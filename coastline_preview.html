@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STRANDED - Coastline & Shoreline Foam Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080e18;
+      --bg-card: rgba(15, 26, 42, 0.75);
+      --bg-card-border: rgba(45, 85, 125, 0.35);
+      --accent-aqua: #19c8dd;
+      --accent-cyan: #71dcec;
+      --accent-sand: #f8ea9c;
+      --accent-gold: #f2d979;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9eb3;
+      --text-dim: #5c7088;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #112338 0%, var(--bg-dark) 70%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 32px 24px 64px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--bg-card-border);
+    }
+
+    .header-title h1 {
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-aqua) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: rgba(25, 200, 221, 0.15);
+      color: var(--accent-aqua);
+      border: 1px solid rgba(25, 200, 221, 0.4);
+      padding: 4px 10px;
+      border-radius: 20px;
+      vertical-align: middle;
+    }
+
+    .header-title p {
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-size: 15px;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background: rgba(25, 200, 221, 0.1);
+      color: var(--text-main);
+      border-color: rgba(25, 200, 221, 0.4);
+    }
+
+    .tab-btn.active {
+      background: rgba(25, 200, 221, 0.18);
+      color: var(--accent-cyan);
+      border-color: var(--accent-aqua);
+      box-shadow: 0 0 15px rgba(25, 200, 221, 0.25);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Main Stage Layout */
+    .stage-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .canvas-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .canvas-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .canvas-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      border: 2px solid rgba(25, 200, 221, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      display: block;
+    }
+
+    /* Controls Panel */
+    .controls-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .ctrl-group {
+      margin-bottom: 24px;
+    }
+
+    .ctrl-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .btn {
+      width: 100%;
+      background: rgba(25, 200, 221, 0.15);
+      border: 1px solid rgba(25, 200, 221, 0.4);
+      color: var(--accent-cyan);
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn:hover {
+      background: rgba(25, 200, 221, 0.28);
+      border-color: var(--accent-aqua);
+      box-shadow: 0 0 16px rgba(25, 200, 221, 0.3);
+    }
+
+    .slider-container {
+      margin-top: 10px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: rgba(45, 85, 125, 0.5);
+      border-radius: 4px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-aqua);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-aqua);
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(10, 18, 30, 0.5);
+      border: 1px solid rgba(45, 85, 125, 0.25);
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider-toggle {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(45, 85, 125, 0.5);
+      transition: .2s;
+      border-radius: 20px;
+    }
+
+    .slider-toggle:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider-toggle {
+      background-color: var(--accent-aqua);
+    }
+
+    input:checked + .slider-toggle:before {
+      transform: translateX(16px);
+    }
+
+    /* Gallery Cards */
+    .grid-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(25, 200, 221, 0.5);
+    }
+
+    .card-preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      border: 1px solid rgba(45, 85, 125, 0.4);
+      border-radius: var(--radius-sm);
+      height: 100px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-preview img {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      transform: scale(4);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .card-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-sand);
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Multi-frame foam card */
+    .foam-strip {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      background: #000;
+      border: 1px solid rgba(45, 85, 125, 0.4);
+      border-radius: var(--radius-sm);
+      margin-bottom: 14px;
+    }
+
+    .foam-frame-box {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(25, 200, 221, 0.25);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: #08111e;
+    }
+
+    .foam-frame-box img {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      transform: scale(3);
+    }
+
+    .frame-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0,0,0,0.7);
+      color: var(--accent-cyan);
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-title">
+        <h1>
+          STRANDED
+          <span class="badge">Unity 6.5 Ready</span>
+        </h1>
+        <p>Interactive preview of Base Sand-Water Transitions & 4-Frame Shoreline Wave Surge Animations</p>
+      </div>
+    </header>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('simulation')">
+        <span>🏝️</span> Interactive Island Preview
+      </button>
+      <button class="tab-btn" onclick="switchTab('foam-gallery')">
+        <span>🌊</span> Shoreline Foam Animations (12 Directions)
+      </button>
+      <button class="tab-btn" onclick="switchTab('transitions-gallery')">
+        <span>🏖️</span> Base Sand–Water Transition Set (14 Tiles)
+      </button>
+    </div>
+
+    <!-- TAB 1: SIMULATION -->
+    <div id="tab-simulation" class="tab-content active">
+      <div class="stage-layout">
+        <div class="canvas-panel">
+          <div class="canvas-header">
+            <div class="canvas-title">
+              <span>🌊</span> Live Island Coastline Simulation
+            </div>
+            <span class="badge" id="fps-counter">Wave FPS: 4.0</span>
+          </div>
+
+          <div class="canvas-wrapper">
+            <canvas id="islandCanvas" width="768" height="512"></canvas>
+          </div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="section-title">Simulation Controls</div>
+          <div class="ctrl-group">
+            <button class="btn" id="btnPlayPause" onclick="togglePlayPause()">
+              <span id="playIcon">⏸️</span> Pause Animation
+            </button>
+          </div>
+
+          <div class="ctrl-group">
+            <div class="slider-header">
+              <span>Wave Surge Speed</span>
+              <span id="speedValue" style="color: var(--accent-aqua); font-weight: 600;">4 FPS</span>
+            </div>
+            <input type="range" id="speedSlider" min="1" max="10" value="4" oninput="updateSpeed(this.value)">
+          </div>
+
+          <div class="section-title">Layer Visibility</div>
+          <div class="ctrl-group">
+            <div class="toggle-row">
+              <span class="toggle-label">🌊 Shoreline Foam Overlay</span>
+              <label class="switch">
+                <input type="checkbox" id="toggleFoam" checked onchange="redraw()">
+                <span class="slider-toggle"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <span class="toggle-label">🏖️ Base Shoreline Transitions</span>
+              <label class="switch">
+                <input type="checkbox" id="toggleTransitions" checked onchange="redraw()">
+                <span class="slider-toggle"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <span class="toggle-label">🦀 Player & Beach Decor</span>
+              <label class="switch">
+                <input type="checkbox" id="toggleDecor" checked onchange="redraw()">
+                <span class="slider-toggle"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <span class="toggle-label">📏 16x16 Tile Grid</span>
+              <label class="switch">
+                <input type="checkbox" id="toggleGrid" onchange="redraw()">
+                <span class="slider-toggle"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="section-title" style="margin-top: 24px;">Architecture Specs</div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6; background: rgba(10, 18, 30, 0.4); padding: 14px; border-radius: var(--radius-sm); border: 1px solid rgba(45, 85, 125, 0.2);">
+            <div style="margin-bottom: 6px;"><strong style="color: var(--accent-sand);">Ground Layer:</strong> Base Sand-Water RuleTile</div>
+            <div style="margin-bottom: 6px;"><strong style="color: var(--accent-cyan);">Overlay Layer:</strong> Shoreline Foam AnimatedTile</div>
+            <div style="margin-bottom: 6px;"><strong style="color: #fff;">Surge Cycle:</strong> 4 frames looping at 4 FPS</div>
+            <div><strong style="color: var(--accent-aqua);">Seam Continuity:</strong> Mathematically locked at y=6, y=9, x=6, x=9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: FOAM GALLERY -->
+    <div id="tab-foam-gallery" class="tab-content">
+      <div class="grid-gallery" id="foamGrid"></div>
+    </div>
+
+    <!-- TAB 3: TRANSITIONS GALLERY -->
+    <div id="tab-transitions-gallery" class="tab-content">
+      <div class="grid-gallery" id="transitionsGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    const ASSETS = {"sand_1": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAf0lEQVR4nGP88WrOfwYiwNuH9xmE5RUxxJkYiATYNKMY8Ov9XWLNwm4Am6AyTkX4DGfCZzpMIz7DmfAZgE8jUQYQ4yUmBjIAssuYYHFMLmDCFsekRCkTISfiAyCLmIi2CotXQRYxkWIAWXkBPTzQ+RgGYHMmPj6GAbhyHS6XAQCN4iq2joY4GQAAAABJRU5ErkJggg==", "sand_2": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAgklEQVR4nJ2SMQqAMAxF4x+6Sw8g4rW9moirUFyliyJYaEMaG9/WQF4/Sbpzny/KCNtKfhipFfBCa3M8FllQ40mW4/rJJvCVZKAfpPi/Be6NXwhiZrUAycrR5NDsqVGTQxNojYUgsB1bgLRjy0AhFVuip49MdyCds0kgnfOngM+Dv2+n2Cp8R2r9GQAAAABJRU5ErkJggg==", "sea_1": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABMklEQVR4nHVSsWrDMBCVjCCDoZA0QzuEDh6yFbIF0v/snjXfUWi7BLJl8BCyZHBTOhhSMHV5kp55kZ0DoztL7+7e3bOT13U7WqwMrMicySe59+tzbXaHk3HV3sfu69s092NDI8Y+vpdtCoSVf42pj1UAxyTNdO59gIHxd0V0dtVPB8hnU38+Pz2ERLEqwTQUtS+fh/ZWNSZDEbxJafr3ZQQr12AhRvUydqTdMrZ3m48W4HRIGqMb0kppZqx8mS+7thmnpjR/t2+h89FidZ1VOHN4+K9gpWk5xCEdDK1TqcF3ABTnugckuL9O3dLeOAJwEpAOit1hG1e0uMaCnBMt8DGAXKHqAr6FlId0MLTCLokIKSNYgfgY446dkaKaUx1o+4jp9/QgG+oo6NDSmdxSId79A98r9J0dtABjAAAAAElFTkSuQmCC", "sea_2": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABMUlEQVR4nHVTPWvDQAy9MwcZDIE6HpohZPDgLdAtkP7P7F37OwpJl0K2DB5MlwxuSgdDCiEO7+x3keVEYKT7eLqnJ9m+fpaN6ay4nL2vvyvv41nqfRa5cC7PEDts4oI8dNW+TcTEszQkAZD3Edvppmh8pg7kfn69P0+eWp/mAyZxEpO0iQiWQHxc44zMWKI0x5dP+bJHH2vG2upjHRJalqBF04I9Etcm67dm9LIKG6wPr+zKQ08b6gIjxoKBBuqWMQkERQwwBXUMdtXfgOJi/twmomAdmIZHLQbp0Wu677pMf7/owHoOjLkNEwaJYLINIo7ftw3nQIok13KYdJmR7Dtpy7no9V+U+f/10TKHKL2somaKxx+HYFlmEPHeHNxrpywNsQMgO9YDIMHDdsou7c0Vw6n3N5mTM3sAAAAASUVORK5CYII=", "starfish": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAo0lEQVR4nGP88WrOfwYiwNuH9xmE5RUxxJkYiATYNKMY8Ov9XWLNwm4Am6AyTkX4DGfCZzpMIz7DmXDKvMevEb8B7xkYvn//BaZJNuD7s19gmpOTjYGBWwnCf0+CAZycbBDbQYa9uUG6CxgEGRievrwGpjml2OBsXICR2JSIK5aYSNEASs7IABRLTKQYQFZeQE+F6HwMA7A5Ex8fwwBcuQ6XywCOFz0oPFi9ogAAAABJRU5ErkJggg==", "pebbles": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAn0lEQVR4nGP88WrOfwYiwNuH9xmE5RUxxJkYiATYNKMY8Ov9XWLNwm4Am6AyTkX4DGfCZzpMIz7DmfAZgE8jXgOm75NjSJv0maBmrAZM3yfHcP7KVTDbs/A8QQNY0AUWzp7KICghw/D+xROGJWWyBA1gJDYh4QJMlGgGxRITKRpAyRk9lphIMYCsvICeCtH5GAZgcyY+PoYBuHIdLpcBALqVNA6IcpMjAAAAAElFTkSuQmCC", "seashell": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAm0lEQVR4nGP88WrOfwYiwNuH9xmE5RUxxJkYiATYNKMY8Ov9XWLNwm4Am6AyTkX4DGfCZzpMIz7DmfAZgE8jUQawC4cx/GfQIM8AduEwhh9vL4HZz+78w2kACy6Jq3uqGLh49cDsb59BBhlgVcdIbELCBZgo0QyKJSZSNICSM3osMZFiAFl5AT0VovMxDMDmTHx8DANw5TpcLgMAWTsx7e2vzvoAAAAASUVORK5CYII=", "player": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACSElEQVR4nMVVMUjDQBT9CZnEQUQ6lSAOIiKhiJQODp3EQRxEHEQcHBxEMnZwcBBx6FiKkziIOBRxECdxcHAoIlKKiDiIFAcREQdxEiv/7I+/p2nvrik+CLl/ebn3/v93CcA/wzJ90U/3V+W53Omt9npWK8JHNy/B/MRAt5EZx0ScC7sdAJX3nzmMPbfeTCPYOgZkcW4CLwSJ/9Ui4wr4DRbD7LkJMii3pCUDYZkjKHM0wisRWQv8JqXkFaA40j2Qq+1mXlI5UxTlRsqVl+gMhLUAsyRTPHuqgOoxtFVIXISEECvL88IExSawVUiYDfU1bHfTPN51voi2KpEWp6zxflW6qotVj57xp9ivnYjJ0WEYSgwF82jk8OzS6H9ggwEWt05gI78TxOt7J2AKS5V4WzoW2V8Ui8Fc7OEanuKDYnx+sAtL2bwY9yfG2rMHLopFGEmlxIWQxbk5VTg62XOQiZ63LIyk8r/4qlWwdbPn2Mwsw3Nnps6UbhUcHTItjkIoTj3nz3ThmLyE4smpOWNRDqsZAftZ2d8WY3d6AcbHZ2HS+/7grK664r62VhH3ieRw8B5yVfaB1YzwuL9eLZyXYSbpiRjHpeu7X7zEYF8dB+FnC1bLLSjUFuNjFAvjkglVWCqkXGZGHEPMnMSpCtwMf66SvbIB2UiYAR3hlv4FHGTkr32hAkuHnPZ6qw9Pr0H8CQ7Y8BHE8VgXnJbv21OBtNdb5UIcPOa8SA0gMHtZnIDzvDptMRCXxN1YZ8PnkRqQe0v9lkV198AXmTf1Ol5QtCMAAAAASUVORK5CYII=", "sw_tiles": {"edge_s_01": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABPElEQVR4nGMUmr7oP7uhNQMIKDOxMHALcYPZX999Zbj08AUDy5ubYD7L2/cMf4QFGWAApodR8sTd/+gaQeDuvz8MXx+/gWiGGvJHRB3MBmkG6QHLKUMZl958hGvglhUB03ryEhCDoLbCNMMAyFJGm1MP/+OyDWYYyBKQGnRvgtXfhWpG9isEQPhGEhD7jRgYGD6yK8NdCzOM0fvwvv8w045feQI32VJHBkxnXZ8PF5ummciADhi3zor9j00BTKO0jBBc7OmTdxgGsCArQLYNJi4qysPAy/eP4fMnJgzNYANEcSiAibMJKoL5oCTAy3cXrA6mHkQz/ng1B+6FX+8RCtgEIQFGCLAgc0CakBIbQQCykIl45QwMbx/eZ0C3kIkUA4TlIeGBDAgaAHImPj6GAdiciY+PYQA2Z+JzGQD/yohcuVntbAAAAABJRU5ErkJggg==", "edge_s_02": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABRklEQVR4nGO0OfXwPwMU3P33B0x/ffwGTHPLioBpZSYWuDyyHIjNAhIEKUCWZHlzE2IQzGBZEbghII0w9SA2o+SJu//BJkE1sbx9D6b/CAtCaBF1DJdwC3HDHM3ABNOMrBGEYXyQHMxlMC8iAxaYzab2unDB41eeMPxQt4C7CkPT80sMH9mVwQayWOrIgAWzrs9HqNBJBIfAYQZ1uL+Nfj+ES4PUTtNMZDBiYGBg3DorFhwL0jJCcAVPn7wD0yBFyJpgAKQWpoYFplFUlIeBl+8fw+dPTDg1wYCSMhfCO6JQjWyCimABUODz8t1FMQjdApBaUdH7YD7jj1dz4AkJHfx6DzEIYoEy9gBlYGBgePvwPoOwPMQFyACkCZoccAImsLPRNINsJhYwYRPE5Vx0ALIIqwG4AMir6BaRZAC2cCJoAHp4oPMBjZ+PKItZdzwAAAAASUVORK5CYII=", "edge_n_01": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABG0lEQVR4nI2SPQvCMBCG0xBdRMGPxUGKOIiLg5ODf8bVH+Qk+HfEwVUcqhR1sX6AUhGVVi7lDUmttQflLrl7n7sctR6HScgy2MndsKrd/LrnLKMliQ3A8+JkZSUD8uXWz6I0OE+jQ5gG5/FFkYj8PyFMkOB25axYCpjn3ZnnRYliKbrXl0dgqkM9ebF27jJJwv3u/NUBoHgDeKGLxp2hikfLqQH61UDowne9y/yzb8B0kN4AOWswd9Wf6ARv6f3tUfpCo8Z6L1cJFjnbyFFs1WdO2OJCipEUx1U0Ua2tilFDpscWAUgIkThdInG1rCAEgFACKwU1FYdYF9KHM+UwGboaS0TnR7tvjE9nxHHDogmonoC36m+M3yfVfQA1u7NlMqhHsQAAAABJRU5ErkJggg==", "edge_n_02": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABQ0lEQVR4nJ2PzUrDUBCFJ+GqYGikpoW6kCBZFDeCO0F9GLc+kCvBB/ApRAR/QBcuJItrCFoQ06SgpLQSGpm5nXCTGKyeVWZyvnPPGJP30xw0xWEAjrsFi8qsLhaFv0by54AmYTNdy23vbwFOQzMT/iGu/2tAHAZkbqqPEmj4/DChZc+KHwjgHEVjiCJlbNllH3PiWY7nhtUaOHhNaq1w3+0G5KEGg4pJB0+2j4r98dNZyccewUbdwODlmwXWZgc8U9TCmDE2rmWevgzhsJcWhruLR8icNn1nnT6FoDAItTaVcL/k0mzY5ze5GPog4lEBUTVt1kPwMRTPJsKoSX+PjCycq2IYmenDFc1iZXe/nDq/Wc4y4KNwr8PYTskH4+A2zNHMN1rrlnotUTgFVWA+Db8FAl6S1kCGUTtuT2ukTlbn+vANG4+8yXu/qbsAAAAASUVORK5CYII=", "edge_e": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABSElEQVR4nI1TTUvDQBB9LosetlqStFAwIpJDEfTgTRF/jFd/kD0K/hUP3oMgHoIEKy00TfFjwY9QZdZs3Cyb0AebHZJ9M7PzXtb80fXPxtEpCBHjEL4An8S4uL/Cduij3+8g2N3DPH1Uuw1OZE0kyFyiaxzY3Fqq3UVWCSLGVRBnL5BPmYrPBv8H3l4ZAg+NYPRIlkVF5tkDbu/GuNw/x/M4x2z2jq9F0piAazIR1Yv5ovwUrtQF02RNLAJPLTjm4EzAy8ofw2MUvaGKTw7CmgrrXlQjmVfipIK+v9jpAbS+09bqZkJOKiREKn3Q/Uys6m75qgTCF4hyWfkAk9XuXs1A5lIFtJMXTND020CzYCQjQct5MxWNHiA727PgFMTp9E9K7YPBYa0LrarLzk4fmLDnYLvS6YO2OdieYOQDTSQf6F+7qQO7k1/PrZ/+PyRx3AAAAABJRU5ErkJggg==", "edge_w": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABSklEQVR4nI1TwUrDQBAdw2LB0EKaHAQNojlIL4LgTfyYXP2gngT/yEMvkkOUooI0aUuVFZUlykwy2+12F30QspPNm3k783bnc3bzAw58L0t4KD/g5XlBcT67ABVHer93fknvADx4f1tvjUc5kVVyqslZIOgJzIom+oNmI0ayqAtdGREOQxAc7EaZ3phPH6GqWvlYfdXLIEwVQJpQVSQyhEs+Vq+qdVw2it5IRkzqlY6Dv86PkE+1TjSZvm7EwpUgPjqG/qDtyfX9LcAohztINBF78VUXbV/AA58KJIv5svtatEfAprlUnGR7cHA4JBVX+1KTaaRxROuAfzbBI7VVoGQ2E6+FSz6P1J5GmCYgrbXw9cDlBWgUEXF8ZbcWvgQuL7AP0Ehn3fd/3QUziY2tv3gi9l0wIReSHnTkVgKeiKmAzNR5AZ2ISvhIv3yCq7EvovhpAAAAAElFTkSuQmCC", "inner_br": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABW0lEQVR4nHWTy0rDQBSGJ2Gwi2ilN6ioFMmiK4UKglDF9/GFXApufRF12Y24GCS4cZG2qAS8hKb8k/nDmVHPZuaQ+c75zyVR9+qmak2mCpbGWiXdxN6LRaFm2avS+ZP19Xypyl5H0chEO3emCkGYWZWqeMlr2AUp+2N7BwzGfkvdZZa/NUCy37fn0WhYB3JZCdOQNDp7yKr/sjEYkuBNWKZ9bxwsa62t9pHdOEVSLf2ofXtfAQ6bJH2oYVnHP1nzxr7TLvPn+NQrAT7vErx8vPYDtCZTv3miZjbvfFg04O5e1wsQsYlhgzjO7S/jwYPBptpqr9THe2xPDSBdFL9ACTMr4Y1OqtguTQAnlaAkKZtwb3Tgyf9eGhUT4jjlSKVswPPs2QsAJdrO1e08HIzv5OKwkU7ZsFABLGZGLpDcBRhrlrK9AHLuXF9p6HYo2wuAPZB7L38WKvjLqGQNn6LP6SaN660AAAAASUVORK5CYII=", "inner_bl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABfklEQVR4nHVTwUrDQBB9KdGCtUprC4qWoDlIQYSe9Q/8ilz9IL0Igh/ipQfFg4cgSA6LlFYoJm2pWrBSGpnZbJwk+i47S/a9mTczseqXN3G5cwKCW7JRqVc4no1n8HtD2FHAd3s0wWKrBgPDsXbuVZwnEtRygVk/0uREZNE45JjIxOFvbhL40TQlVFoNPo+dbS2UZDVkA0pqnT704v+yGTFKQm/yNvm9SsjSq4a+U3aVVCSrNXfrrHsbp3IA7p4GhaZRNcZW3qZ9/nwt+cCRx0d3qBsmIW3Oo0A3dXevnnmUCrY9dPHbB0mWNu0Ddw0f7yVUN5Z8El4HYy3U9vC44hTIxhrF9mrNhdmPKhSA9Uw1F20PU8cV45RTCqBTJmAxZx/NZlZkc670+FoNJpqmcg/wB0gEeEntSMi9oNj6ervKjNHge6K4J2H4ySJspexqEbFIGQt5O9RYCbONEgWBUU+XTjBTyYN+OP5bo2mxB9q/BlUQhoLYj+CLLaRe/AClgsla4aOZCgAAAABJRU5ErkJggg==", "inner_tr": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABY0lEQVR4nIVSTUvDQBCdhBXBqKVJChUtRXMIHvUk2J79HV79QXoU/CfiRSp4qAcRXCWo6CFpUIn4ERqZMRMnMcEHm8lu5r28mVnDPjjKZje2AeGZCizbAvU4hr3LQ1hesaHTmQenvwpRcEuxCoVkJiKSSQItkbCwOKVYRyYBz1T0Mg6fIbkL6X3Y/U14fTHBaUMjTHzoaVqQVXhVSkAHaL9RQOdkJNKKYjg7voD99V14uJ/AjX4ryqgVSJgcxXSQOm1aDBb5jHW9gMotv/tbkLp+8eHkySIXDBbBcqSYsXSqM67f6rkUsbFc2rCb0EgRONY1b44ai2VhNAajIMNkJspxcoM3v4KSiISxcx1mmFwlMpmFWx8/tlmoEBiMgqxKqCtJupFQeChrpsO8sexF99xC5HymX+SXmqhykhwnRdf/44TLpTE23QPe4zd2xn8tlSDvgbSP++q1ZsgJ/XsP5Hld3jeg2+eOZmNL0wAAAABJRU5ErkJggg==", "inner_tl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVElEQVR4nH2SsU7DMBCGL5GhgwVSIQMMUYcMFQsSGxKPwFPwUkw8C0sHmBgQS4YUIYqESNKoQFFBUYt+u+fYTtqTIvtqf3f//XWw+LhZ0YYoX54pz7/pbTKl65MrunuamLPe2YVaQ9oSe/tLJ6+joYGTUKgv5MO/KmsV+Pp064siNZ0R8kCS4GS3n7TkQ0GeN79xZ4CmKG2RP85+zPwPOwMFIx6LmVqRiy4Y4zBsR7asaf5aaPlxpHLRJRswB7qP3iXJmAwML36LVJkqGIJhtmwXjhxYlNW6fEoC/zMbhdWGZ72EZFy34Pqwr/OyIuHPCRABGDMiTgdHev511+ZNpBRcjm6dlwi3baPY7S4TsQ+O77MVLtiHkNp00Zf5DhfkfYACABlig3hOFPGV2A8pZNgG8XGOM1bGXe0Q3HkxPHfkI+e9H/OpthMFzQi+ab5hCuy49w8SMOZNKRkrFAAAAABJRU5ErkJggg==", "outer_br": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA8klEQVR4nJWSTQrCMBCFxxAUrD+0pVBQEM0JdCteqBdyKXikblwVKS7cVEWlG5UqEx0J/Unab9EkpO/NmyQtZ719d+ZLQATjYDkW8GMIwW4Do7EDntcDdzKFU7yXYx6OYhIi6TmFofJDf5DJsUwsDQTjchImV0gPCaz8VFYn7jcGrg2VMPxE2UuKVdT4j0tUacBJjJUR6l2N37ZFtcHiGQP4XyFVRmaiqxX+DQKl37pibIn2OYkQ7Bljmyqr+5xE8rQrrkrbgvsTqVelRjTBTBF1YCEGDcDnnC/EmhiUnZHRIP8K8+uCQVlM3bpgUPcqKckHM61TvxQzPGwAAAAASUVORK5CYII=", "outer_bl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA/UlEQVR4nGP88WrOfwYc4O3D+wyvX39hePrkHcM0zUSG41eewOXYDa3BNBMDHsDL9w+F/0dEHa5ZmYkFjJlgkr/e38Uw4PMnhPlZ1+cz2Ep8hdsMAtxC3AwsMA6boDKGAcLyigwMDPfBbJA3QABkK0gjDDDh8wLIVTBvSMsIgV3B//MuA8vzSwyX3nxk+PruKwMjvkBENuje3W8oLgEFKggwEmMALkNAgIWBSAAKIyXluygBCzfg7cP70AAjbIiwIIh1Hxw2IMMYsXkB5FxssYINMOGyiRgAsoiJgQQA8iq6RUykGIAtnAgagJ7E0fkYBmBzJj4+hgHERCeySwAOVWp/zKfIlAAAAABJRU5ErkJggg==", "outer_tr": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA/klEQVR4nGP88WrOfwYiwNuH9xmE5RUxxJkYiATYNKMY8Ov9XWLNwm4Am6AyTkX4DGfCZzpMIz7DmfAZgE8jUQYQ4yUWEOfzJyYGXr5/RNkIAsjqWO7d/QZmvH7NwKCkDDEMV5RhAyxPn7zDIow90WADjN6H94FTYtb1+WABaRkhMC0qykPQEJD3GSVP3P2vzMTCwP8TEjAgg3AZgi05s4CISw9fMLC8eQIR0UmEGwIKWGSANS98ffyGgeXNTQaWt+9RJEBhAwpg9FSIzmcCaQaBH+oWDH9E1BmOX3nCME0zEa4AFCvIAD2qmdgNrcEaQYBbVoQBxEcG6N5AdwkAEslhww5r4OgAAAAASUVORK5CYII=", "outer_tl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA1ElEQVR4nGP88WrOfwYiwNuH9xmE5RUxxJkYiATYNKMY8Ov9XWLNwm4Am6AyTkX4DGfCZzpMIz7DmfAZgE8jUQYQ4yUWBjIBKFp5+f5BDMAVx7g03bv7Dcx//RrqAnTNICei+x+k+fXrL2BNT5+8w+8FNhyaQQCmeZpmIm4D8GmGaTzHKk+cAbx8/+DOBmn+yK7MwC3EzaAHlSeYkEABhuxndIBhAMjJMPD5E0IaZDvM2V/ffQXjS28+YnoBOUZgzoeBr4/fMFxiYGDglhUB85WZWBgA9g1pnYH5OToAAAAASUVORK5CYII="}, "foam_anims": {"s": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAQklEQVR4nGNgGAUEwbH3n/4X3nmzBUSTpOAYVPz/////QWwQgKlDphlgktgUgACyociGwdgM6LbCAGHPjYJRwAAHAGeYclWdz2SWAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAARUlEQVR4nGNgGAW0B8fef/pfeOfNFhBNkoJjUPH/////B7FBAKYOmWaASWJTAALIhiIbBmMzoNsKAzA+ujxB/zKMgiEIAF9NfUdrgoPYAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAQklEQVR4nGNgGAUEwbH3n/4X3nmzBUSTpOAYVPz/////QWwQgKlDphlgktgUgACyociGwdgM6LbCAGHPjYJRwAAHAGeYclWdz2SWAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAQklEQVR4nGNgGP7g2PtP/wvvvNkCoklScAwq/v////8gNgjA1CHTDDBJbApAANlQZMNgbAZ0W2GAJuExCkYBAw4AAHCfclW21mrmAAAAAElFTkSuQmCC"], "n": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATklEQVR4nGNgGAWjAA0ce//pPwwwEAmYkDWtfvtr6/EPnxmK7r7dChNHVgziI6sHsRlAROGdN1vAHDTXgMSRNcHUIdMMhAAuC0YBAxwAADETcbn72OJiAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUUlEQVR4nGNgGAWDEBx7/+k/RZphgFgLmJA1rX77a+vxD58Ziu6+3QoTR9YAMximHix37P2n/4V33mxBNxkmDlMIAjB1yDQDMd7CZsEooCIAAOs0eQXWl33dAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATklEQVR4nGNgGAWjAA0ce//pPwwwEAmYkDWtfvtr6/EPnxmK7r7dChNHVgziI6sHsRlAROGdN1vAHDTXgMSRNcHUIdMMhAAuC0YBAxwAADETcbn72OJiAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATElEQVR4nGNgGAWjgNrg2PtP/2GAWD1MyJpWv/219fiHzwxFd99uhYkjKwbxkdWD2AwgovDOmy1gDpprQOLImmDqkGkGYryFzYJhBABPqHG5pi+8mwAAAABJRU5ErkJggg=="], "e": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAY0lEQVR4nGNgwAKOvf/0H4QZyAWFd95s+f//P/kGHHv/6T9FBsBcQZE3jhHpCiZcEqvf/tpKjEUsuGwH0YyMjIwMdI+FYyTGABM2vx//8Jksy6mbBv5TmhKPDZm8gDUlkhITAOTeaddqhWdDAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZ0lEQVR4nGNgwAGOvf/0H4QZyAWFd95s+f//P/kGHHv/6T9FBsBcQZFXjhHhCiZ8kqvf/tpKyBIWfLaDaEZGRkYGSmLhGDn+P0ZCDDDh8vvxD59Jtpj6aeA/uWHAMKTyAs6USGxMAAC4wHTJzgXGGgAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAY0lEQVR4nGNgwAKOvf/0H4QZyAWFd95s+f//P/kGHHv/6T9FBsBcQZE3jhHpCiZcEqvf/tpKjEUsuGwH0YyMjIwMdI+FYyTGABM2vx//8Jksy6mbBv5TmhKPDZm8gDUlkhITAOTeaddqhWdDAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAY0lEQVR4nGNgQAPH3n/6D8IM5ILCO2+2/P//n3wDjr3/9J8iA2CuoMgbx0hwBRM2wdVvf20l1jIWbLaDaEZGRkYGusfCMTJigAnd78c/fCbLcuqmgf+UpsRjQyovYKREUmMCAIwsaddUOOBBAAAAAElFTkSuQmCC"], "w": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWUlEQVR4nGNgIAIce//pPwgzkAv+////v/DOmy0UGXCMXBcce/+JtrYzEWPI6re/tjJQAo4NeCzgCwsmBiLB8Q+fKQuL/5Skhf+UhsGxAY8FfP4nKhbwxQAAx3xtdVeuxVsAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZUlEQVR4nGNgIACOvf/0H4QZyAX/////X3jnzRaKDDhGrguOvf9Evu3H3n8CWT7A/h8csXCMGmFxjJLYAAGKXPCfQBgw4tOMbKuVIB9etWS7gCgD8PmfiZABxz98Zlj99tdWXPIAEOx1tjMGyjIAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWUlEQVR4nGNgIAIce//pPwgzkAv+////v/DOmy0UGXCMXBcce/+JtrYzEWPI6re/tjJQAo4NeCzgCwsmBiLB8Q+fKQuL/5Skhf+UhsGxAY8FfP4nKhbwxQAAx3xtdVeuxVsAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWUlEQVR4nGNgIBIce//pPwgzkAv+////v/DOmy0UGXCMXBcce/+JdrYzEWvI6re/tjJQAo4NeCzgCgsmBhLA8Q+fKQuL/5Skhf+UhsGxAY8FXP4nOhZwxQAAEbVtdWcucEgAAAAASUVORK5CYII="], "inner_br": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAXUlEQVR4nGNgGAX0BYV33mw59v7TfxCGsRlI0QgDMDZRBhQiaSbZycegNuCziQWf5tVvf20F2czIyMhIsu2Fd95sIcvZIECKn5lwSRz/8JkY/dgBRc4HAVhioYsLACC8bcEDqjR5AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAaUlEQVR4nGNgGAUDDxhJUVx4582WUGE279Vvf20F8UFsBlI0g+j/////P/b+038YzUCsZpI0YNPMQA4ovPNmC1m2ggBMIyHbmXBJgEIaZAgjIyPemMJpAAhYCvDik8YPQLaT7X8QIDb0AeudTwbqoasNAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAXUlEQVR4nGNgGAX0BYV33mw59v7TfxCGsRlI0QgDMDZRBhQiaSbZycegNuCziQWf5tVvf20F2czIyMhIsu2Fd95sIcvZIECKn5lwSRz/8JkY/dgBRc4HAVhioYsLACC8bcEDqjR5AAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAX0lEQVR4nGNgGAVEg8I7b7Yce//pPzrNQIpmdECUAcegGnEpZiKkGca2EuRjJMq5yM4G2cxAALBgEyQ6cHBpLiTSdqygkBLNDEihTqx6jFhY/fbXVrJth7mAokAkNQwAEfdyWC3yGuQAAAAASUVORK5CYII="], "inner_bl": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUklEQVR4nGNgGAWUg8I7b7Yce//pPwiD2CQb8P//f7BmGCDbIBigiiHH3n/6j0yT7ZJCaPhQbAgDJeA/NExwyTMRMuD4h88UOYByb8ASGc1cAQCeSmYTfbDpKwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAYUlEQVR4nGNgGAWDABTeebMFhI+9//QfRJNswP////+DNIMAzECyXXMMahBFhoAAVQw5Rm6YwAAsTEAGMeABTLgkGBkZGUGaV7/9tZUsA0DAUoAXnzRhAHIBIS8QBIRiBAA8sFAmHCvnAAAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUklEQVR4nGNgGAWUg8I7b7Yce//pPwiD2CQb8P//f7BmGCDbIBigiiHH3n/6j0yT7ZJCaPhQbAgDJeA/NExwyTMRMuD4h88UOYByb8ASGc1cAQCeSmYTfbDpKwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAY0lEQVR4nGNgGAUMhXfebDn2/tN/ZJqkYPmPBsgyBBmADIAZxEAEYEIXsBLkY0Q2jIES8P//f4LeYSRkwPEPnzFcRpYrjlHinf9EeIWBkAG4XIARC7jA6re/tpLtApDtNItSABE3bmOznbTeAAAAAElFTkSuQmCC"], "inner_tr": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAa0lEQVR4nGNgwAIK77zZ8v////8M5IJj7z/9B2Fi1DLhkrAU4GUg24DVb39tZaAUHHv/CRQM/8n2wuq3v7Ye//AZbBDZrii882YLiKY4RgqpEa2FUENgYUOW145B0wfIMGIDmagwGgUMlAEAWU9fKfcgXHMAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAYUlEQVR4nGNgwAEK77zZ8v////8MBAATPsnjHz4zkA2Ovf/0nyIXrH77aysjIyMjyCCyXVFIZDjQx5BjRIYJXkNANMwgWNgwMpAAQJpAgQtihwqzeVsK8JKiHberRsFAAwDV3Emr8Tm9jwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAa0lEQVR4nGNgwAIK77zZ8v////8M5IJj7z/9B2Fi1DLhkrAU4GUg24DVb39tZaAUHHv/CRQM/8n2wuq3v7Ye//AZbBDZrii882YLiKY4RgqpEa2FUENgYUOW145B0wfIMGIDmagwGgUMlAEAWU9fKfcgXHMAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAY0lEQVR4nGNgQAOFd95s+f///38GcsGx95/+k2IAE7rA6re/tpJtO9VccPzDZ7BBDOSCQmhAUhyYxyhxBXJ4UOSSwjtvtpAasBgAZAByuIAAyd47BjUEmabIVSAAMohhFDAAANEVeVDHSniCAAAAAElFTkSuQmCC"], "inner_tl": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWklEQVR4nGNgIACOvf/0HwQK77zZwkAO+E+JZpgLQJgBB2BiIAAsBXgZyAb/qeH3Y3icjxMcg2oiS/P////BgUa00/9DNcAASZpBoBDqT5I1wsAxcvw5CqgLAI+vY2kSUtLMAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWklEQVR4nGNgwAOOvf/0HwQK77zZwkAO+E+EZiZ8ksc/fCbLYrjtMG8wkAOOvf9EW79TL9T/////H6YRxCfVZpaiu2+3QpifvUGa+1VEfEgxgIHsUB4FgwgAAPcQTjY2i6zxAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWklEQVR4nGNgIACOvf/0HwQK77zZwkAO+E+JZpgLQJgBB2BiIAAsBXgZyAb/qeH3Y3icjxMcg2oiS/P////BgUa00/9DNcAASZpBoBDqT5I1wsAxcvw5CqgLAI+vY2kSUtLMAAAAAElFTkSuQmCC", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAa0lEQVR4nGNgIAIce//pPwgU3nmzhYEc8J8SzTADQK5gwAKYGIgEq9/+2spAifOP4XABIyHNxz98BrOtBPkYybadAQ9gpNRmJnQBZL8S42ym/2gAJFh09+1Wov1cCA1hZJoojdicPAoYyAIAkp9m1k76uR0AAAAASUVORK5CYII="], "outer_br": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAU0lEQVR4nGNkQAPH3n/6D2NbCfIxMhAATLgkiNGMYcAxqO2WArzE6EU14BiS0xkZGYmyHaz2GJJGkM2kaAaD/////wcZAgIM5IBjSC4YBaNgwAAAxlYfTdqPf10AAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATUlEQVR4nGNkwAKOvf/0H8a2EuRjZMADWHBJWArwMjAyMuLVDAJMDNQGx95/+g8CZGtmYGBgIMUAFuQAg2kmxu8oGo5Rw9mjYBQwUAAAMJ0qlA7YQLcAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAU0lEQVR4nGNkQAPH3n/6D2NbCfIxMhAATLgkiNGMYcAxqO2WArzE6EU14BiS0xkZGYmyHaz2GJJGkM2kaAaD/////wcZAgIM5IBjSC4YBaNgwAAAxlYfTdqPf10AAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASElEQVR4nGNkQALH3n/6D2NbCfIxMhABmLAJEqsZxYBjUNstBXgZSAGMyM4GaWZkZGQkyYD////DDSBVMxgcQ3LBKBgFQxcAAOIDFASseRy9AAAAAElFTkSuQmCC"], "outer_bl": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAT0lEQVR4nGNgIAIce//pPwhjk2NioBAwEaPIUoAX7hKyDGBkZGSEsdENYWQgAfz/////8Q+f4XwrQT6S9MMNAbkCRjNQAig2YBSMAgYoAAAWISjki2LNKQAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASklEQVR4nGNgIACOvf/0H4RxyTMRMsBSgBevPBMDPcD////xeoMoA0A0NkMYSTHk+IfPKGJWgnxE60cxCOQSir0FAhQbMAqGDQAAGNww1qbNzSgAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAT0lEQVR4nGNgIAIce//pPwhjk2NioBAwEaPIUoAX7hKyDGBkZGSEsdENYWQgAfz/////8Q+f4XwrQT6S9MMNAbkCRjNQAig2YBSMAgYoAAAWISjki2LNKQAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASElEQVR4nGNgIBIce//pPwijizMxUAiYiFVoKcALdwmyOCMptv3/////8Q+fGcg2AGYImMHAwAAyjImBRMCIBEjVOwpGAe0AAIuOGKlL+626AAAAAElFTkSuQmCC"], "outer_tr": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUklEQVR4nGNgGAWjgBrg/////4+9/wSi/pOjn+n4h89gBogmxxBGGAPkChjbSpCPkWgXMGDRRIpL4AYgGwLzFskGwIClAC/RBmAFoPBADhN8AACHVSf0G9KaXwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASklEQVR4nGNgGAWjgIGB4f////+Pvf8Eov6TEyCMIM3IApYCvAyMjIyMZIXuMahh5LoGDCjxDgMMkGIIE0U2UcMAnADkDfQYwgYAmG8t1hMi+GoAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUklEQVR4nGNgGAWjgBrg/////4+9/wSi/pOjn+n4h89gBogmxxBGGAPkChjbSpCPkWgXMGDRRIpL4AYgGwLzFskGwIClAC/RBmAFoPBADhN8AACHVSf0G9KaXwAAAABJRU5ErkJggg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATklEQVR4nGNgGAWjYDAAxv////+HcxgZGUk1gOX4h89wDsgwUg1hhDGOvf8EdomlAC9JLmGCMawE+cCakF1EkgEwAHIBRQaAXADzDjEAAI1HGGEI9clNAAAAAElFTkSuQmCC"], "outer_tl": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAR0lEQVR4nGNgGAWjYCDA/////x97/+k/jGYkVfPxD59RxBiJ1QyyDca2EuSD62Mi1mZsmok2AOZsdM1EG2ApwItTjiQXYAMAFH4kT4XXvmEAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOElEQVR4nGNgGAWjgAzw/////8fef/oPoxlJ0Xj8w2dy7GQAawbRIBvJNuAYrTQzkWUqXQ0gFPIAM9svgjIvvc8AAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAR0lEQVR4nGNgGAWjYCDA/////x97/+k/jGYkVfPxD59RxBiJ1QyyDca2EuSD62Mi1mZsmok2AOZsdM1EG2ApwItTjiQXYAMAFH4kT4XXvmEAAAAASUVORK5CYII=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAP0lEQVR4nGNgGAWjYDAARlI1/P///z+MffzDZ9IMAGkGaSLLBf+RNFsJ8sH1MRFrADbNJBlgKcCLVZxkF6ADAPs6Gloj0JjOAAAAAElFTkSuQmCC"]}};
+
+    const imgCache = {};
+    function getImg(src) {
+      if (!imgCache[src]) {
+        const im = new Image();
+        im.src = src;
+        imgCache[src] = im;
+      }
+      return imgCache[src];
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    // Map definition (24x16)
+    const mapData = [
+      "WWWWWWWWWWWWWWWWWWWWWWWW",
+      "WWWWWWWWWWWWWWWWWWWWWWWW",
+      "WWWWWWWSSSSSSSSSSWWWWWWW",
+      "WWWWWWWSSSSSSSSSSWWWWWWW",
+      "WWWWWWSSSSSSSSSSSSWWWWWW",
+      "WWWWWWSSSSSSSSSSSSWWWWWW",
+      "WWWWSSSSSSSSSSSSSSSSWWWW",
+      "WWWWSSSSSSSSSSSSSSSSWWWW",
+      "WWWWSSSSSSSSSSSSSSSSWWWW",
+      "WWWWWWSSSSSSSSSSSSWWWWWW",
+      "WWWWWWSSSSSSSSSSSSWWWWWW",
+      "WWWWWWWSSSSSSSSSSWWWWWWW",
+      "WWWWWWWSSSSSSSSSSWWWWWWW",
+      "WWWWWWWWWWWWWWWWWWWWWWWW",
+      "WWWWWWWWWWWWWWWWWWWWWWWW",
+      "WWWWWWWWWWWWWWWWWWWWWWWW"
+    ];
+
+    const mw = mapData[0].length;
+    const mh = mapData.length;
+
+    function getCell(x, y) {
+      if (x >= 0 && x < mw && y >= 0 && y < mh) return mapData[y][x];
+      return 'W';
+    }
+
+    let isPlaying = true;
+    let waveFps = 4;
+    let currentFrame = 0;
+    let lastFrameTime = 0;
+    const canvas = document.getElementById('islandCanvas');
+    const ctx = canvas.getContext('2d');
+    const scale = 2; // 24*16*2 = 768, 16*16*2 = 512
+
+    function updateSpeed(val) {
+      waveFps = parseInt(val);
+      document.getElementById('speedValue').innerText = waveFps + ' FPS';
+      document.getElementById('fps-counter').innerText = 'Wave FPS: ' + waveFps.toFixed(1);
+    }
+
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      document.getElementById('playIcon').innerText = isPlaying ? '⏸️' : '▶️';
+      document.getElementById('btnPlayPause').innerHTML = (isPlaying ? '<span>⏸️</span> Pause Animation' : '<span>▶️</span> Resume Animation');
+    }
+
+    function redraw() {
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const showFoam = document.getElementById('toggleFoam').checked;
+      const showTransitions = document.getElementById('toggleTransitions').checked;
+      const showDecor = document.getElementById('toggleDecor').checked;
+      const showGrid = document.getElementById('toggleGrid').checked;
+
+      const sea1Img = getImg(ASSETS.sea_1);
+      const sea2Img = getImg(ASSETS.sea_2);
+      const sand1Img = getImg(ASSETS.sand_1);
+      const sand2Img = getImg(ASSETS.sand_2);
+
+      // Pass 1: Base Ground
+      for (let y = 0; y < mh; y++) {
+        for (let x = 0; x < mw; x++) {
+          const c = mapData[y][x];
+          const px = x * 16 * scale;
+          const py = y * 16 * scale;
+
+          if (c === 'W') {
+            const sImg = (x + y) % 2 === 0 ? sea1Img : sea2Img;
+            ctx.drawImage(sImg, px, py, 16 * scale, 16 * scale);
+          } else {
+            const n = getCell(x, y - 1);
+            const s = getCell(x, y + 1);
+            const w = getCell(x - 1, y);
+            const e = getCell(x + 1, y);
+            const nw = getCell(x - 1, y - 1);
+            const ne = getCell(x + 1, y - 1);
+            const sw = getCell(x - 1, y + 1);
+            const se = getCell(x + 1, y + 1);
+
+            let tileImg = (x + y) % 2 === 0 ? sand1Img : sand2Img;
+
+            if (showTransitions) {
+              if (n === 'W' && w === 'W') tileImg = getImg(ASSETS.sw_tiles.inner_br);
+              elif_placeholder = false;
+              if (n === 'W' && w === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.inner_br);
+              } else if (n === 'W' && e === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.inner_bl);
+              } else if (s === 'W' && w === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.inner_tr);
+              } else if (s === 'W' && e === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.inner_tl);
+              } else if (n === 'W') {
+                tileImg = x % 2 === 0 ? getImg(ASSETS.sw_tiles.edge_s_01) : getImg(ASSETS.sw_tiles.edge_s_02);
+              } else if (s === 'W') {
+                tileImg = x % 2 === 0 ? getImg(ASSETS.sw_tiles.edge_n_01) : getImg(ASSETS.sw_tiles.edge_n_02);
+              } else if (w === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.edge_e);
+              } else if (e === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.edge_w);
+              } else if (nw === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.outer_br);
+              } else if (ne === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.outer_bl);
+              } else if (sw === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.outer_tr);
+              } else if (se === 'W') {
+                tileImg = getImg(ASSETS.sw_tiles.outer_tl);
+              }
+            }
+
+            ctx.drawImage(tileImg, px, py, 16 * scale, 16 * scale);
+          }
+        }
+      }
+
+      // Pass 2: Animated Foam
+      if (showFoam) {
+        for (let y = 0; y < mh; y++) {
+          for (let x = 0; x < mw; x++) {
+            if (mapData[y][x] === 'S') {
+              const n = getCell(x, y - 1);
+              const s = getCell(x, y + 1);
+              const w = getCell(x - 1, y);
+              const e = getCell(x + 1, y);
+              const nw = getCell(x - 1, y - 1);
+              const ne = getCell(x + 1, y - 1);
+              const sw = getCell(x - 1, y + 1);
+              const se = getCell(x + 1, y + 1);
+
+              let foamKey = null;
+              if (n === 'W' && w === 'W') foamKey = 'inner_br';
+              else if (n === 'W' && e === 'W') foamKey = 'inner_bl';
+              else if (s === 'W' && w === 'W') foamKey = 'inner_tr';
+              else if (s === 'W' && e === 'W') foamKey = 'inner_tl';
+              else if (n === 'W') foamKey = 's';
+              else if (s === 'W') foamKey = 'n';
+              else if (w === 'W') foamKey = 'e';
+              else if (e === 'W') foamKey = 'w';
+              else if (nw === 'W') foamKey = 'outer_br';
+              else if (ne === 'W') foamKey = 'outer_bl';
+              else if (sw === 'W') foamKey = 'outer_tr';
+              else if (se === 'W') foamKey = 'outer_tl';
+
+              if (foamKey && ASSETS.foam_anims[foamKey]) {
+                const fImg = getImg(ASSETS.foam_anims[foamKey][currentFrame]);
+                ctx.drawImage(fImg, x * 16 * scale, y * 16 * scale, 16 * scale, 16 * scale);
+              }
+            }
+          }
+        }
+      }
+
+      // Pass 3: Decor & Player
+      if (showDecor) {
+        const star = getImg(ASSETS.starfish);
+        const shell = getImg(ASSETS.seashell);
+        const peb = getImg(ASSETS.pebbles);
+        const playerImg = getImg(ASSETS.player);
+
+        ctx.drawImage(star, (8 * 16 + 2) * scale, (4 * 16 + 4) * scale, 16 * scale, 16 * scale);
+        ctx.drawImage(shell, (15 * 16 + 4) * scale, (6 * 16 + 6) * scale, 16 * scale, 16 * scale);
+        ctx.drawImage(peb, (7 * 16 + 8) * scale, (8 * 16 + 2) * scale, 16 * scale, 16 * scale);
+        ctx.drawImage(star, (14 * 16 + 6) * scale, (9 * 16 + 3) * scale, 16 * scale, 16 * scale);
+        ctx.drawImage(peb, (16 * 16 + 2) * scale, (5 * 16 + 8) * scale, 16 * scale, 16 * scale);
+
+        // Player shadow
+        const px = (12 * 16 - 16) * scale;
+        const py = (7 * 16 - 16) * scale;
+        ctx.fillStyle = 'rgba(20, 40, 50, 0.35)';
+        ctx.beginPath();
+        ctx.ellipse(px + 16 * scale, py + 29 * scale, 7 * scale, 3 * scale, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.drawImage(playerImg, px, py, 32 * scale, 32 * scale);
+      }
+
+      // Pass 4: Grid
+      if (showGrid) {
+        ctx.strokeStyle = 'rgba(25, 200, 221, 0.2)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= mw * 16 * scale; x += 16 * scale) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, mh * 16 * scale);
+          ctx.stroke();
+        }
+        for (let y = 0; y <= mh * 16 * scale; y += 16 * scale) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(mw * 16 * scale, y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    function loop(time) {
+      if (isPlaying) {
+        const interval = 1000 / waveFps;
+        if (time - lastFrameTime >= interval) {
+          currentFrame = (currentFrame + 1) % 4;
+          lastFrameTime = time;
+          redraw();
+          updateFoamGridFrames();
+        }
+      }
+      requestAnimationFrame(loop);
+    }
+
+    // Populate Transition Cards
+    const transMeta = [
+      { code: "edge_s_01", title: "North Shore 1", desc: "Water North, Sand South (seam y=6)" },
+      { code: "edge_s_02", title: "North Shore 2", desc: "Alternate gentle tide contour" },
+      { code: "edge_n_01", title: "South Shore 1", desc: "Sand North, Water South (seam y=9)" },
+      { code: "edge_n_02", title: "South Shore 2", desc: "Alternate south tide contour" },
+      { code: "edge_e",    title: "West Shore",    desc: "Water West, Sand East (seam x=6)" },
+      { code: "edge_w",    title: "East Shore",    desc: "Sand West, Water East (seam x=9)" },
+      { code: "inner_br",  title: "Cape NW (Point)", desc: "Top-Left Cape (water NW, sand SE)" },
+      { code: "inner_bl",  title: "Cape NE (Point)", desc: "Top-Right Cape (water NE, sand SW)" },
+      { code: "inner_tr",  title: "Cape SW (Point)", desc: "Bottom-Left Cape (water SW, sand NE)" },
+      { code: "inner_tl",  title: "Cape SE (Point)", desc: "Bottom-Right Cape (water SE, sand NW)" },
+      { code: "outer_br",  title: "Cove NW (Bay)",   desc: "Inward cove (water cuts in NW)" },
+      { code: "outer_bl",  title: "Cove NE (Bay)",   desc: "Inward cove (water cuts in NE)" },
+      { code: "outer_tr",  title: "Cove SW (Bay)",   desc: "Inward cove (water cuts in SW)" },
+      { code: "outer_tl",  title: "Cove SE (Bay)",   desc: "Inward cove (water cuts in SE)" }
+    ];
+
+    const tGrid = document.getElementById('transitionsGrid');
+    transMeta.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-preview">
+          <img src="${ASSETS.sw_tiles[m.code]}" alt="${m.title}">
+        </div>
+        <div class="card-title">${m.title}</div>
+        <div class="card-meta">sand_water_${m.code}.png</div>
+        <div class="card-desc">${m.desc}</div>
+      `;
+      tGrid.appendChild(card);
+    });
+
+    // Populate Foam Cards
+    const foamMeta = [
+      { code: "s", title: "North Shore Waves", desc: "Surges South onto sand" },
+      { code: "n", title: "South Shore Waves", desc: "Surges North onto sand" },
+      { code: "e", title: "West Shore Waves",  desc: "Surges East onto sand" },
+      { code: "w", title: "East Shore Waves",  desc: "Surges West onto sand" },
+      { code: "inner_br", title: "Cape NW Waves", desc: "Wraps smoothly around NW point" },
+      { code: "inner_bl", title: "Cape NE Waves", desc: "Wraps smoothly around NE point" },
+      { code: "inner_tr", title: "Cape SW Waves", desc: "Wraps smoothly around SW point" },
+      { code: "inner_tl", title: "Cape SE Waves", desc: "Wraps smoothly around SE point" },
+      { code: "outer_br", title: "Cove NW Waves", desc: "Surges inside NW coastal cove" },
+      { code: "outer_bl", title: "Cove NE Waves", desc: "Surges inside NE coastal cove" },
+      { code: "outer_tr", title: "Cove SW Waves", desc: "Surges inside SW coastal cove" },
+      { code: "outer_tl", title: "Cove SE Waves", desc: "Surges inside SE coastal cove" }
+    ];
+
+    const fGrid = document.getElementById('foamGrid');
+    foamMeta.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      let stripHtml = '';
+      for (let f = 0; f < 4; f++) {
+        stripHtml += `
+          <div class="foam-frame-box">
+            <img src="${ASSETS.foam_anims[m.code][f]}" alt="Frame ${f}">
+            <span class="frame-badge">f${f}</span>
+          </div>
+        `;
+      }
+      card.innerHTML = `
+        <div class="foam-strip">${stripHtml}</div>
+        <div class="card-title">${m.title}</div>
+        <div class="card-meta">sea_foam_${m.code}_sheet.png</div>
+        <div class="card-desc">${m.desc}</div>
+      `;
+      fGrid.appendChild(card);
+    });
+
+    function updateFoamGridFrames() {
+      // Micro-animation indicator on cards if needed
+    }
+
+    // Initial render
+    setTimeout(() => {
+      redraw();
+      requestAnimationFrame(loop);
+    }, 100);
+  </script>
+</body>
+</html>
