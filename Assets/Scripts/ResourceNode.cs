@@ -187,13 +187,37 @@ public class ResourceNode : MonoBehaviour
             return 0;
         }
 
-        // Tool requirement satisfied: Trigger player action hook
+        // Tool requirement satisfied: Check Inventory capacity if player has inventory
+        ItemData resItem = ItemDatabase.GetResourceItem(resourceType);
+        Inventory playerInv = player != null ? player.Inventory : null;
+
+        if (playerInv != null && resItem != null)
+        {
+            if (!playerInv.CanAddItem(resItem, yieldAmount))
+            {
+                // Inventory is full: reject harvest atomically, preserve node state, show clear feedback
+                TemporaryResourceHUD.ShowRequirementFeedback("Inventory Full");
+                return 0;
+            }
+        }
+
+        // Trigger player action hook for animations/audio
         if (player != null && equippedTool != ToolType.None)
         {
             player.TriggerToolAction(equippedTool);
         }
 
         int collected = yieldAmount;
+
+        // Add to player's inventory
+        if (playerInv != null && resItem != null)
+        {
+            playerInv.AddItem(resItem, collected);
+        }
+
+        // Display inventory collection feedback
+        string itemDisplayName = resItem != null ? resItem.DisplayName : DisplayName;
+        TemporaryResourceHUD.RecordCollection(resourceType, collected, itemDisplayName);
 
         // Visual bounce feedback on interaction
         if (gameObject.activeInHierarchy)

@@ -121,6 +121,10 @@ public class TemporaryResourceHUD : MonoBehaviour
 
     public static int GetCollectedCount(ResourceType type)
     {
+        if (instance != null && instance.cachedPlayer != null && instance.cachedPlayer.Inventory != null)
+        {
+            return instance.cachedPlayer.Inventory.GetItemCount(type);
+        }
         return collectedCounts.ContainsKey(type) ? collectedCounts[type] : 0;
     }
 
@@ -221,15 +225,20 @@ public class TemporaryResourceHUD : MonoBehaviour
     {
         EnsureStyles();
 
+        if (cachedPlayer == null)
+        {
+            cachedPlayer = Object.FindAnyObjectByType<PlayerInteraction>();
+        }
+
         // 1. Session Harvest & Tool Equipment Tracker in Top-Left Corner
-        float trackerWidth = 380f;
+        float trackerWidth = 390f;
         float trackerHeight = 90f;
         Rect trackerRect = new Rect(16f, 16f, trackerWidth, trackerHeight);
         GUI.Box(trackerRect, GUIContent.none, trackerStyle);
 
         GUILayout.BeginArea(trackerRect);
         GUILayout.Space(3);
-        GUILayout.Label("  [STRANDED BATCH 3: TOOL SYSTEM & HARVEST TRACKER]", trackerHeaderStyle);
+        GUILayout.Label("  [STRANDED BATCH 4: INVENTORY & TOOL SYSTEM]", trackerHeaderStyle);
         GUILayout.Space(1);
         string summaryLine = $"   Wood: {GetCollectedCount(ResourceType.Wood)}  |  " +
                              $"Stone: {GetCollectedCount(ResourceType.Stone)}  |  " +
@@ -239,12 +248,8 @@ public class TemporaryResourceHUD : MonoBehaviour
         GUILayout.Label(summaryLine, trackerStyle);
         GUILayout.Space(1);
 
-        if (cachedPlayer == null)
-        {
-            cachedPlayer = Object.FindFirstObjectByType<PlayerInteraction>();
-        }
         string toolName = cachedPlayer != null ? cachedPlayer.CurrentTool.ToDisplayName() : "None";
-        string toolLine = $"   Equipped: [{toolName}]  (Keys: 1:Knife, 2:Axe, 3:Pickaxe, 4:Rod, 0:None)";
+        string toolLine = $"   Equipped: [{toolName}]  (Hotbar: 1-9,0,-,= | Bag: 'I')";
         GUILayout.Label(toolLine, trackerToolStyle);
         GUILayout.EndArea();
 

@@ -38,6 +38,9 @@ public class PlayerInteraction : MonoBehaviour
     private float lastInteractionTime = -99f;
     private readonly Collider2D[] queryResults = new Collider2D[16];
 
+    private Inventory inventory;
+    public Inventory Inventory => inventory;
+
     void Start()
     {
         playerRenderer = GetComponent<SpriteRenderer>();
@@ -47,7 +50,22 @@ public class PlayerInteraction : MonoBehaviour
         interactAction.AddBinding("<Gamepad>/buttonSouth"); // Gamepad 'A' / Cross
         interactAction.Enable();
 
-        // Ensure TemporaryResourceHUD is present in the scene
+        // Ensure Inventory and UI components exist on player
+        inventory = GetComponent<Inventory>();
+        if (inventory == null)
+        {
+            inventory = gameObject.AddComponent<Inventory>();
+        }
+        if (GetComponent<HotbarUI>() == null)
+        {
+            gameObject.AddComponent<HotbarUI>();
+        }
+        if (GetComponent<InventoryUI>() == null)
+        {
+            gameObject.AddComponent<InventoryUI>();
+        }
+
+        // Ensure TemporaryResourceHUD is present in the scene for notifications
         if (TemporaryResourceHUD.Instance == null)
         {
             GameObject hudObj = new GameObject("TemporaryResourceHUD");
@@ -62,8 +80,16 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        // 1. Temporary tool selection input (Keys 1-4, 0)
-        HandleToolSelectionInput();
+        // 1. If Inventory window is open, suppress world interaction to prevent accidental harvesting
+        if (InventoryUI.IsOpen)
+        {
+            if (currentTargetNode != null)
+            {
+                currentTargetNode = null;
+                TemporaryResourceHUD.Instance?.SetInteractionPrompt("");
+            }
+            return;
+        }
 
         // 2. Efficient local query for closest available ResourceNode
         UpdateNearbyInteractable();
@@ -78,35 +104,6 @@ public class PlayerInteraction : MonoBehaviour
         if (wasInteracted && currentTargetNode != null && currentTargetNode.CanInteract())
         {
             HarvestCurrentTarget();
-        }
-    }
-
-    /// <summary>
-    /// Temporary keyboard controls for equipping tools (1=Knife, 2=Axe, 3=Pickaxe, 4=Rod, 0=None).
-    /// </summary>
-    private void HandleToolSelectionInput()
-    {
-        if (Keyboard.current == null) return;
-
-        if (Keyboard.current.digit1Key.wasPressedThisFrame || Keyboard.current.numpad1Key.wasPressedThisFrame)
-        {
-            EquipTool(ToolType.StoneKnife);
-        }
-        else if (Keyboard.current.digit2Key.wasPressedThisFrame || Keyboard.current.numpad2Key.wasPressedThisFrame)
-        {
-            EquipTool(ToolType.StoneAxe);
-        }
-        else if (Keyboard.current.digit3Key.wasPressedThisFrame || Keyboard.current.numpad3Key.wasPressedThisFrame)
-        {
-            EquipTool(ToolType.StonePickaxe);
-        }
-        else if (Keyboard.current.digit4Key.wasPressedThisFrame || Keyboard.current.numpad4Key.wasPressedThisFrame)
-        {
-            EquipTool(ToolType.FishingRod);
-        }
-        else if (Keyboard.current.digit0Key.wasPressedThisFrame || Keyboard.current.numpad0Key.wasPressedThisFrame)
-        {
-            UnequipTool();
         }
     }
 
@@ -257,11 +254,6 @@ public class PlayerInteraction : MonoBehaviour
 
         ResourceNode nodeToHarvest = currentTargetNode;
         int yielded = nodeToHarvest.Interact(this);
-
-        if (yielded > 0)
-        {
-            TemporaryResourceHUD.RecordCollection(nodeToHarvest.Type, yielded, nodeToHarvest.DisplayName);
-        }
 
         // Re-evaluate target after state change
         UpdateNearbyInteractable();

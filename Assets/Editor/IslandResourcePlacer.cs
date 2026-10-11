@@ -516,6 +516,21 @@ public class IslandResourcePlacer : EditorWindow
                 Undo.AddComponent<PlayerInteraction>(playerObj);
                 Debug.Log("Attached PlayerInteraction component to Player.");
             }
+            if (playerObj.GetComponent<Inventory>() == null)
+            {
+                Undo.AddComponent<Inventory>(playerObj);
+                Debug.Log("Attached Inventory component to Player.");
+            }
+            if (playerObj.GetComponent<HotbarUI>() == null)
+            {
+                Undo.AddComponent<HotbarUI>(playerObj);
+                Debug.Log("Attached HotbarUI component to Player.");
+            }
+            if (playerObj.GetComponent<InventoryUI>() == null)
+            {
+                Undo.AddComponent<InventoryUI>(playerObj);
+                Debug.Log("Attached InventoryUI component to Player.");
+            }
         }
 
         GameObject hudObj = GameObject.Find("TemporaryResourceHUD");

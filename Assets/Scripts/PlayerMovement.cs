@@ -33,8 +33,27 @@ public class PlayerMovement : MonoBehaviour
         moveAction?.Disable();
     }
 
+    private bool canMove = true;
+
+    public void SetMovementEnabled(bool enabled)
+    {
+        canMove = enabled;
+        if (!canMove)
+        {
+            movement = Vector2.zero;
+            if (rb != null) rb.linearVelocity = Vector2.zero;
+            if (animator != null) animator.SetBool("IsMoving", false);
+        }
+    }
+
     void Update()
     {
+        if (!canMove)
+        {
+            movement = Vector2.zero;
+            return;
+        }
+
         movement = moveAction.ReadValue<Vector2>();
 
         if (animator != null)
@@ -54,6 +73,12 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         // Normalize to prevent faster diagonal movement
         rb.linearVelocity = movement.normalized * moveSpeed;
     }
