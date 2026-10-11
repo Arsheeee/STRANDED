@@ -269,7 +269,7 @@ public class InventoryUI : MonoBehaviour
                     }
                 }
 
-                // Click Handling: Pick up, Swap, or Merge
+                // Click Handling: Pick up, Swap, or Merge (Left Click)
                 if (e.type == EventType.MouseDown && e.button == 0 && slotRect.Contains(e.mousePosition))
                 {
                     if (heldSlotIndex == -1)
@@ -287,6 +287,17 @@ public class InventoryUI : MonoBehaviour
                         heldSlotIndex = -1;
                     }
                     e.Use();
+                }
+
+                // Right Click Handling: Consume edible food / drink from slot
+                if (e.type == EventType.MouseDown && e.button == 1 && slotRect.Contains(e.mousePosition))
+                {
+                    if (slot != null && !slot.IsEmpty && slot.Item != null && slot.Item.IsConsumable)
+                    {
+                        var survival = SurvivalStats.Instance != null ? SurvivalStats.Instance : Object.FindAnyObjectByType<SurvivalStats>();
+                        survival?.TryConsumeItem(slot.Item, slotIndex);
+                        e.Use();
+                    }
                 }
             }
         }
@@ -341,6 +352,39 @@ public class InventoryUI : MonoBehaviour
         Rect seasonRect = new Rect(infoX, cardY + 108, 450, 22);
         GUI.Label(seasonRect, "Day 1 - Spring, Year 1", cardSubStyle);
 
+        // 2.5. Save & Load Game Controls in Bottom Card
+        float saveX = panelX + 630f;
+        Rect saveFrame = new Rect(saveX, cardY, 230f, 130f);
+        if (slotBgTex != null) GUI.DrawTexture(saveFrame, slotBgTex, ScaleMode.StretchToFill);
+        else GUI.Box(saveFrame, GUIContent.none);
+
+        Rect saveHeaderRect = new Rect(saveX + 8, cardY + 8, saveFrame.width - 16, 20);
+        GUI.Label(saveHeaderRect, "SAVE & LOAD GAME", cardSubStyle);
+
+        var saveMgr = SaveManager.Instance ?? FindAnyObjectByType<SaveManager>();
+        bool hasSave = saveMgr != null && saveMgr.SaveExists();
+
+        Rect saveBtnRect = new Rect(saveX + 16, cardY + 34, saveFrame.width - 32, 28);
+        if (GUI.Button(saveBtnRect, "SAVE GAME (F5)", saveBtnStyle ?? GUI.skin.button))
+        {
+            saveMgr?.SaveGame(out _);
+            e.Use();
+        }
+
+        Rect loadBtnRect = new Rect(saveX + 16, cardY + 66, saveFrame.width - 32, 28);
+        bool prevGuiEnabled = GUI.enabled;
+        GUI.enabled = hasSave;
+        if (GUI.Button(loadBtnRect, "LOAD GAME (F9)", saveBtnStyle ?? GUI.skin.button))
+        {
+            saveMgr?.LoadGame(out _);
+            e.Use();
+        }
+        GUI.enabled = prevGuiEnabled;
+
+        string saveTimestamp = saveMgr != null ? saveMgr.GetSaveTimestampDisplay() : "No Save Found";
+        Rect timestampRect = new Rect(saveX + 8, cardY + 100, saveFrame.width - 16, 20);
+        GUI.Label(timestampRect, saveTimestamp, saveStatusStyle ?? cardSubStyle);
+
         // 3. Trash Can / Discard Box on far right
         Rect trashRect = new Rect(panelX + panelWidth - 95, cardY + 24, 60, 70);
         if (slotBgTex != null) GUI.DrawTexture(trashRect, slotBgTex, ScaleMode.StretchToFill);
@@ -356,6 +400,31 @@ public class InventoryUI : MonoBehaviour
                 heldSlotIndex = -1;
             }
             e.Use();
+        }
+
+        // 4. Clickable Consume Button next to Trash for held item
+        if (heldSlotIndex != -1)
+        {
+            var heldSlot = inventory.GetSlot(heldSlotIndex);
+            if (heldSlot != null && !heldSlot.IsEmpty && heldSlot.Item != null && heldSlot.Item.IsConsumable)
+            {
+                Rect consumeRect = new Rect(trashRect.x - 120, cardY + 24, 110, 70);
+                if (slotBgTex != null) GUI.DrawTexture(consumeRect, slotBgTex, ScaleMode.StretchToFill);
+                else GUI.Box(consumeRect, GUIContent.none);
+
+                GUI.Label(new Rect(consumeRect.x, consumeRect.y + 12, consumeRect.width, 20), "CONSUME", cardSubStyle);
+                GUI.Label(new Rect(consumeRect.x, consumeRect.y + 36, consumeRect.width, 20), "[Eat/Drink]", sectionStyle);
+
+                if (e.type == EventType.MouseDown && e.button == 0 && consumeRect.Contains(e.mousePosition))
+                {
+                    var survival = SurvivalStats.Instance != null ? SurvivalStats.Instance : Object.FindAnyObjectByType<SurvivalStats>();
+                    if (survival != null && survival.TryConsumeItem(heldSlot.Item, heldSlotIndex))
+                    {
+                        if (heldSlot.IsEmpty) heldSlotIndex = -1;
+                    }
+                    e.Use();
+                }
+            }
         }
 
         // Draw Floating Held Cursor Item
@@ -440,6 +509,8 @@ public class InventoryUI : MonoBehaviour
     private GUIStyle portraitBoxStyle;
     private GUIStyle quantityShadowStyle;
     private GUIStyle slotNumberStyle;
+    private GUIStyle saveBtnStyle;
+    private GUIStyle saveStatusStyle;
 
     private Texture2D LoadTexture(string path)
     {
@@ -570,6 +641,24 @@ public class InventoryUI : MonoBehaviour
             tooltipStyle.richText = true;
             tooltipStyle.wordWrap = true;
             tooltipStyle.padding = new RectOffset(12, 12, 10, 10);
+        }
+
+        if (saveBtnStyle == null)
+        {
+            saveBtnStyle = new GUIStyle(GUI.skin.button);
+            saveBtnStyle.fontSize = 12;
+            saveBtnStyle.fontStyle = FontStyle.Bold;
+            saveBtnStyle.alignment = TextAnchor.MiddleCenter;
+            saveBtnStyle.normal.textColor = new Color(0.95f, 0.90f, 0.82f, 1f);
+        }
+
+        if (saveStatusStyle == null)
+        {
+            saveStatusStyle = new GUIStyle(GUI.skin.label);
+            saveStatusStyle.fontSize = 11;
+            saveStatusStyle.fontStyle = FontStyle.Italic;
+            saveStatusStyle.alignment = TextAnchor.MiddleCenter;
+            saveStatusStyle.normal.textColor = new Color(0.48f, 0.35f, 0.22f, 1f);
         }
     }
 }

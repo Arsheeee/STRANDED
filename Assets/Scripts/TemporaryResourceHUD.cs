@@ -19,7 +19,8 @@ public class TemporaryResourceHUD : MonoBehaviour
         { ResourceType.Stone, 0 },
         { ResourceType.Fiber, 0 },
         { ResourceType.Berries, 0 },
-        { ResourceType.Coconut, 0 }
+        { ResourceType.Coconut, 0 },
+        { ResourceType.Vines, 0 }
     };
 
     // Notification toast data
@@ -159,6 +160,7 @@ public class TemporaryResourceHUD : MonoBehaviour
             case ResourceType.Fiber: return new Color(0.55f, 0.90f, 0.55f); // Fresh green
             case ResourceType.Berries: return new Color(1.0f, 0.45f, 0.55f); // Berry red/pink
             case ResourceType.Coconut: return new Color(0.95f, 0.85f, 0.60f); // Coconut tan
+            case ResourceType.Vines: return new Color(0.35f, 0.80f, 0.35f); // Jungle vine green
             default: return Color.white;
         }
     }
@@ -248,6 +250,7 @@ public class TemporaryResourceHUD : MonoBehaviour
         string summaryLine = $"   Wood: {GetCollectedCount(ResourceType.Wood)}  |  " +
                              $"Stone: {GetCollectedCount(ResourceType.Stone)}  |  " +
                              $"Fiber: {GetCollectedCount(ResourceType.Fiber)}  |  " +
+                             $"Vines: {GetCollectedCount(ResourceType.Vines)}  |  " +
                              $"Berries: {GetCollectedCount(ResourceType.Berries)}  |  " +
                              $"Coconut: {GetCollectedCount(ResourceType.Coconut)}";
         GUILayout.Label(summaryLine, trackerStyle);

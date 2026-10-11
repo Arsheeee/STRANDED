@@ -191,11 +191,22 @@ public class HotbarUI : MonoBehaviour
                 GUI.DrawTexture(selRect, slotSelectedTex, ScaleMode.StretchToFill);
             }
 
-            // Mouse Click to select slot
+            // Left Mouse Click to select slot
             if (e.type == EventType.MouseDown && e.button == 0 && slotRect.Contains(e.mousePosition))
             {
                 SelectSlot(i);
                 e.Use();
+            }
+
+            // Right Mouse Click to consume food/drink item
+            if (e.type == EventType.MouseDown && e.button == 1 && slotRect.Contains(e.mousePosition))
+            {
+                if (slot != null && !slot.IsEmpty && slot.Item != null && slot.Item.IsConsumable)
+                {
+                    var survival = SurvivalStats.Instance != null ? SurvivalStats.Instance : Object.FindAnyObjectByType<SurvivalStats>();
+                    survival?.TryConsumeItem(slot.Item, i);
+                    e.Use();
+                }
             }
         }
 

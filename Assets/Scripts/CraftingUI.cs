@@ -18,6 +18,10 @@ public class CraftingUI : MonoBehaviour
     private CraftingManager craftingManager;
 
     private int selectedRecipeIndex = 0;
+    private int selectedCategoryIndex = 0;
+    private Vector2 recipeScrollPosition = Vector2.zero;
+    private static readonly string[] CategoryLabels = new string[] { "ALL", "TOOLS", "MATERIALS", "BOAT" };
+    private static readonly string[] CategoryFilters = new string[] { "All", "Tools", "Materials", "Boat Components" };
 
     private Texture2D panelTex;
     private Texture2D slotBgTex;
@@ -127,8 +131,10 @@ public class CraftingUI : MonoBehaviour
 
         InitStyles();
 
-        IReadOnlyList<CraftingRecipe> recipes = RecipeDatabase.GetAllRecipes();
-        if (recipes == null || recipes.Count == 0) return;
+        string activeFilter = CategoryFilters[selectedCategoryIndex];
+        List<CraftingRecipe> recipes = RecipeDatabase.GetRecipesByCategory(activeFilter);
+        if (recipes == null) recipes = new List<CraftingRecipe>();
+        if (selectedRecipeIndex >= recipes.Count) selectedRecipeIndex = Mathf.Max(0, recipes.Count - 1);
 
         // VERY VERY BIG Window (1120 x 720 px)
         float panelWidth = Mathf.Min(Screen.width - 40f, 1120f);
@@ -191,26 +197,48 @@ public class CraftingUI : MonoBehaviour
         Event e = Event.current;
 
         // =====================================================================
-        // LEFT COLUMN: RECIPE LIST (380px wide)
+        // LEFT COLUMN: RECIPES & CATEGORY FILTER
         // =====================================================================
         float listX = panelX + 36f;
-        float listY = panelY + 58f;
-        float listW = 380f;
+        float listY = panelY + 54f;
+        float listW = 390f;
 
-        Rect listHeaderRect = new Rect(listX, listY, listW, 24);
-        GUI.Label(listHeaderRect, "AVAILABLE RECIPES", sectionStyle);
+        // Category Filter Buttons
+        float catBtnW = (listW - 12f) / 4f;
+        float catBtnH = 28f;
+        for (int c = 0; c < CategoryLabels.Length; c++)
+        {
+            Rect catRect = new Rect(listX + c * (catBtnW + 4f), listY, catBtnW, catBtnH);
+            bool isCatActive = (c == selectedCategoryIndex);
+            if (GUI.Button(catRect, CategoryLabels[c], isCatActive ? activeTabStyle : inactiveTabStyle))
+            {
+                if (selectedCategoryIndex != c)
+                {
+                    selectedCategoryIndex = c;
+                    selectedRecipeIndex = 0;
+                    recipeScrollPosition = Vector2.zero;
+                }
+            }
+        }
 
-        float cardStartY = listY + 30f;
-        float cardH = 110f;
-        float cardSpacing = 10f;
+        float cardStartY = listY + 36f;
+        float cardH = 104f;
+        float cardSpacing = 8f;
+        float scrollOuterH = panelHeight - (cardStartY - panelY) - 24f;
+
+        Rect scrollOuterRect = new Rect(listX, cardStartY, listW, scrollOuterH);
+        float totalInnerH = recipes.Count * (cardH + cardSpacing);
+        Rect scrollInnerRect = new Rect(0, 0, listW - 18f, Mathf.Max(scrollOuterH, totalInnerH));
+
+        recipeScrollPosition = GUI.BeginScrollView(scrollOuterRect, recipeScrollPosition, scrollInnerRect, false, true);
 
         for (int i = 0; i < recipes.Count; i++)
         {
             var recipe = recipes[i];
             bool isSelected = (i == selectedRecipeIndex);
-            bool canCraftThis = craftingManager.CanCraft(recipe, inventory, out _);
+            bool canCraftThis = craftingManager.CanCraft(recipe, inventory, out string failReason);
 
-            Rect cardRect = new Rect(listX, cardStartY + i * (cardH + cardSpacing), listW, cardH);
+            Rect cardRect = new Rect(0, i * (cardH + cardSpacing), listW - 20f, cardH);
 
             // Card background
             if (slotBgTex != null)
@@ -225,20 +253,42 @@ public class CraftingUI : MonoBehaviour
             // Selection border
             if (isSelected && slotSelectedTex != null)
             {
-                Rect selRect = new Rect(cardRect.x - 3, cardRect.y - 3, cardRect.width + 6, cardRect.height + 6);
+                Rect selRect = new Rect(cardRect.x - 2, cardRect.y - 2, cardRect.width + 4, cardRect.height + 4);
                 GUI.DrawTexture(selRect, slotSelectedTex, ScaleMode.StretchToFill);
             }
 
             // Icon on the left
             if (recipe.Icon != null)
             {
-                Rect iconRect = new Rect(cardRect.x + 14, cardRect.y + 18, 70, 70);
+                Rect iconRect = new Rect(cardRect.x + 10, cardRect.y + 14, 68, 68);
                 DrawSprite(iconRect, recipe.Icon);
             }
 
             // Recipe Name
-            Rect nameRect = new Rect(cardRect.x + 94, cardRect.y + 16, cardRect.width - 100, 28);
+            Rect nameRect = new Rect(cardRect.x + 84, cardRect.y + 8, cardRect.width - 90, 22);
             GUI.Label(nameRect, recipe.DisplayName, recipeTitleStyle);
+
+            float curCardY = cardRect.y + 30;
+
+            // Prerequisite Badge
+            if (recipe.HasToolRequirement || recipe.HasStationRequirement)
+            {
+                string reqBadge = "";
+                if (recipe.HasToolRequirement)
+                {
+                    string tName = recipe.RequiredTool != null ? recipe.RequiredTool.DisplayName : recipe.RequiredToolType.GetDisplayName();
+                    bool hasT = craftingManager.HasRequiredTool(recipe, inventory);
+                    reqBadge += hasT ? $"<color=#1e7b24>[Tool: {tName}]</color> " : $"<color=#b82a20>[Need: {tName}]</color> ";
+                }
+                if (recipe.HasStationRequirement)
+                {
+                    bool hasS = craftingManager.HasRequiredStation(recipe, inventory);
+                    reqBadge += hasS ? $"<color=#1e7b24>[{recipe.RequiredStation}]</color>" : $"<color=#b82a20>[Need: {recipe.RequiredStation}]</color>";
+                }
+                Rect badgeReqRect = new Rect(cardRect.x + 84, curCardY, cardRect.width - 90, 18);
+                GUI.Label(badgeReqRect, reqBadge, statusStyle);
+                curCardY += 18;
+            }
 
             // Ingredients summary line
             string ingSummary = "";
@@ -248,18 +298,22 @@ public class CraftingUI : MonoBehaviour
                 if (k > 0) ingSummary += ", ";
                 ingSummary += $"{ing.Item.DisplayName} x{ing.RequiredQuantity}";
             }
-            Rect summaryRect = new Rect(cardRect.x + 94, cardRect.y + 46, cardRect.width - 100, 22);
+            Rect summaryRect = new Rect(cardRect.x + 84, curCardY, cardRect.width - 90, 18);
             GUI.Label(summaryRect, ingSummary, ingredientStyle);
+            curCardY += 20;
 
             // Status Badge
-            Rect badgeRect = new Rect(cardRect.x + 94, cardRect.y + 72, cardRect.width - 100, 24);
+            Rect badgeRect = new Rect(cardRect.x + 84, curCardY, cardRect.width - 90, 20);
             if (canCraftThis)
             {
                 GUI.Label(badgeRect, "<color=#1e7b24><b>[READY TO CRAFT]</b></color>", statusStyle);
             }
             else
             {
-                GUI.Label(badgeRect, "<color=#a83228><b>[MISSING MATERIALS]</b></color>", statusStyle);
+                string shortFail = failReason.Contains("Requires tool") ? "[TOOL REQUIRED]" :
+                                   (failReason.Contains("Requires station") ? "[STATION REQUIRED]" :
+                                   (failReason.Contains("space") ? "[BAG FULL]" : "[MISSING INGREDIENTS]"));
+                GUI.Label(badgeRect, $"<color=#a83228><b>{shortFail}</b></color>", statusStyle);
             }
 
             // Click card to select
@@ -270,13 +324,15 @@ public class CraftingUI : MonoBehaviour
             }
         }
 
+        GUI.EndScrollView();
+
         // =====================================================================
-        // RIGHT COLUMN: RECIPE DETAILS & CRAFT BUTTON (Rest of width)
+        // RIGHT COLUMN: RECIPE DETAILS & CRAFT BUTTON
         // =====================================================================
-        float detailsX = listX + listW + 30f;
+        float detailsX = listX + listW + 24f;
         float detailsY = listY;
-        float detailsW = panelWidth - (listW + 102f);
-        float detailsH = panelHeight - 110f;
+        float detailsW = panelWidth - (listW + 96f);
+        float detailsH = panelHeight - 90f;
 
         Rect detailsBoxRect = new Rect(detailsX, detailsY, detailsW, detailsH);
         if (slotBgTex != null)
@@ -296,64 +352,98 @@ public class CraftingUI : MonoBehaviour
             // Header Icon and Name
             if (selectedRecipe.Icon != null)
             {
-                Rect bigIconRect = new Rect(detailsX + 24, detailsY + 24, 84, 84);
+                Rect bigIconRect = new Rect(detailsX + 24, detailsY + 20, 80, 80);
                 DrawSprite(bigIconRect, selectedRecipe.Icon);
             }
 
-            Rect selTitleRect = new Rect(detailsX + 120, detailsY + 24, detailsW - 140, 36);
-            GUI.Label(selTitleRect, selectedRecipe.DisplayName.ToUpper(), titleStyle);
+            Rect selTitleRect = new Rect(detailsX + 116, detailsY + 16, detailsW - 136, 32);
+            GUI.Label(selTitleRect, $"{selectedRecipe.DisplayName.ToUpper()} <size=15><color=#7a4b18>[{selectedRecipe.Category.ToUpper()}]</color></size>", titleStyle);
 
-            Rect selDescRect = new Rect(detailsX + 120, detailsY + 62, detailsW - 140, 50);
+            Rect selYieldRect = new Rect(detailsX + 116, detailsY + 46, detailsW - 136, 22);
+            GUI.Label(selYieldRect, $"Yields: <b>{selectedRecipe.OutputQuantity}x {selectedRecipe.OutputItem.DisplayName}</b>", ingredientStyle);
+
+            Rect selDescRect = new Rect(detailsX + 116, detailsY + 68, detailsW - 136, 44);
             GUI.Label(selDescRect, selectedRecipe.Description, recipeDescStyle);
 
             // Dividing line
-            float lineY = detailsY + 124f;
-            Rect divRect = new Rect(detailsX + 20, lineY, detailsW - 40, 3);
+            float lineY = detailsY + 118f;
+            Rect divRect = new Rect(detailsX + 20, lineY, detailsW - 40, 2);
             GUI.Box(divRect, GUIContent.none);
 
+            float curDetailY = lineY + 10f;
+
+            // Optional Prerequisites Section
+            if (selectedRecipe.HasToolRequirement || selectedRecipe.HasStationRequirement)
+            {
+                Rect prereqHeaderRect = new Rect(detailsX + 24, curDetailY, detailsW - 48, 22);
+                GUI.Label(prereqHeaderRect, "REQUIRED EQUIPMENT / STATION", sectionStyle);
+                curDetailY += 24f;
+
+                if (selectedRecipe.HasToolRequirement)
+                {
+                    string tName = selectedRecipe.RequiredTool != null ? selectedRecipe.RequiredTool.DisplayName : selectedRecipe.RequiredToolType.GetDisplayName();
+                    bool hasT = craftingManager.HasRequiredTool(selectedRecipe, inventory);
+                    string tStatus = hasT ? "<color=#1e7b24><b>[OWNED IN INVENTORY]</b></color>" : "<color=#b82a20><b>[MISSING - REQUIRED TO CRAFT]</b></color>";
+                    Rect tRect = new Rect(detailsX + 32, curDetailY, detailsW - 64, 22);
+                    GUI.Label(tRect, $"Required Tool: <b>{tName}</b> — {tStatus}", ingredientStyle);
+                    curDetailY += 22f;
+                }
+
+                if (selectedRecipe.HasStationRequirement)
+                {
+                    bool hasS = craftingManager.HasRequiredStation(selectedRecipe, inventory);
+                    string sStatus = hasS ? "<color=#1e7b24><b>[AVAILABLE]</b></color>" : "<color=#b82a20><b>[MISSING - CRAFT WEAVING FRAME FIRST]</b></color>";
+                    Rect sRect = new Rect(detailsX + 32, curDetailY, detailsW - 64, 22);
+                    GUI.Label(sRect, $"Required Station: <b>{selectedRecipe.RequiredStation}</b> — {sStatus}", ingredientStyle);
+                    curDetailY += 22f;
+                }
+
+                curDetailY += 6f;
+            }
+
             // Required Materials Section Header
-            Rect reqHeaderRect = new Rect(detailsX + 24, lineY + 16, detailsW - 48, 28);
-            GUI.Label(reqHeaderRect, "REQUIRED MATERIALS", sectionStyle);
+            Rect reqHeaderRect = new Rect(detailsX + 24, curDetailY, detailsW - 48, 22);
+            GUI.Label(reqHeaderRect, "REQUIRED INGREDIENTS", sectionStyle);
+            curDetailY += 26f;
 
             // Ingredient list
-            float ingStartY = lineY + 48f;
             for (int j = 0; j < selectedRecipe.Ingredients.Count; j++)
             {
                 var ing = selectedRecipe.Ingredients[j];
                 int hasCount = inventory.GetItemCount(ing.Item);
                 bool hasEnough = hasCount >= ing.RequiredQuantity;
 
-                Rect ingRowRect = new Rect(detailsX + 24, ingStartY + j * 54f, detailsW - 48, 48);
+                Rect ingRowRect = new Rect(detailsX + 24, curDetailY + j * 44f, detailsW - 48, 40);
 
                 // Mini slot background for ingredient icon
-                Rect ingSlotRect = new Rect(ingRowRect.x, ingRowRect.y, 48, 48);
+                Rect ingSlotRect = new Rect(ingRowRect.x, ingRowRect.y, 40, 40);
                 if (slotBgTex != null) GUI.DrawTexture(ingSlotRect, slotBgTex, ScaleMode.StretchToFill);
                 if (ing.Item.Icon != null)
                 {
-                    DrawSprite(new Rect(ingSlotRect.x + 6, ingSlotRect.y + 6, 36, 36), ing.Item.Icon);
+                    DrawSprite(new Rect(ingSlotRect.x + 4, ingSlotRect.y + 4, 32, 32), ing.Item.Icon);
                 }
 
-                // Name and Quantity Ratio (e.g. Stone: 3 / 3)
+                // Name and Quantity Ratio
                 string colorTag = hasEnough ? "#1e7b24" : "#b82a20";
                 string ingText = $"<b>{ing.Item.DisplayName}</b>: <color={colorTag}><b>{hasCount}</b></color> / {ing.RequiredQuantity}";
 
-                Rect ingTextRect = new Rect(ingRowRect.x + 60, ingRowRect.y + 10, 300, 30);
+                Rect ingTextRect = new Rect(ingRowRect.x + 50, ingRowRect.y + 8, 280, 26);
                 GUI.Label(ingTextRect, ingText, ingredientStyle);
 
-                // Status text (Satisfied vs Need X More)
+                // Status text
                 string statusText = hasEnough
                     ? "<color=#1e7b24><b>[SATISFIED]</b></color>"
                     : $"<color=#b82a20><b>[NEED {ing.RequiredQuantity - hasCount} MORE]</b></color>";
-                Rect ingStatusRect = new Rect(ingRowRect.x + 360, ingRowRect.y + 10, 220, 30);
+                Rect ingStatusRect = new Rect(ingRowRect.x + 340, ingRowRect.y + 8, 220, 26);
                 GUI.Label(ingStatusRect, statusText, ingredientStyle);
             }
 
             // Craftability Banner
-            float bannerY = detailsY + detailsH - 146f;
-            Rect bannerRect = new Rect(detailsX + 24, bannerY, detailsW - 48, 44);
+            float bannerY = detailsY + detailsH - 128f;
+            Rect bannerRect = new Rect(detailsX + 24, bannerY, detailsW - 48, 38);
             if (canCraftSelected)
             {
-                GUI.Box(bannerRect, "CRAFTABLE: ALL MATERIALS READY", activeTabStyle);
+                GUI.Box(bannerRect, "CRAFTABLE: ALL PREREQUISITES AND MATERIALS READY", activeTabStyle);
             }
             else
             {
@@ -361,8 +451,8 @@ public class CraftingUI : MonoBehaviour
             }
 
             // Big CRAFT Button
-            float btnY = detailsY + detailsH - 86f;
-            Rect craftBtnRect = new Rect(detailsX + 24, btnY, detailsW - 48, 64);
+            float btnY = detailsY + detailsH - 80f;
+            Rect craftBtnRect = new Rect(detailsX + 24, btnY, detailsW - 48, 60);
 
             if (canCraftSelected)
             {

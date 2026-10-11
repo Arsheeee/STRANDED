@@ -12,5 +12,6 @@ public enum ResourceType
     Fiber,
     Berries,
     Coconut,
-    Fish // Reserved for future fishing batch
+    Fish, // Reserved for future fishing batch
+    Vines // Special gathering resource for Batch 8 bindings and cordage
 }

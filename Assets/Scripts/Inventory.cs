@@ -219,6 +219,26 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Removes a quantity directly from a specific slot index.
+    /// Returns true if successful.
+    /// </summary>
+    public bool RemoveFromSlot(int slotIndex, int amount = 1)
+    {
+        if (slotIndex < 0 || slotIndex >= slots.Length) return false;
+        var slot = slots[slotIndex];
+        if (slot == null || slot.IsEmpty) return false;
+
+        int removed = slot.RemoveQuantity(amount);
+        if (removed > 0)
+        {
+            OnSlotChanged?.Invoke(slotIndex);
+            NotifyChanged();
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
     /// Checks whether the inventory has at least the required amount of an item.
     /// </summary>
     public bool HasItem(ItemData item, int amount = 1)
@@ -317,6 +337,18 @@ public class Inventory : MonoBehaviour
             slots[i]?.Clear();
             OnSlotChanged?.Invoke(i);
         }
+        NotifyChanged();
+    }
+
+    /// <summary>
+    /// Explicitly assigns the item and quantity to a specific slot index.
+    /// </summary>
+    public void SetSlot(int index, ItemData item, int quantity)
+    {
+        if (index < 0 || index >= slots.Length) return;
+        if (slots[index] == null) slots[index] = new InventorySlot();
+        slots[index].Set(item, quantity);
+        OnSlotChanged?.Invoke(index);
         NotifyChanged();
     }
 

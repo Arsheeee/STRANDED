@@ -36,6 +36,22 @@ public class ItemData : ScriptableObject
     [Tooltip("Maximum stack size (tools default to 1, resources to 99).")]
     [SerializeField] private int maxStackSize = 99;
 
+    [Header("Consumable / Food Properties")]
+    [Tooltip("Whether this item can be directly eaten or drunk by the player.")]
+    [SerializeField] private bool isConsumable = false;
+
+    [Tooltip("Amount of hunger restored when consumed.")]
+    [SerializeField] private float hungerRestored = 0f;
+
+    [Tooltip("Amount of thirst restored when consumed.")]
+    [SerializeField] private float thirstRestored = 0f;
+
+    [Tooltip("Amount of health restored when consumed.")]
+    [SerializeField] private float healthRestored = 0f;
+
+    [Tooltip("Amount of energy restored when consumed.")]
+    [SerializeField] private float energyRestored = 0f;
+
     public string ItemId => itemId;
     public string DisplayName => string.IsNullOrEmpty(displayName) ? name : displayName;
     public string Description => description;
@@ -45,6 +61,11 @@ public class ItemData : ScriptableObject
     public ToolType ToolType => toolType;
     public bool IsStackable => isStackable;
     public int MaxStackSize => isStackable ? maxStackSize : 1;
+    public bool IsConsumable => isConsumable;
+    public float HungerRestored => hungerRestored;
+    public float ThirstRestored => thirstRestored;
+    public float HealthRestored => healthRestored;
+    public float EnergyRestored => energyRestored;
 
     /// <summary>
     /// Runtime factory method to instantiate or initialize item data dynamically.
@@ -58,7 +79,12 @@ public class ItemData : ScriptableObject
         ResourceType resType,
         ToolType tool,
         bool stackable,
-        int maxStack)
+        int maxStack,
+        bool consumable = false,
+        float hunger = 0f,
+        float thirst = 0f,
+        float health = 0f,
+        float energy = 0f)
     {
         ItemData item = ScriptableObject.CreateInstance<ItemData>();
         item.itemId = id;
@@ -70,6 +96,11 @@ public class ItemData : ScriptableObject
         item.toolType = tool;
         item.isStackable = stackable;
         item.maxStackSize = stackable ? maxStack : 1;
+        item.isConsumable = consumable;
+        item.hungerRestored = hunger;
+        item.thirstRestored = thirst;
+        item.healthRestored = health;
+        item.energyRestored = energy;
         return item;
     }
 }

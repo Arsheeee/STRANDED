@@ -541,6 +541,8 @@ public class IslandResourcePlacer : EditorWindow
             Undo.RegisterCreatedObjectUndo(hudObj, "Create TemporaryResourceHUD");
         }
 
+        VineResourcePlacer.PlaceVineResources();
+
         // 6. Save Scene
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
         EditorSceneManager.SaveOpenScenes();

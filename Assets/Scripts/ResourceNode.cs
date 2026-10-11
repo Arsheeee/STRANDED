@@ -97,6 +97,7 @@ public class ResourceNode : MonoBehaviour
             case ResourceType.Stone:
                 return ToolType.StonePickaxe;
             case ResourceType.Fiber:
+            case ResourceType.Vines:
                 return ToolType.StoneKnife;
             case ResourceType.Fish:
                 return ToolType.FishingRod;
@@ -151,6 +152,11 @@ public class ResourceNode : MonoBehaviour
     public bool CanHarvestWith(ToolType equippedTool)
     {
         if (requiredTool == ToolType.None)
+        {
+            return true;
+        }
+        // Improved Knife satisfies all Stone Knife cutting requirements
+        if (requiredTool == ToolType.StoneKnife && equippedTool == ToolType.ImprovedKnife)
         {
             return true;
         }
@@ -313,6 +319,109 @@ public class ResourceNode : MonoBehaviour
         }
 
         transform.localScale = initialScale;
+    }
+
+    /// <summary>
+    /// Ensures that default natural Vine gathering nodes exist in the island environment.
+    /// Non-destructively spawns them under Environment_Resources/VineBushes if none are present in the scene.
+    /// </summary>
+    public static void EnsureDefaultVineNodesExist()
+    {
+        ResourceNode[] allNodes = FindObjectsByType<ResourceNode>();
+        bool hasVines = false;
+        for (int i = 0; i < allNodes.Length; i++)
+        {
+            if (allNodes[i] != null && allNodes[i].Type == ResourceType.Vines)
+            {
+                hasVines = true;
+                // Ensure existing colliders are non-triggers so physical interaction is completely reliable
+                Collider2D c = allNodes[i].GetComponent<Collider2D>();
+                if (c != null && c.isTrigger)
+                {
+                    c.isTrigger = false;
+                }
+            }
+        }
+        if (hasVines) return;
+
+        GameObject envRoot = GameObject.Find("Environment_Resources");
+        GameObject vinesRoot = GameObject.Find("VineBushes");
+        if (vinesRoot == null)
+        {
+            vinesRoot = new GameObject("VineBushes");
+            if (envRoot != null) vinesRoot.transform.SetParent(envRoot.transform);
+        }
+
+        Vector2[] defaultPositions = new Vector2[]
+        {
+            new Vector2(141.5f, 124.5f),
+            new Vector2(146.5f, 118.5f),
+            new Vector2(132.5f, 127.5f),
+            new Vector2(154.5f, 134.5f),
+            new Vector2(165.5f, 112.5f),
+            new Vector2(178.5f, 108.5f),
+            new Vector2(188.5f, 132.5f),
+            new Vector2(202.5f, 232.5f),
+            new Vector2(215.5f, 222.5f),
+            new Vector2(230.5f, 178.5f)
+        };
+
+        Sprite bushSprite = LoadSpriteAsset("Assets/Art/Environment/Plants/plant_vine_bush.png");
+        Sprite depletedSprite = LoadSpriteAsset("Assets/Art/Environment/Plants/plant_vine_depleted.png");
+
+        for (int i = 0; i < defaultPositions.Length; i++)
+        {
+            GameObject nodeGo = new GameObject($"Vine_Cluster_{i + 1}");
+            nodeGo.transform.position = new Vector3(defaultPositions[i].x, defaultPositions[i].y, 0f);
+            nodeGo.transform.SetParent(vinesRoot.transform, false);
+
+            SpriteRenderer sr = nodeGo.AddComponent<SpriteRenderer>();
+            sr.sprite = bushSprite;
+
+            CircleCollider2D col = nodeGo.AddComponent<CircleCollider2D>();
+            col.isTrigger = false;
+            col.radius = 0.4f;
+            col.offset = new Vector2(0f, 0.2f);
+
+            ResourceNode node = nodeGo.AddComponent<ResourceNode>();
+            node.resourceType = ResourceType.Vines;
+            node.nodeDisplayName = "Jungle Vine Cluster";
+            node.requiredTool = ToolType.StoneKnife;
+            node.yieldAmount = 2;
+            node.interactionRange = 1.6f;
+            node.isHarvestable = true;
+            node.depleteOnHarvest = true;
+            node.destroyOnDeplete = false;
+            node.availableSprite = bushSprite;
+            node.depletedSprite = depletedSprite;
+
+            node.UpdateSortingOrder();
+        }
+
+        Debug.Log($"[STRANDED World] Initialized {defaultPositions.Length} default Vine gathering nodes.");
+    }
+
+    private static Sprite LoadSpriteAsset(string path)
+    {
+#if UNITY_EDITOR
+        Sprite s = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        if (s != null) return s;
+#endif
+        if (System.IO.File.Exists(path))
+        {
+            try
+            {
+                byte[] bytes = System.IO.File.ReadAllBytes(path);
+                Texture2D tex = new Texture2D(16, 16, TextureFormat.RGBA32, false);
+                tex.filterMode = FilterMode.Point;
+                if (tex.LoadImage(bytes))
+                {
+                    return Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 16f);
+                }
+            }
+            catch (System.Exception) { }
+        }
+        return null;
     }
 
 #if UNITY_EDITOR

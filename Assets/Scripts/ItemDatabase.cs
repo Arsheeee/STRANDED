@@ -23,19 +23,68 @@ public static class ItemDatabase
         itemsByResource.Clear();
         itemsByTool.Clear();
 
-        // 1. Primitive Resources (Stackable to 99)
+        // 1. Primitive Raw Resources (Non-consumable)
         RegisterResource(ResourceType.Wood, "wood", "Wood", "Sturdy timber chopped from island trees and driftwood.", "item_wood.png");
         RegisterResource(ResourceType.Stone, "stone", "Stone", "Dense raw stones gathered from island rocks and boulders.", "item_stone.png");
         RegisterResource(ResourceType.Fiber, "fiber", "Fiber", "Pliable plant fibers and ferns cut from island foliage.", "item_fiber.png");
-        RegisterResource(ResourceType.Berries, "berries", "Berries", "Sweet wild island berries gathered from bushes.", "item_berry.png");
-        RegisterResource(ResourceType.Coconut, "coconut", "Coconut", "Hard tropical coconut gathered from beach palms.", "item_coconut.png");
-        RegisterResource(ResourceType.Fish, "fish", "Fish", "Raw coastal fish caught with a fishing rod.", "item_fish.png");
+        RegisterResource(ResourceType.Vines, "vines", "Vines", "Tough, pliable jungle creepers. Used for spinning cordage and weaving sailcloth.", "item_vines.png");
 
-        // 2. Primitive Tools (Non-stackable, MaxStack = 1)
+        // 2. Consumable Foods & Drinks
+        RegisterConsumable(ResourceType.Berries, "berries", "Berries", "Sweet wild island berries gathered from bushes. Satisfies hunger.", "item_berry.png", hunger: 15f, thirst: 0f, health: 0f, energy: 5f);
+        RegisterConsumable(ResourceType.Coconut, "coconut", "Coconut", "Hard tropical coconut. Crack open for rich meat and hydrating coconut water.", "item_coconut.png", hunger: 20f, thirst: 15f, health: 0f, energy: 5f);
+        RegisterConsumable(ResourceType.Fish, "fish", "Raw Fish", "Freshly caught coastal raw fish. Nutritious, but best cooked over fire.", "item_fish.png", hunger: 8f, thirst: 0f, health: -2f, energy: 2f);
+
+        // Architecture prepared for future cooking batch: Cooked Fish
+        RegisterSpecialConsumable("cooked_fish", "Cooked Fish", "Tender fish fillet grilled over campfire embers. Hearty and restorative.", "item_fish.png", hunger: 35f, thirst: 0f, health: 15f, energy: 15f);
+
+        // 3. Primitive Tools (Non-stackable, MaxStack = 1)
         RegisterTool(ToolType.StoneKnife, "tool_stone_knife", "Stone Knife", "Sharp carved stone knife tied to a wood handle. Cuts fibers.", "tool_stone_knife.png");
         RegisterTool(ToolType.StoneAxe, "tool_stone_axe", "Stone Axe", "Chipped flint axe lashed to a sturdy wooden shaft. Fells trees.", "tool_stone_axe.png");
         RegisterTool(ToolType.StonePickaxe, "tool_stone_pickaxe", "Stone Pickaxe", "Pointed rock pick bound with fiber rope. Breaks boulders.", "tool_stone_pickaxe.png");
         RegisterTool(ToolType.FishingRod, "tool_fishing_rod", "Fishing Rod", "Flexible pole with vine cord and bone hook.", "tool_fishing_rod.png");
+
+        // 4. Advanced Primitive Equipment (Non-stackable, MaxStack = 1)
+        RegisterTool(ToolType.ImprovedKnife, "tool_improved_knife", "Improved Cutting Knife", "Precision stone blade bound with vines. Essential for shaping wooden boat parts.", "tool_improved_knife.png");
+        RegisterTool(ToolType.WoodenMallet, "tool_wooden_mallet", "Wooden Mallet", "Heavy hardwood mallet. Drives pegs and secures reinforced structural joints.", "tool_wooden_mallet.png");
+        RegisterTool(ToolType.FiberTwister, "tool_fiber_twister", "Fiber Twisting Tool", "Twisting spindle that braids fibers and vines into strong nautical ropes.", "tool_fiber_twister.png");
+        RegisterTool(ToolType.WeavingFrame, "tool_weaving_frame", "Weaving Frame", "Portable wooden loom used to weave fibrous sailcloth for the escape boat.", "tool_weaving_frame.png");
+
+        // 5. Processed Materials (Stackable, MaxStack = 99)
+        RegisterMaterial("shaped_wood", "Shaped Wooden Parts", "Carefully carved and planed timber ribs for structural boat assemblies.", "item_shaped_wood.png");
+        RegisterMaterial("wooden_pegs", "Wooden Pegs", "Carved hardwood dowel fasteners used to pin wooden components together.", "item_wooden_pegs.png");
+        RegisterMaterial("strong_rope", "Strong Rope", "Tightly twisted cordage braided from fiber and tough jungle vines.", "item_strong_rope.png");
+        RegisterMaterial("reinforced_rope", "Reinforced Rope", "Heavy-duty braided nautical rope bound with double vine wraps for heavy loads.", "item_reinforced_rope.png");
+        RegisterMaterial("woven_sailcloth", "Woven Sailcloth", "Dense, flexible canvas woven from island fibers and vines on a weaving frame.", "item_woven_sailcloth.png");
+        RegisterMaterial("reinforced_joints", "Reinforced Wooden Joints", "Mortise and tenon wooden joints pegged and lashed for high-stress framing.", "item_reinforced_joints.png");
+
+        // 6. Boat Components (Non-stackable, MaxStack = 1)
+        RegisterComponent("paddle", "Paddle", "Carved wooden canoe paddle with broad blade. Essential navigation component for the escape boat.", "item_paddle.png");
+        RegisterComponent("wind_assembly", "Wind-Catching Assembly", "Primitive triangular sail mounted on yardarm spar with rigging. Propulsion component for the escape boat.", "item_wind_assembly.png");
+        RegisterComponent("rope_binding_kit", "Rope Binding Kit", "Complete set of nautical lashings, coils, and fastening loops for assembling the escape boat.", "item_rope_binding_kit.png");
+        RegisterComponent("structural_frame", "Structural Frame", "Rigid timber skeleton of keel stringers and pegged rib supports for the escape boat.", "item_structural_frame.png");
+        RegisterComponent("reinforced_hull", "Reinforced Hull", "Buoyant, watertight wooden boat hull reinforced with pegged joints and lashings for the escape boat.", "item_reinforced_hull.png");
+    }
+
+    private static void RegisterMaterial(string id, string name, string desc, string spriteFile)
+    {
+        Sprite icon = LoadItemSprite(spriteFile);
+        ItemData item = ItemData.CreateRuntimeInstance(
+            id, name, desc, icon,
+            ItemType.Resource, ResourceType.Wood, ToolType.None,
+            stackable: true, maxStack: 99
+        );
+        itemsById[id] = item;
+    }
+
+    private static void RegisterComponent(string id, string name, string desc, string spriteFile)
+    {
+        Sprite icon = LoadItemSprite(spriteFile);
+        ItemData item = ItemData.CreateRuntimeInstance(
+            id, name, desc, icon,
+            ItemType.Resource, ResourceType.Wood, ToolType.None,
+            stackable: false, maxStack: 1
+        );
+        itemsById[id] = item;
     }
 
     private static void RegisterResource(ResourceType resType, string id, string name, string desc, string spriteFile)
@@ -48,6 +97,31 @@ public static class ItemDatabase
         );
         itemsById[id] = item;
         itemsByResource[resType] = item;
+    }
+
+    private static void RegisterConsumable(ResourceType resType, string id, string name, string desc, string spriteFile, float hunger, float thirst, float health, float energy)
+    {
+        Sprite icon = LoadItemSprite(spriteFile);
+        ItemData item = ItemData.CreateRuntimeInstance(
+            id, name, desc, icon,
+            ItemType.Resource, resType, ToolType.None,
+            stackable: true, maxStack: 99,
+            consumable: true, hunger: hunger, thirst: thirst, health: health, energy: energy
+        );
+        itemsById[id] = item;
+        itemsByResource[resType] = item;
+    }
+
+    private static void RegisterSpecialConsumable(string id, string name, string desc, string spriteFile, float hunger, float thirst, float health, float energy)
+    {
+        Sprite icon = LoadItemSprite(spriteFile);
+        ItemData item = ItemData.CreateRuntimeInstance(
+            id, name, desc, icon,
+            ItemType.Resource, ResourceType.Fish, ToolType.None,
+            stackable: true, maxStack: 99,
+            consumable: true, hunger: hunger, thirst: thirst, health: health, energy: energy
+        );
+        itemsById[id] = item;
     }
 
     private static void RegisterTool(ToolType toolType, string id, string name, string desc, string spriteFile)

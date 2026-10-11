@@ -47,7 +47,22 @@ public class CraftingManager : MonoBehaviour
             return false;
         }
 
-        // 1. Check all required ingredients
+        // 1. Check required tool
+        if (recipe.HasToolRequirement && !HasRequiredTool(recipe, inventory))
+        {
+            string toolName = recipe.RequiredTool != null ? recipe.RequiredTool.DisplayName : recipe.RequiredToolType.GetDisplayName();
+            failReason = $"Requires tool: {toolName}.";
+            return false;
+        }
+
+        // 2. Check required station
+        if (recipe.HasStationRequirement && !HasRequiredStation(recipe, inventory))
+        {
+            failReason = $"Requires station: {recipe.RequiredStation}.";
+            return false;
+        }
+
+        // 3. Check all required ingredients
         for (int i = 0; i < recipe.Ingredients.Count; i++)
         {
             var ingredient = recipe.Ingredients[i];
@@ -56,15 +71,69 @@ public class CraftingManager : MonoBehaviour
             int currentCount = inventory.GetItemCount(ingredient.Item);
             if (currentCount < ingredient.RequiredQuantity)
             {
-                failReason = $"Not enough {ingredient.Item.DisplayName}.";
+                failReason = $"Not enough {ingredient.Item.DisplayName} ({currentCount}/{ingredient.RequiredQuantity}).";
                 return false;
             }
         }
 
-        // 2. Check if output can fit into inventory
+        // 4. Check if output can fit into inventory
         if (!CanFitOutput(recipe, inventory))
         {
             failReason = "Not enough inventory space.";
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Checks whether the player possesses the required tool in their inventory or hotbar.
+    /// </summary>
+    public bool HasRequiredTool(CraftingRecipe recipe, Inventory inventory)
+    {
+        if (recipe == null || !recipe.HasToolRequirement || inventory == null) return true;
+
+        if (recipe.RequiredTool != null && inventory.GetItemCount(recipe.RequiredTool) > 0)
+        {
+            return true;
+        }
+
+        if (recipe.RequiredToolType != ToolType.None)
+        {
+            for (int i = 0; i < inventory.TotalSlots; i++)
+            {
+                var slot = inventory.GetSlot(i);
+                if (slot != null && !slot.IsEmpty && slot.Item != null && slot.Item.ToolType == recipe.RequiredToolType)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Checks whether the required crafting station is available.
+    /// For portable stations like Weaving Frame, having the station item in inventory satisfies it.
+    /// </summary>
+    public bool HasRequiredStation(CraftingRecipe recipe, Inventory inventory)
+    {
+        if (recipe == null || !recipe.HasStationRequirement || inventory == null) return true;
+
+        if (recipe.RequiredStation.IndexOf("Weaving", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            for (int i = 0; i < inventory.TotalSlots; i++)
+            {
+                var slot = inventory.GetSlot(i);
+                if (slot != null && !slot.IsEmpty && slot.Item != null)
+                {
+                    if (slot.Item.ToolType == ToolType.WeavingFrame || slot.Item.ItemId.Equals("tool_weaving_frame", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
