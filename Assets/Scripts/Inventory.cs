@@ -297,6 +297,17 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
+    /// Clears a single slot at the specified index.
+    /// </summary>
+    public void ClearSlot(int index)
+    {
+        if (index < 0 || index >= slots.Length) return;
+        slots[index]?.Clear();
+        OnSlotChanged?.Invoke(index);
+        NotifyChanged();
+    }
+
+    /// <summary>
     /// Clears all slots in the inventory.
     /// </summary>
     public void Clear()

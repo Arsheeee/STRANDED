@@ -64,6 +64,14 @@ public class PlayerInteraction : MonoBehaviour
         {
             gameObject.AddComponent<InventoryUI>();
         }
+        if (GetComponent<CraftingManager>() == null)
+        {
+            gameObject.AddComponent<CraftingManager>();
+        }
+        if (GetComponent<CraftingUI>() == null)
+        {
+            gameObject.AddComponent<CraftingUI>();
+        }
 
         // Ensure TemporaryResourceHUD is present in the scene for notifications
         if (TemporaryResourceHUD.Instance == null)
@@ -80,8 +88,8 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        // 1. If Inventory window is open, suppress world interaction to prevent accidental harvesting
-        if (InventoryUI.IsOpen)
+        // 1. If Inventory or Crafting window is open, suppress world interaction to prevent accidental harvesting
+        if (InventoryUI.IsOpen || CraftingUI.IsOpen)
         {
             if (currentTargetNode != null)
             {

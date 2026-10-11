@@ -11,13 +11,13 @@ public class HotbarUI : MonoBehaviour
 {
     [Header("Hotbar Configuration")]
     [Tooltip("Size in screen pixels of each square hotbar slot.")]
-    [SerializeField] private float slotSize = 44f;
+    [SerializeField] private float slotSize = 80f;
 
     [Tooltip("Spacing between adjacent slots.")]
-    [SerializeField] private float slotSpacing = 4f;
+    [SerializeField] private float slotSpacing = 8f;
 
     [Tooltip("Vertical padding from the bottom edge of the screen.")]
-    [SerializeField] private float bottomPadding = 16f;
+    [SerializeField] private float bottomPadding = 24f;
 
     private Inventory inventory;
     private PlayerInteraction playerInteraction;
@@ -63,8 +63,8 @@ public class HotbarUI : MonoBehaviour
 
     void Update()
     {
-        // Only handle hotbar input if full inventory UI is NOT currently open
-        if (InventoryUI.IsOpen) return;
+        // Only handle hotbar input if full inventory and crafting UI are NOT currently open
+        if (InventoryUI.IsOpen || CraftingUI.IsOpen) return;
 
         HandleHotbarKeys();
     }
@@ -134,13 +134,13 @@ public class HotbarUI : MonoBehaviour
 
         int count = Mathf.Min(12, inventory.HotbarSlotsCount);
         float totalWidth = count * slotSize + (count - 1) * slotSpacing;
-        float startX = (Screen.width - totalWidth) * 0.5f;
+        float startX = (Screen.width - (totalWidth + (slotSize + slotSpacing) * 2)) * 0.5f;
         float startY = Screen.height - slotSize - bottomPadding;
 
-        // Draw hotbar outer container
-        float bagButtonWidth = slotSize + 6;
-        float fullBarWidth = totalWidth + bagButtonWidth + 6;
-        Rect containerRect = new Rect(startX - 8, startY - 8, fullBarWidth + 16, slotSize + 16);
+        // Draw hotbar outer container (includes 12 slots + BAG button + CRAFT button)
+        float sideButtonsWidth = (slotSize + slotSpacing) * 2;
+        float fullBarWidth = totalWidth + sideButtonsWidth;
+        Rect containerRect = new Rect(startX - 10, startY - 10, fullBarWidth + 20, slotSize + 20);
         GUI.Box(containerRect, GUIContent.none, containerStyle);
 
         Event e = Event.current;
@@ -165,26 +165,29 @@ public class HotbarUI : MonoBehaviour
             {
                 if (slot.Item.Icon != null)
                 {
-                    Rect iconRect = new Rect(slotRect.x + 6, slotRect.y + 6, slotSize - 12, slotSize - 12);
+                    // Large icon inside 80x80 slot
+                    Rect iconRect = new Rect(slotRect.x + 10, slotRect.y + 10, slotSize - 20, slotSize - 20);
                     DrawSprite(iconRect, slot.Item.Icon);
                 }
 
                 if (slot.Quantity > 1)
                 {
-                    Rect qtyRect = new Rect(slotRect.x + slotSize - 26, slotRect.y + slotSize - 18, 24, 16);
+                    Rect qtyShadowRect = new Rect(slotRect.x + slotSize - 42, slotRect.y + slotSize - 30, 38, 26);
+                    GUI.Label(qtyShadowRect, slot.Quantity.ToString(), quantityShadowStyle);
+                    Rect qtyRect = new Rect(slotRect.x + slotSize - 43, slotRect.y + slotSize - 31, 38, 26);
                     GUI.Label(qtyRect, slot.Quantity.ToString(), quantityStyle);
                 }
             }
 
-            // Draw Slot Index Label (1, 2, ... 9, 0, -, =)
+            // Draw Slot Index Label (1, 2, ... 9, 0, -, =) in Stardew-style red
             string labelKey = GetSlotLabel(i);
-            Rect labelRect = new Rect(slotRect.x + 3, slotRect.y + 2, 14, 14);
+            Rect labelRect = new Rect(slotRect.x + 6, slotRect.y + 4, 24, 24);
             GUI.Label(labelRect, labelKey, slotNumberStyle);
 
-            // Draw Selected Highlight
+            // Draw Selected Highlight (prominent border)
             if (i == selectedSlotIndex && slotSelectedTex != null)
             {
-                Rect selRect = new Rect(slotRect.x - 2, slotRect.y - 2, slotSize + 4, slotSize + 4);
+                Rect selRect = new Rect(slotRect.x - 4, slotRect.y - 4, slotSize + 8, slotSize + 8);
                 GUI.DrawTexture(selRect, slotSelectedTex, ScaleMode.StretchToFill);
             }
 
@@ -198,25 +201,31 @@ public class HotbarUI : MonoBehaviour
 
         // Draw Clickable Bag Toggle Button on right of hotbar
         Rect bagBtnRect = new Rect(startX + count * (slotSize + slotSpacing) + 6, startY, slotSize, slotSize);
-        if (slotBgTex != null)
-        {
-            GUI.DrawTexture(bagBtnRect, slotBgTex, ScaleMode.StretchToFill);
-        }
-        else
-        {
-            GUI.Box(bagBtnRect, GUIContent.none);
-        }
+        if (slotBgTex != null) GUI.DrawTexture(bagBtnRect, slotBgTex, ScaleMode.StretchToFill);
+        else GUI.Box(bagBtnRect, GUIContent.none);
 
-        GUI.Label(new Rect(bagBtnRect.x, bagBtnRect.y + 4, slotSize, 14), "BAG", slotNumberStyle);
-        GUI.Label(new Rect(bagBtnRect.x, bagBtnRect.y + 18, slotSize, 16), "[ I ]", quantityStyle);
+        GUI.Label(new Rect(bagBtnRect.x, bagBtnRect.y + 14, slotSize, 22), "BAG", bagLabelStyle);
+        GUI.Label(new Rect(bagBtnRect.x, bagBtnRect.y + 40, slotSize, 22), "[ I ]", bagSubStyle);
 
         if (e.type == EventType.MouseDown && e.button == 0 && bagBtnRect.Contains(e.mousePosition))
         {
             var invUI = Object.FindAnyObjectByType<InventoryUI>();
-            if (invUI != null)
-            {
-                invUI.SetInventoryOpen(!InventoryUI.IsOpen);
-            }
+            invUI?.SetInventoryOpen(!InventoryUI.IsOpen);
+            e.Use();
+        }
+
+        // Draw Clickable Craft Toggle Button right next to Bag button
+        Rect craftBtnRect = new Rect(bagBtnRect.x + slotSize + slotSpacing, startY, slotSize, slotSize);
+        if (slotBgTex != null) GUI.DrawTexture(craftBtnRect, slotBgTex, ScaleMode.StretchToFill);
+        else GUI.Box(craftBtnRect, GUIContent.none);
+
+        GUI.Label(new Rect(craftBtnRect.x, craftBtnRect.y + 14, slotSize, 22), "CRAFT", bagLabelStyle);
+        GUI.Label(new Rect(craftBtnRect.x, craftBtnRect.y + 40, slotSize, 22), "[ C ]", bagSubStyle);
+
+        if (e.type == EventType.MouseDown && e.button == 0 && craftBtnRect.Contains(e.mousePosition))
+        {
+            var craftUI = Object.FindAnyObjectByType<CraftingUI>();
+            craftUI?.SetCraftingOpen(!CraftingUI.IsOpen);
             e.Use();
         }
     }
@@ -276,30 +285,59 @@ public class HotbarUI : MonoBehaviour
         return null;
     }
 
+    private GUIStyle quantityShadowStyle;
+    private GUIStyle bagLabelStyle;
+    private GUIStyle bagSubStyle;
+
     private void InitStyles()
     {
         if (slotNumberStyle == null)
         {
             slotNumberStyle = new GUIStyle();
-            slotNumberStyle.fontSize = 11;
+            slotNumberStyle.fontSize = 18;
             slotNumberStyle.fontStyle = FontStyle.Bold;
-            slotNumberStyle.normal.textColor = new Color(0.45f, 0.28f, 0.15f, 1f);
+            // Authentic Stardew Valley red slot numbers
+            slotNumberStyle.normal.textColor = new Color(0.85f, 0.16f, 0.12f, 1f);
         }
 
         if (quantityStyle == null)
         {
             quantityStyle = new GUIStyle();
-            quantityStyle.fontSize = 11;
+            quantityStyle.fontSize = 18;
             quantityStyle.fontStyle = FontStyle.Bold;
             quantityStyle.alignment = TextAnchor.LowerRight;
             quantityStyle.normal.textColor = Color.white;
+        }
+
+        if (quantityShadowStyle == null)
+        {
+            quantityShadowStyle = new GUIStyle(quantityStyle);
+            quantityShadowStyle.normal.textColor = new Color(0.1f, 0.1f, 0.1f, 0.85f);
+        }
+
+        if (bagLabelStyle == null)
+        {
+            bagLabelStyle = new GUIStyle();
+            bagLabelStyle.fontSize = 16;
+            bagLabelStyle.fontStyle = FontStyle.Bold;
+            bagLabelStyle.alignment = TextAnchor.MiddleCenter;
+            bagLabelStyle.normal.textColor = new Color(0.38f, 0.22f, 0.10f, 1f);
+        }
+
+        if (bagSubStyle == null)
+        {
+            bagSubStyle = new GUIStyle();
+            bagSubStyle.fontSize = 15;
+            bagSubStyle.fontStyle = FontStyle.Bold;
+            bagSubStyle.alignment = TextAnchor.MiddleCenter;
+            bagSubStyle.normal.textColor = new Color(0.85f, 0.16f, 0.12f, 1f);
         }
 
         if (containerStyle == null)
         {
             containerStyle = new GUIStyle(GUI.skin.box);
             Texture2D cTex = new Texture2D(1, 1);
-            cTex.SetPixel(0, 0, new Color(0.18f, 0.11f, 0.05f, 0.85f));
+            cTex.SetPixel(0, 0, new Color(0.18f, 0.11f, 0.05f, 0.88f));
             cTex.Apply();
             containerStyle.normal.background = cTex;
         }
