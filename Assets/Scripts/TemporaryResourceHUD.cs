@@ -37,8 +37,10 @@ public class TemporaryResourceHUD : MonoBehaviour
     private GUIStyle promptStyle;
     private GUIStyle trackerStyle;
     private GUIStyle trackerHeaderStyle;
+    private GUIStyle trackerToolStyle;
     private Texture2D boxTexture;
     private Texture2D promptTexture;
+    private PlayerInteraction cachedPlayer;
 
     void Awake()
     {
@@ -82,6 +84,30 @@ public class TemporaryResourceHUD : MonoBehaviour
         {
             Color toastColor = GetResourceColor(type);
             instance.AddToast(message, toastColor);
+        }
+    }
+
+    /// <summary>
+    /// Displays a requirement warning notification (e.g. 'Requires Stone Axe').
+    /// </summary>
+    public static void ShowRequirementFeedback(string feedback)
+    {
+        Debug.LogWarning($"[STRANDED Tool Requirement] {feedback}");
+        if (instance != null)
+        {
+            instance.AddToast(feedback, new Color(1.0f, 0.42f, 0.38f)); // Warning coral-red
+        }
+    }
+
+    /// <summary>
+    /// Displays an equipment notification when the player switches or unequips tools.
+    /// </summary>
+    public static void ShowEquipmentNotification(string notification)
+    {
+        Debug.Log($"[STRANDED Equipment] {notification}");
+        if (instance != null)
+        {
+            instance.AddToast(notification, new Color(0.40f, 0.85f, 1.0f)); // Equipment cyan
         }
     }
 
@@ -181,28 +207,45 @@ public class TemporaryResourceHUD : MonoBehaviour
             trackerHeaderStyle.fontStyle = FontStyle.Bold;
             trackerHeaderStyle.normal.textColor = new Color(0.65f, 0.80f, 0.95f);
         }
+
+        if (trackerToolStyle == null)
+        {
+            trackerToolStyle = new GUIStyle(trackerStyle);
+            trackerToolStyle.fontSize = 12;
+            trackerToolStyle.fontStyle = FontStyle.Bold;
+            trackerToolStyle.normal.textColor = new Color(0.40f, 0.88f, 1.0f);
+        }
     }
 
     void OnGUI()
     {
         EnsureStyles();
 
-        // 1. Session Harvest Tracker in Top-Left Corner
-        float trackerWidth = 320f;
-        float trackerHeight = 72f;
+        // 1. Session Harvest & Tool Equipment Tracker in Top-Left Corner
+        float trackerWidth = 380f;
+        float trackerHeight = 90f;
         Rect trackerRect = new Rect(16f, 16f, trackerWidth, trackerHeight);
         GUI.Box(trackerRect, GUIContent.none, trackerStyle);
 
         GUILayout.BeginArea(trackerRect);
-        GUILayout.Space(4);
-        GUILayout.Label("  [STRANDED BATCH 2: RESOURCE HARVEST TRACKER]", trackerHeaderStyle);
-        GUILayout.Space(2);
+        GUILayout.Space(3);
+        GUILayout.Label("  [STRANDED BATCH 3: TOOL SYSTEM & HARVEST TRACKER]", trackerHeaderStyle);
+        GUILayout.Space(1);
         string summaryLine = $"   Wood: {GetCollectedCount(ResourceType.Wood)}  |  " +
                              $"Stone: {GetCollectedCount(ResourceType.Stone)}  |  " +
                              $"Fiber: {GetCollectedCount(ResourceType.Fiber)}  |  " +
                              $"Berries: {GetCollectedCount(ResourceType.Berries)}  |  " +
                              $"Coconut: {GetCollectedCount(ResourceType.Coconut)}";
         GUILayout.Label(summaryLine, trackerStyle);
+        GUILayout.Space(1);
+
+        if (cachedPlayer == null)
+        {
+            cachedPlayer = Object.FindFirstObjectByType<PlayerInteraction>();
+        }
+        string toolName = cachedPlayer != null ? cachedPlayer.CurrentTool.ToDisplayName() : "None";
+        string toolLine = $"   Equipped: [{toolName}]  (Keys: 1:Knife, 2:Axe, 3:Pickaxe, 4:Rod, 0:None)";
+        GUILayout.Label(toolLine, trackerToolStyle);
         GUILayout.EndArea();
 
         // 2. Contextual Interaction Prompt (e.g. "[E] Harvest Berry Bush")

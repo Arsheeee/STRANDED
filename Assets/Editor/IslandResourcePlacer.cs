@@ -571,6 +571,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Wood);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneAxe);
         SetSerializedField(node, "nodeDisplayName", treeName);
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.6f);
@@ -598,6 +599,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Coconut);
+        SetSerializedField(node, "requiredTool", (int)ToolType.None);
         SetSerializedField(node, "nodeDisplayName", "Coconut Palm");
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.6f);
@@ -625,6 +627,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Stone);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StonePickaxe);
         SetSerializedField(node, "nodeDisplayName", "Large Boulder");
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.5f);
@@ -652,6 +655,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Stone);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StonePickaxe);
         SetSerializedField(node, "nodeDisplayName", "Slate Rock");
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.4f);
@@ -678,6 +682,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Stone);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StonePickaxe);
         SetSerializedField(node, "nodeDisplayName", "Loose Stones");
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.3f);
@@ -704,6 +709,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Berries);
+        SetSerializedField(node, "requiredTool", (int)ToolType.None);
         SetSerializedField(node, "nodeDisplayName", "Berry Bush");
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.4f);
@@ -732,6 +738,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Fiber);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
         SetSerializedField(node, "nodeDisplayName", name);
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.4f);
@@ -758,6 +765,7 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Wood);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneAxe);
         SetSerializedField(node, "nodeDisplayName", "Driftwood Log");
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.5f);

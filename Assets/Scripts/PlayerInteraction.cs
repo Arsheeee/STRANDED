@@ -16,9 +16,26 @@ public class PlayerInteraction : MonoBehaviour
     [Tooltip("Layer mask containing interactable resource nodes (default to Everything if unset).")]
     [SerializeField] private LayerMask interactableLayers = ~0;
 
+    [Tooltip("Cooldown in seconds between interactions to prevent accidental repeated harvesting.")]
+    [SerializeField] private float interactionCooldown = 0.25f;
+
+    [Header("Tool Equipment")]
+    [Tooltip("Currently equipped primitive tool.")]
+    [SerializeField] private ToolType currentTool = ToolType.None;
+
+    public ToolType CurrentTool => currentTool;
+    public ToolType GetCurrentTool() => currentTool;
+
+    /// <summary>
+    /// Event triggered whenever a tool action is performed on a resource.
+    /// Connects to future tool animations or sound hooks.
+    /// </summary>
+    public event System.Action<ToolType> OnToolUsed;
+
     private InputAction interactAction;
     private SpriteRenderer playerRenderer;
     private ResourceNode currentTargetNode;
+    private float lastInteractionTime = -99f;
     private readonly Collider2D[] queryResults = new Collider2D[16];
 
     void Start()
@@ -45,10 +62,13 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        // 1. Efficient local query for closest available ResourceNode
+        // 1. Temporary tool selection input (Keys 1-4, 0)
+        HandleToolSelectionInput();
+
+        // 2. Efficient local query for closest available ResourceNode
         UpdateNearbyInteractable();
 
-        // 2. Check for interaction input ('E')
+        // 3. Check for interaction input ('E')
         bool wasInteracted = (interactAction != null && interactAction.WasPressedThisFrame());
         if (!wasInteracted && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
@@ -59,6 +79,89 @@ public class PlayerInteraction : MonoBehaviour
         {
             HarvestCurrentTarget();
         }
+    }
+
+    /// <summary>
+    /// Temporary keyboard controls for equipping tools (1=Knife, 2=Axe, 3=Pickaxe, 4=Rod, 0=None).
+    /// </summary>
+    private void HandleToolSelectionInput()
+    {
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.digit1Key.wasPressedThisFrame || Keyboard.current.numpad1Key.wasPressedThisFrame)
+        {
+            EquipTool(ToolType.StoneKnife);
+        }
+        else if (Keyboard.current.digit2Key.wasPressedThisFrame || Keyboard.current.numpad2Key.wasPressedThisFrame)
+        {
+            EquipTool(ToolType.StoneAxe);
+        }
+        else if (Keyboard.current.digit3Key.wasPressedThisFrame || Keyboard.current.numpad3Key.wasPressedThisFrame)
+        {
+            EquipTool(ToolType.StonePickaxe);
+        }
+        else if (Keyboard.current.digit4Key.wasPressedThisFrame || Keyboard.current.numpad4Key.wasPressedThisFrame)
+        {
+            EquipTool(ToolType.FishingRod);
+        }
+        else if (Keyboard.current.digit0Key.wasPressedThisFrame || Keyboard.current.numpad0Key.wasPressedThisFrame)
+        {
+            UnequipTool();
+        }
+    }
+
+    /// <summary>
+    /// Equips the specified tool and updates feedback.
+    /// </summary>
+    public void EquipTool(ToolType tool)
+    {
+        currentTool = tool;
+        string toolName = tool.ToDisplayName();
+        Debug.Log($"[STRANDED Tool] Equipped: {toolName}");
+
+        if (tool == ToolType.None)
+        {
+            TemporaryResourceHUD.ShowEquipmentNotification("Unequipped Tool (Hands Free)");
+        }
+        else
+        {
+            TemporaryResourceHUD.ShowEquipmentNotification($"Equipped: {toolName}");
+        }
+
+        UpdateNearbyInteractable();
+    }
+
+    /// <summary>
+    /// Unequips current tool (sets to ToolType.None).
+    /// </summary>
+    public void UnequipTool()
+    {
+        EquipTool(ToolType.None);
+    }
+
+    /// <summary>
+    /// Returns true if the currently equipped tool matches the specified tool.
+    /// </summary>
+    public bool CheckCurrentTool(ToolType tool)
+    {
+        return currentTool == tool;
+    }
+
+    /// <summary>
+    /// Checks whether the currently equipped tool can interact with the given ResourceNode.
+    /// </summary>
+    public bool CanInteractWith(ResourceNode node)
+    {
+        return node != null && node.CanInteract() && node.CanHarvestWith(currentTool);
+    }
+
+    /// <summary>
+    /// Triggers tool action event for animation/audio hooks.
+    /// </summary>
+    public void TriggerToolAction(ToolType tool)
+    {
+        OnToolUsed?.Invoke(tool);
+        Debug.Log($"[STRANDED Action Hook] Tool action performed with {tool.ToDisplayName()}");
     }
 
     void LateUpdate()
@@ -112,12 +215,23 @@ public class PlayerInteraction : MonoBehaviour
 
         currentTargetNode = bestNode;
 
-        // Update HUD prompt
+        // Update HUD prompt with contextual tool information
         if (TemporaryResourceHUD.Instance != null)
         {
             if (currentTargetNode != null)
             {
-                TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] Gather {currentTargetNode.DisplayName}");
+                if (!currentTargetNode.RequiresTool)
+                {
+                    TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] Gather {currentTargetNode.DisplayName}");
+                }
+                else if (currentTargetNode.CanHarvestWith(currentTool))
+                {
+                    TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] Harvest {currentTargetNode.DisplayName} [{currentTool.ToDisplayName()}]");
+                }
+                else
+                {
+                    TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] {currentTargetNode.DisplayName} (Requires {currentTargetNode.RequiredTool.ToDisplayName()})");
+                }
             }
             else
             {
@@ -128,10 +242,18 @@ public class PlayerInteraction : MonoBehaviour
 
     /// <summary>
     /// Triggers harvest on the current target node and records collected yield.
+    /// Uses interaction cooldown to prevent accidental repeated harvesting.
     /// </summary>
     private void HarvestCurrentTarget()
     {
         if (currentTargetNode == null) return;
+
+        // Interaction cooldown check
+        if (Time.time - lastInteractionTime < interactionCooldown)
+        {
+            return;
+        }
+        lastInteractionTime = Time.time;
 
         ResourceNode nodeToHarvest = currentTargetNode;
         int yielded = nodeToHarvest.Interact(this);

@@ -232,6 +232,282 @@ public static class IslandPlayModeSimulator
         Debug.Log("=====================================================================");
     }
 
+    [MenuItem("Tools/STRANDED/Run Batch 3 Tool System Tests")]
+    public static void RunBatch3ToolTests()
+    {
+        Debug.Log("=====================================================================");
+        Debug.Log("STRANDED: Running Batch 3 Tool System & Resource Interaction Tests");
+        Debug.Log("=====================================================================");
+
+        // 1. Ensure scene is open
+        if (EditorSceneManager.GetActiveScene().path != SCENE_PATH)
+        {
+            EditorSceneManager.OpenScene(SCENE_PATH);
+        }
+
+        // 2. Ensure resources are populated with up-to-date tool requirements
+        IslandResourcePlacer.PopulateResources();
+
+        // 3. Validate Player & PlayerInteraction
+        GameObject playerObj = GameObject.Find("Player");
+        if (playerObj == null)
+        {
+            Debug.LogError("TEST FAILED: Player GameObject not found in MainScene!");
+            return;
+        }
+
+        PlayerMovement pm = playerObj.GetComponent<PlayerMovement>();
+        Rigidbody2D rb = playerObj.GetComponent<Rigidbody2D>();
+        Collider2D col = playerObj.GetComponent<Collider2D>();
+        PlayerInteraction pi = playerObj.GetComponent<PlayerInteraction>();
+
+        if (pm == null || rb == null || col == null || pi == null)
+        {
+            Debug.LogError("TEST FAILED: Player missing one or more essential components (Movement, Rigidbody2D, Collider2D, PlayerInteraction)!");
+            return;
+        }
+
+        // 4. TEST TOOL SELECTION (Equipping, Unequipping, and Switching)
+        Debug.Log("--- 1. Testing Tool Selection & State Architecture ---");
+        
+        pi.EquipTool(ToolType.StoneKnife);
+        if (pi.CurrentTool != ToolType.StoneKnife || !pi.CheckCurrentTool(ToolType.StoneKnife))
+        {
+            Debug.LogError("TEST FAILED: Equipping Stone Knife failed!");
+            return;
+        }
+        Debug.Log("  [OK] Equip Tool 1 -> Stone Knife");
+
+        pi.EquipTool(ToolType.StoneAxe);
+        if (pi.CurrentTool != ToolType.StoneAxe || !pi.CheckCurrentTool(ToolType.StoneAxe))
+        {
+            Debug.LogError("TEST FAILED: Equipping Stone Axe failed!");
+            return;
+        }
+        Debug.Log("  [OK] Equip Tool 2 -> Stone Axe");
+
+        pi.EquipTool(ToolType.StonePickaxe);
+        if (pi.CurrentTool != ToolType.StonePickaxe || !pi.CheckCurrentTool(ToolType.StonePickaxe))
+        {
+            Debug.LogError("TEST FAILED: Equipping Stone Pickaxe failed!");
+            return;
+        }
+        Debug.Log("  [OK] Equip Tool 3 -> Stone Pickaxe");
+
+        pi.EquipTool(ToolType.FishingRod);
+        if (pi.CurrentTool != ToolType.FishingRod || !pi.CheckCurrentTool(ToolType.FishingRod))
+        {
+            Debug.LogError("TEST FAILED: Equipping Fishing Rod failed!");
+            return;
+        }
+        Debug.Log("  [OK] Equip Tool 4 -> Fishing Rod");
+
+        pi.UnequipTool();
+        if (pi.CurrentTool != ToolType.None || !pi.CheckCurrentTool(ToolType.None))
+        {
+            Debug.LogError("TEST FAILED: Unequipping tool to None failed!");
+            return;
+        }
+        Debug.Log("  [OK] Unequip Tool 0 -> None (Hands)");
+
+        // 5. TEST RESOURCE NODES TOOL REQUIREMENTS IN SCENE
+        Debug.Log("--- 2. Validating Resource Node Requirements Across World ---");
+        GameObject envRoot = GameObject.Find("Environment_Resources");
+        if (envRoot == null)
+        {
+            Debug.LogError("TEST FAILED: Environment_Resources root not found!");
+            return;
+        }
+
+        ResourceNode[] allNodes = envRoot.GetComponentsInChildren<ResourceNode>(true);
+        ResourceNode sampleTree = FindNodeOfType(allNodes, ResourceType.Wood);
+        ResourceNode sampleRock = FindNodeOfType(allNodes, ResourceType.Stone);
+        ResourceNode sampleFiber = FindNodeOfType(allNodes, ResourceType.Fiber);
+        ResourceNode sampleBush = FindNodeOfType(allNodes, ResourceType.Berries);
+        ResourceNode samplePalm = FindNodeOfType(allNodes, ResourceType.Coconut);
+
+        if (sampleTree == null || sampleRock == null || sampleFiber == null || sampleBush == null || samplePalm == null)
+        {
+            Debug.LogError("TEST FAILED: Missing one or more resource sample nodes!");
+            return;
+        }
+
+        if (sampleTree.RequiredTool != ToolType.StoneAxe)
+        {
+            Debug.LogError($"TEST FAILED: Tree requires {sampleTree.RequiredTool}, expected StoneAxe!");
+            return;
+        }
+        if (sampleRock.RequiredTool != ToolType.StonePickaxe)
+        {
+            Debug.LogError($"TEST FAILED: Rock requires {sampleRock.RequiredTool}, expected StonePickaxe!");
+            return;
+        }
+        if (sampleFiber.RequiredTool != ToolType.StoneKnife)
+        {
+            Debug.LogError($"TEST FAILED: Fiber requires {sampleFiber.RequiredTool}, expected StoneKnife!");
+            return;
+        }
+        if (sampleBush.RequiredTool != ToolType.None)
+        {
+            Debug.LogError($"TEST FAILED: Berry bush requires {sampleBush.RequiredTool}, expected None!");
+            return;
+        }
+        if (samplePalm.RequiredTool != ToolType.None)
+        {
+            Debug.LogError($"TEST FAILED: Coconut palm requires {samplePalm.RequiredTool}, expected None!");
+            return;
+        }
+        Debug.Log("  [OK] Resource node requirements correctly configured in scene.");
+
+        // 6. TEST WRONG TOOL REJECTIONS
+        Debug.Log("--- 3. Testing Wrong Tool Rejections & Safeguards ---");
+
+        // Knife + Tree -> FAIL
+        pi.EquipTool(ToolType.StoneKnife);
+        int failWood = sampleTree.Interact(pi);
+        if (failWood != 0 || sampleTree.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Tree harvested with Stone Knife! Should have failed.");
+            return;
+        }
+        Debug.Log("  [OK] Knife + Tree -> REJECTED (Requires Stone Axe)");
+
+        // Axe + Rock -> FAIL
+        pi.EquipTool(ToolType.StoneAxe);
+        int failStone = sampleRock.Interact(pi);
+        if (failStone != 0 || sampleRock.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Rock harvested with Stone Axe! Should have failed.");
+            return;
+        }
+        Debug.Log("  [OK] Axe + Rock -> REJECTED (Requires Stone Pickaxe)");
+
+        // Pickaxe + Tree -> FAIL
+        pi.EquipTool(ToolType.StonePickaxe);
+        int failTree2 = sampleTree.Interact(pi);
+        if (failTree2 != 0 || sampleTree.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Tree harvested with Stone Pickaxe! Should have failed.");
+            return;
+        }
+        Debug.Log("  [OK] Pickaxe + Tree -> REJECTED (Requires Stone Axe)");
+
+        // Hands (None) + Fiber -> FAIL
+        pi.UnequipTool();
+        int failFiber = sampleFiber.Interact(pi);
+        if (failFiber != 0 || sampleFiber.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Fiber harvested with bare hands! Should require Stone Knife.");
+            return;
+        }
+        Debug.Log("  [OK] Hands + Fiber -> REJECTED (Requires Stone Knife)");
+
+        // 7. TEST SUCCESSFUL TOOL INTERACTIONS
+        Debug.Log("--- 4. Testing Successful Tool-Based Harvesting ---");
+
+        // Stone Axe + Tree -> SUCCESS
+        pi.EquipTool(ToolType.StoneAxe);
+        int woodYield = sampleTree.Interact(pi);
+        if (woodYield <= 0 || !sampleTree.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Stone Axe + Tree interaction failed to harvest!");
+            return;
+        }
+        TemporaryResourceHUD.RecordCollection(sampleTree.Type, woodYield, sampleTree.DisplayName);
+        Debug.Log($"  [OK] Stone Axe + Tree -> SUCCESS (Harvested {woodYield} Wood, Tree Depleted)");
+
+        // Stone Pickaxe + Rock -> SUCCESS
+        pi.EquipTool(ToolType.StonePickaxe);
+        int rockYield = sampleRock.Interact(pi);
+        if (rockYield <= 0 || !sampleRock.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Stone Pickaxe + Rock interaction failed to harvest!");
+            return;
+        }
+        TemporaryResourceHUD.RecordCollection(sampleRock.Type, rockYield, sampleRock.DisplayName);
+        Debug.Log($"  [OK] Stone Pickaxe + Rock -> SUCCESS (Harvested {rockYield} Stone, Rock Depleted)");
+
+        // Stone Knife + Fiber -> SUCCESS
+        pi.EquipTool(ToolType.StoneKnife);
+        int fiberYield = sampleFiber.Interact(pi);
+        if (fiberYield <= 0 || !sampleFiber.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Stone Knife + Fiber interaction failed to harvest!");
+            return;
+        }
+        TemporaryResourceHUD.RecordCollection(sampleFiber.Type, fiberYield, sampleFiber.DisplayName);
+        Debug.Log($"  [OK] Stone Knife + Fiber -> SUCCESS (Harvested {fiberYield} Fiber, Plant Depleted)");
+
+        // Hands (None) + Berry Bush -> SUCCESS
+        pi.UnequipTool();
+        int berryYield = sampleBush.Interact(pi);
+        if (berryYield <= 0 || !sampleBush.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Hands + Berry Bush interaction failed to harvest!");
+            return;
+        }
+        TemporaryResourceHUD.RecordCollection(sampleBush.Type, berryYield, sampleBush.DisplayName);
+        Debug.Log($"  [OK] Hands + Berry Bush -> SUCCESS (Harvested {berryYield} Berries, Bush Depleted)");
+
+        // Hands (None) + Coconut Palm -> SUCCESS
+        int coconutYield = samplePalm.Interact(pi);
+        if (coconutYield <= 0 || !samplePalm.IsDepleted)
+        {
+            Debug.LogError("TEST FAILED: Hands + Coconut Palm interaction failed to harvest!");
+            return;
+        }
+        TemporaryResourceHUD.RecordCollection(samplePalm.Type, coconutYield, samplePalm.DisplayName);
+        Debug.Log($"  [OK] Hands + Coconut Palm -> SUCCESS (Harvested {coconutYield} Coconut, Palm Depleted)");
+
+        // 8. TEST DEPLETED STATE & SPAM PROTECTION
+        Debug.Log("--- 5. Testing Depleted State & Repeated Interaction Safety ---");
+        pi.EquipTool(ToolType.StoneAxe);
+        int repeatWood = sampleTree.Interact(pi);
+        if (repeatWood != 0)
+        {
+            Debug.LogError("TEST FAILED: Depleted tree yielded resources on repeated interaction!");
+            return;
+        }
+        Debug.Log("  [OK] Depleted tree yields 0 on repeated harvest.");
+
+        // 9. TEST FISHING ROD REQUIREMENT COMPATIBILITY
+        Debug.Log("--- 6. Testing Fishing Rod Requirement Compatibility ---");
+        ToolType fishToolReq = ResourceNode.GetDefaultToolRequirement(ResourceType.Fish);
+        if (fishToolReq != ToolType.FishingRod)
+        {
+            Debug.LogError($"TEST FAILED: ResourceType.Fish requires {fishToolReq}, expected FishingRod!");
+            return;
+        }
+        Debug.Log("  [OK] Fish resource type mapped to FishingRod tool requirement for future fishing system.");
+
+        // 10. TEST PLAYER ACTION HOOK / EVENT
+        Debug.Log("--- 7. Testing Player Action Hook (OnToolUsed) ---");
+        bool hookTriggered = false;
+        ToolType hookedTool = ToolType.None;
+        Action<ToolType> listener = (tool) => { hookTriggered = true; hookedTool = tool; };
+        pi.OnToolUsed += listener;
+
+        pi.EquipTool(ToolType.StoneAxe);
+        pi.TriggerToolAction(ToolType.StoneAxe);
+        pi.OnToolUsed -= listener;
+
+        if (!hookTriggered || hookedTool != ToolType.StoneAxe)
+        {
+            Debug.LogError("TEST FAILED: OnToolUsed action hook was not triggered properly!");
+            return;
+        }
+        Debug.Log("  [OK] Player OnToolUsed event dispatched correctly for animation/action hooks.");
+
+        // 11. RESTORE TESTED NODES
+        sampleTree.Regrow();
+        sampleBush.Regrow();
+        samplePalm.Regrow();
+
+        Debug.Log("=====================================================================");
+        Debug.Log("BATCH 3 TOOL SYSTEM TEST SUITE COMPLETED - ALL 11 TEST PHASES PASSED!");
+        Debug.Log("=====================================================================");
+    }
+
     private static ResourceNode FindNodeOfType(ResourceNode[] nodes, ResourceType type)
     {
         foreach (var node in nodes)

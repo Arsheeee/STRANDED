@@ -23,6 +23,10 @@ public class ResourceNode : MonoBehaviour
     [Tooltip("Interaction distance from the player to this node.")]
     [SerializeField] private float interactionRange = 1.6f;
 
+    [Header("Tool Requirement")]
+    [Tooltip("Primitive tool required to harvest this node. ToolType.None means harvestable by hand.")]
+    [SerializeField] private ToolType requiredTool = ToolType.None;
+
     [Header("State & Depletion")]
     [Tooltip("Whether this node is currently harvestable.")]
     [SerializeField] private bool isHarvestable = true;
@@ -51,6 +55,8 @@ public class ResourceNode : MonoBehaviour
 
     // Public Properties
     public ResourceType Type => resourceType;
+    public ToolType RequiredTool => requiredTool;
+    public bool RequiresTool => requiredTool != ToolType.None;
     public int YieldAmount => yieldAmount;
     public float InteractionRange => interactionRange;
     public bool IsAvailable => isHarvestable && !isDepleted;
@@ -63,6 +69,12 @@ public class ResourceNode : MonoBehaviour
         nodeCollider = GetComponent<Collider2D>();
         initialScale = transform.localScale;
 
+        // Ensure default tool requirement matches resource type if unassigned
+        if (requiredTool == ToolType.None)
+        {
+            requiredTool = GetDefaultToolRequirement(resourceType);
+        }
+
         // Initialize sprite if available
         if (availableSprite != null && spriteRenderer.sprite == null)
         {
@@ -71,6 +83,36 @@ public class ResourceNode : MonoBehaviour
 
         // Apply 2D Y-depth sorting so objects naturally layer based on ground position
         UpdateSortingOrder();
+    }
+
+    /// <summary>
+    /// Gets the standard primitive tool requirement for a given resource type.
+    /// </summary>
+    public static ToolType GetDefaultToolRequirement(ResourceType type)
+    {
+        switch (type)
+        {
+            case ResourceType.Wood:
+                return ToolType.StoneAxe;
+            case ResourceType.Stone:
+                return ToolType.StonePickaxe;
+            case ResourceType.Fiber:
+                return ToolType.StoneKnife;
+            case ResourceType.Fish:
+                return ToolType.FishingRod;
+            case ResourceType.Berries:
+            case ResourceType.Coconut:
+            default:
+                return ToolType.None;
+        }
+    }
+
+    /// <summary>
+    /// Explicitly configure the required tool for this node.
+    /// </summary>
+    public void SetRequiredTool(ToolType tool)
+    {
+        requiredTool = tool;
     }
 
     public const int BASE_SORTING_ORDER = 5000;
@@ -103,14 +145,52 @@ public class ResourceNode : MonoBehaviour
     }
 
     /// <summary>
-    /// Harvests the resource from this node.
-    /// Returns the yielded amount (or 0 if unavailable).
+    /// Checks whether the specified equipped tool satisfies this node's requirement.
+    /// Returns true if no tool is required, or if the equipped tool matches.
+    /// </summary>
+    public bool CanHarvestWith(ToolType equippedTool)
+    {
+        if (requiredTool == ToolType.None)
+        {
+            return true;
+        }
+        return equippedTool == requiredTool;
+    }
+
+    /// <summary>
+    /// Harvests the resource from this node using the player's currently equipped tool.
+    /// Returns yielded amount if successful, or 0 if requirement is not met or node is depleted.
     /// </summary>
     public int Interact(PlayerInteraction player)
+    {
+        ToolType equippedTool = player != null ? player.CurrentTool : ToolType.None;
+        return Interact(equippedTool, player);
+    }
+
+    /// <summary>
+    /// Attempts to harvest the node using a specific tool.
+    /// Provides clear feedback if the tool is incorrect.
+    /// </summary>
+    public int Interact(ToolType equippedTool, PlayerInteraction player = null)
     {
         if (!CanInteract())
         {
             return 0;
+        }
+
+        // Validate tool requirement
+        if (!CanHarvestWith(equippedTool))
+        {
+            // Requirement not met: Reject harvest and display clear feedback
+            string reqName = requiredTool.ToDisplayName();
+            TemporaryResourceHUD.ShowRequirementFeedback($"Requires {reqName}");
+            return 0;
+        }
+
+        // Tool requirement satisfied: Trigger player action hook
+        if (player != null && equippedTool != ToolType.None)
+        {
+            player.TriggerToolAction(equippedTool);
         }
 
         int collected = yieldAmount;
