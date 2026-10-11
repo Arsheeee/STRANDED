@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c25996b49731243b150782900bdccd, type: 3}
+  m_Name: Animated_river_lilypad_lotus
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedTile
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 789186470026f174c976e1f233854202, type: 3}
+  - {fileID: 21300000, guid: a6d735197ba02224e86f94809a39d1dd, type: 3}
+  - {fileID: 21300000, guid: 1641af2748650714f87064dc10ed66b3, type: 3}
+  - {fileID: 21300000, guid: 547a6245e2d724a45a3f8e767b989ff4, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 4
+  m_AnimationStartTime: 0
+  m_TileColliderType: 0

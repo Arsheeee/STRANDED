@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c25996b49731243b150782900bdccd, type: 3}
+  m_Name: Animated_river_pebbles
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedTile
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 72c4124ce1f5e394692c1e4a8d1b4bac, type: 3}
+  - {fileID: 21300000, guid: a40260fdc7b0c8442abeb53a79ba877c, type: 3}
+  - {fileID: 21300000, guid: eac862775ca2f374aa02a8def6796815, type: 3}
+  - {fileID: 21300000, guid: 5f8e7b41fe5176e499a798f8545fdaa9, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 4
+  m_AnimationStartTime: 0
+  m_TileColliderType: 0

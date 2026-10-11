@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c25996b49731243b150782900bdccd, type: 3}
+  m_Name: Animated_sand_water_edge_s_01
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedTile
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: af3238394fc148d6b1c39e2b8422577e, type: 3}
+  - {fileID: 21300000, guid: 53cc94e380c948f89906fc7ef516175a, type: 3}
+  - {fileID: 21300000, guid: 54c8e7e8f1b24f2888433f7e903c40b5, type: 3}
+  - {fileID: 21300000, guid: 942f7937c5e446ec8ad8a7839785af64, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 4
+  m_AnimationStartTime: 0
+  m_TileColliderType: 0

@@ -70,7 +70,7 @@ public class IslandTilemapBuilder : EditorWindow
 
         // 1. Prepare Tile Asset Dictionary
         EditorUtility.DisplayProgressBar("STRANDED Island Builder", "Creating Tile assets...", 0.15f);
-        Dictionary<string, Tile> tileCache = PreloadOrGenerateTiles();
+        Dictionary<string, TileBase> tileCache = PreloadOrGenerateTiles();
 
         // 2. Prepare Grid & Tilemap Layers
         EditorUtility.DisplayProgressBar("STRANDED Island Builder", "Setting up Grid and Tilemaps...", 0.30f);
@@ -117,15 +117,45 @@ public class IslandTilemapBuilder : EditorWindow
         List<Vector3Int> posCliffs = new List<Vector3Int>();
         List<TileBase> tilesCliffs = new List<TileBase>();
 
-        Tile tDeep = GetCachedTile(tileCache, "Water/Sea/sea_deep_base_01.png");
-        Tile tShallow = GetCachedTile(tileCache, "Water/Sea/sea_shallow_base_01.png");
-        Tile tSand01 = GetCachedTile(tileCache, "Sand/sand_base_01.png");
-        Tile tSand02 = GetCachedTile(tileCache, "Sand/sand_base_02.png");
-        Tile tGrass01 = GetCachedTile(tileCache, "Grass/grass_base_01.png");
-        Tile tGrass02 = GetCachedTile(tileCache, "Grass/grass_base_02.png");
-        Tile tDirt01 = GetCachedTile(tileCache, "Dirt/mud_base_01.png");
-        Tile tDirt02 = GetCachedTile(tileCache, "Dirt/mud_base_02.png");
-        Tile tRiver = GetCachedTile(tileCache, "Water/River/river_water_base_01.png");
+        TileBase tDeep01 = GetCachedTile(tileCache, "Water/Sea/sea_deep_base_01.png");
+        TileBase tDeep02 = GetCachedTile(tileCache, "Water/Sea/sea_deep_base_02.png");
+        TileBase tDeepPebbles = GetCachedTile(tileCache, "Water/Sea/sea_deep_pebbles.png");
+
+        TileBase tShallow01 = GetCachedTile(tileCache, "Water/Sea/sea_shallow_base_01.png");
+        TileBase tShallow02 = GetCachedTile(tileCache, "Water/Sea/sea_shallow_base_02.png");
+        TileBase tShallowStarfish = GetCachedTile(tileCache, "Water/Sea/sea_shallow_starfish.png");
+        TileBase tShallowPebbles = GetCachedTile(tileCache, "Water/Sea/sea_shallow_pebbles.png");
+
+        TileBase tShorelineFoam = GetCachedTile(tileCache, "Water/Sea/sea_shoreline_foam.png");
+
+        TileBase tSand01 = GetCachedTile(tileCache, "Sand/sand_base_01.png");
+        TileBase tSand02 = GetCachedTile(tileCache, "Sand/sand_base_02.png");
+        TileBase tSandSeashell = GetCachedTile(tileCache, "Sand/sand_seashell.png");
+        TileBase tSandStarfish = GetCachedTile(tileCache, "Sand/sand_starfish.png");
+        TileBase tSandSlate = GetCachedTile(tileCache, "Sand/sand_pebble_slate.png");
+
+        TileBase tGrass01 = GetCachedTile(tileCache, "Grass/grass_base_01.png");
+        TileBase tGrass02 = GetCachedTile(tileCache, "Grass/grass_base_02.png");
+        TileBase tGrassTuft = GetCachedTile(tileCache, "Grass/grass_tuft_lush.png");
+        TileBase tGrassFlowerBlue = GetCachedTile(tileCache, "Grass/grass_wildflower_blue.png");
+        TileBase tGrassFlowerPink = GetCachedTile(tileCache, "Grass/grass_wildflower_pink.png");
+
+        TileBase tDirt01 = GetCachedTile(tileCache, "Dirt/mud_base_01.png");
+        TileBase tDirt02 = GetCachedTile(tileCache, "Dirt/mud_base_02.png");
+        TileBase tMudPebbles = GetCachedTile(tileCache, "Dirt/mud_pebbles.png");
+        TileBase tMudCrater = GetCachedTile(tileCache, "Dirt/mud_crater.png");
+        TileBase tMudTuft = GetCachedTile(tileCache, "Dirt/mud_tuft.png");
+
+        TileBase tRiver01 = GetCachedTile(tileCache, "Water/River/river_water_base_01.png");
+        TileBase tRiverLilypad = GetCachedTile(tileCache, "Water/River/river_lilypad_lotus.png");
+        TileBase tRiverReeds = GetCachedTile(tileCache, "Water/River/river_reeds.png");
+        TileBase tRiverPebbles = GetCachedTile(tileCache, "Water/River/river_pebbles.png");
+
+        int countMudPebbles = 0, countMudCrater = 0, countMudTuft = 0;
+        int countBlueFlowers = 0, countPinkFlowers = 0, countGrassTufts = 0;
+        int countSandSeashell = 0, countSandStarfish = 0, countSandSlate = 0;
+        int countRiverLilypad = 0, countRiverReeds = 0, countRiverPebbles = 0;
+        int countShallowStarfish = 0, countShallowPebbles = 0, countDeepPebbles = 0;
 
         for (int y = 0; y < height; y++)
         {
@@ -137,24 +167,72 @@ public class IslandTilemapBuilder : EditorWindow
                 // 0: Deep, 1: Shallow, 2: Sand, 3: Grass, 4: Dirt, 5: River, 6: Cliff Wall, 7: Cliff Top
                 if (c == 0) // OCEAN_DEEP
                 {
+                    int val = GetTileHash(x, y, 808) % 1000;
+                    TileBase deepT;
+                    if (val < 5 && tDeepPebbles != null)
+                    {
+                        deepT = tDeepPebbles;
+                        countDeepPebbles++;
+                    }
+                    else
+                    {
+                        deepT = (GetTileHash(x, y, 850) % 2 == 0) ? tDeep01 : tDeep02;
+                    }
                     posDeep.Add(pos);
-                    tilesDeep.Add(tDeep);
+                    tilesDeep.Add(deepT);
                 }
                 else if (c == 1) // OCEAN_SHALLOW
                 {
+                    int val = GetTileHash(x, y, 707) % 1000;
+                    TileBase shallowT;
+                    if (val < 10 && tShallowStarfish != null)
+                    {
+                        shallowT = tShallowStarfish;
+                        countShallowStarfish++;
+                    }
+                    else if (val < 22 && tShallowPebbles != null)
+                    {
+                        shallowT = tShallowPebbles;
+                        countShallowPebbles++;
+                    }
+                    else
+                    {
+                        shallowT = (GetTileHash(x, y, 750) % 2 == 0) ? tShallow01 : tShallow02;
+                    }
                     posShallow.Add(pos);
-                    tilesShallow.Add(tShallow);
+                    tilesShallow.Add(shallowT);
                 }
                 else if (c == 2) // BEACH_SAND
                 {
+                    int val = GetTileHash(x, y, 404) % 1000;
+                    TileBase sandT;
+                    if (val < 12 && tSandSeashell != null)
+                    {
+                        sandT = tSandSeashell;
+                        countSandSeashell++;
+                    }
+                    else if (val < 18 && tSandStarfish != null)
+                    {
+                        sandT = tSandStarfish;
+                        countSandStarfish++;
+                    }
+                    else if (val < 28 && tSandSlate != null)
+                    {
+                        sandT = tSandSlate;
+                        countSandSlate++;
+                    }
+                    else
+                    {
+                        sandT = (GetTileHash(x, y, 450) % 2 == 0) ? tSand01 : tSand02;
+                    }
                     posGround.Add(pos);
-                    tilesGround.Add((x * 7 + y * 13) % 2 == 0 ? tSand01 : tSand02);
+                    tilesGround.Add(sandT);
 
                     // Sand to Water transition (water is 0 or 1)
                     string swCode = SolveWang(mapData.tiles, x, y, (val) => val == 0 || val == 1);
                     if (!string.IsNullOrEmpty(swCode))
                     {
-                        Tile tTrans = GetCachedTile(tileCache, $"Transitions/Sand_Water/sand_water_{swCode}.png");
+                        TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Sand_Water/sand_water_{swCode}.png");
                         if (tTrans != null)
                         {
                             posTrans.Add(pos);
@@ -164,14 +242,35 @@ public class IslandTilemapBuilder : EditorWindow
                 }
                 else if (c == 3 || c == 7) // GRASS_BASE or CLIFF_TOP
                 {
+                    int val = GetTileHash(x, y, 101) % 1000;
+                    TileBase grassT;
+                    if (val < 8 && tGrassFlowerBlue != null)
+                    {
+                        grassT = tGrassFlowerBlue;
+                        countBlueFlowers++;
+                    }
+                    else if (val < 16 && tGrassFlowerPink != null)
+                    {
+                        grassT = tGrassFlowerPink;
+                        countPinkFlowers++;
+                    }
+                    else if (val < 36 && tGrassTuft != null)
+                    {
+                        grassT = tGrassTuft;
+                        countGrassTufts++;
+                    }
+                    else
+                    {
+                        grassT = (GetTileHash(x, y, 150) % 2 == 0) ? tGrass01 : tGrass02;
+                    }
                     posGround.Add(pos);
-                    tilesGround.Add((x * 11 + y * 17) % 2 == 0 ? tGrass01 : tGrass02);
+                    tilesGround.Add(grassT);
 
                     // Priority: River > Sand > Dirt
-                    string grCode = SolveWang(mapData.tiles, x, y, (val) => val == 5);
+                    string grCode = SolveWang(mapData.tiles, x, y, (val) => val == 5, true, true);
                     if (!string.IsNullOrEmpty(grCode))
                     {
-                        Tile tTrans = GetCachedTile(tileCache, $"Transitions/Grass_RiverWater/grass_riverwater_{grCode}.png");
+                        TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Grass_RiverWater/grass_riverwater_{grCode}.png");
                         if (tTrans != null)
                         {
                             posTrans.Add(pos);
@@ -183,7 +282,7 @@ public class IslandTilemapBuilder : EditorWindow
                         string gsCode = SolveWang(mapData.tiles, x, y, (val) => val == 2, false);
                         if (!string.IsNullOrEmpty(gsCode))
                         {
-                            Tile tTrans = GetCachedTile(tileCache, $"Transitions/Grass_Sand/grass_sand_{gsCode}.png");
+                            TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Grass_Sand/grass_sand_{gsCode}.png");
                             if (tTrans != null)
                             {
                                 posTrans.Add(pos);
@@ -192,10 +291,10 @@ public class IslandTilemapBuilder : EditorWindow
                         }
                         else
                         {
-                            string gdCode = SolveWang(mapData.tiles, x, y, (val) => val == 4, false);
+                            string gdCode = SolveWang(mapData.tiles, x, y, (val) => val == 4, true);
                             if (!string.IsNullOrEmpty(gdCode))
                             {
-                                Tile tTrans = GetCachedTile(tileCache, $"Transitions/Grass_Dirt/grass_dirt_{gdCode}.png");
+                                TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Grass_Dirt/grass_dirt_{gdCode}.png");
                                 if (tTrans != null)
                                 {
                                     posTrans.Add(pos);
@@ -207,14 +306,35 @@ public class IslandTilemapBuilder : EditorWindow
                 }
                 else if (c == 4) // DIRT_PATH
                 {
+                    int val = GetTileHash(x, y, 303) % 1000;
+                    TileBase dirtT;
+                    if (val < 18 && tMudPebbles != null)
+                    {
+                        dirtT = tMudPebbles;
+                        countMudPebbles++;
+                    }
+                    else if (val < 32 && tMudTuft != null)
+                    {
+                        dirtT = tMudTuft;
+                        countMudTuft++;
+                    }
+                    else if (val < 42 && tMudCrater != null)
+                    {
+                        dirtT = tMudCrater;
+                        countMudCrater++;
+                    }
+                    else
+                    {
+                        dirtT = (GetTileHash(x, y, 350) % 2 == 0) ? tDirt01 : tDirt02;
+                    }
                     posGround.Add(pos);
-                    tilesGround.Add((x * 5 + y * 9) % 2 == 0 ? tDirt01 : tDirt02);
+                    tilesGround.Add(dirtT);
 
                     // Dirt to River (e.g. crossing ford)
-                    string drCode = SolveWang(mapData.tiles, x, y, (val) => val == 5, true);
+                    string drCode = SolveWang(mapData.tiles, x, y, (val) => val == 5, true, true);
                     if (!string.IsNullOrEmpty(drCode))
                     {
-                        Tile tTrans = GetCachedTile(tileCache, $"Transitions/Dirt_RiverWater/dirt_riverwater_{drCode}.png");
+                        TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Dirt_RiverWater/dirt_riverwater_{drCode}.png");
                         if (tTrans != null)
                         {
                             posTrans.Add(pos);
@@ -227,7 +347,7 @@ public class IslandTilemapBuilder : EditorWindow
                         string dsCode = SolveWang(mapData.tiles, x, y, (val) => val == 2, false);
                         if (!string.IsNullOrEmpty(dsCode))
                         {
-                            Tile tTrans = GetCachedTile(tileCache, $"Transitions/Dirt_Sand/dirt_sand_{dsCode}.png");
+                            TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Dirt_Sand/dirt_sand_{dsCode}.png");
                             if (tTrans != null)
                             {
                                 posTrans.Add(pos);
@@ -238,8 +358,29 @@ public class IslandTilemapBuilder : EditorWindow
                 }
                 else if (c == 5) // RIVER_WATER
                 {
+                    int val = GetTileHash(x, y, 505) % 1000;
+                    TileBase riverT;
+                    if (val < 15 && tRiverLilypad != null)
+                    {
+                        riverT = tRiverLilypad;
+                        countRiverLilypad++;
+                    }
+                    else if (val < 28 && tRiverReeds != null)
+                    {
+                        riverT = tRiverReeds;
+                        countRiverReeds++;
+                    }
+                    else if (val < 42 && tRiverPebbles != null)
+                    {
+                        riverT = tRiverPebbles;
+                        countRiverPebbles++;
+                    }
+                    else
+                    {
+                        riverT = tRiver01;
+                    }
                     posRiver.Add(pos);
-                    tilesRiver.Add(tRiver);
+                    tilesRiver.Add(riverT);
                 }
                 else if (c == 6) // CLIFF_WALL
                 {
@@ -253,7 +394,7 @@ public class IslandTilemapBuilder : EditorWindow
                 if (mapData.cliffSprites != null && mapData.cliffSprites.ContainsKey(key))
                 {
                     string spriteFile = mapData.cliffSprites[key];
-                    Tile tCliff = GetCachedTile(tileCache, $"Cliffs/{spriteFile}");
+                    TileBase tCliff = GetCachedTile(tileCache, $"Cliffs/{spriteFile}");
                     if (tCliff != null)
                     {
                         posCliffs.Add(pos);
@@ -262,6 +403,13 @@ public class IslandTilemapBuilder : EditorWindow
                 }
             }
         }
+
+        Debug.Log($"[IslandTilemapBuilder] Detail tiles placed:\n" +
+            $"- Mud: {countMudPebbles} pebbles, {countMudCrater} craters, {countMudTuft} tufts\n" +
+            $"- Grass: {countBlueFlowers} blue wildflowers, {countPinkFlowers} pink wildflowers, {countGrassTufts} grass tufts\n" +
+            $"- Sand: {countSandSeashell} seashells, {countSandStarfish} starfish, {countSandSlate} slate pebbles\n" +
+            $"- River: {countRiverLilypad} animated lilypads, {countRiverReeds} animated reeds, {countRiverPebbles} animated river pebbles\n" +
+            $"- Ocean: {countShallowStarfish} animated shallow starfish, {countShallowPebbles} animated shallow pebbles, {countDeepPebbles} animated deep pebbles");
 
         // Apply tiles in bulk
         EditorUtility.DisplayProgressBar("STRANDED Island Builder", "Applying tiles to Unity Tilemaps...", 0.80f);
@@ -436,41 +584,189 @@ public class IslandTilemapBuilder : EditorWindow
         }
     }
 
-    private static Dictionary<string, Tile> PreloadOrGenerateTiles()
+    private static Dictionary<string, TileBase> PreloadOrGenerateTiles()
     {
-        Dictionary<string, Tile> cache = new Dictionary<string, Tile>();
+        Dictionary<string, TileBase> cache = new Dictionary<string, TileBase>();
         string[] allPngs = Directory.GetFiles("Assets/Art/Terrain", "*.png", SearchOption.AllDirectories);
 
-        bool reimportedAny = false;
+        // 1. Force reimport all PNGs so Unity decodes fresh pixels from disk into Library
         foreach (string pngPath in allPngs)
         {
             string cleanPath = pngPath.Replace("\\", "/");
-            if (cleanPath.Contains("sheet") || cleanPath.Contains("_f1.") || cleanPath.Contains("_f2.") || cleanPath.Contains("_f3."))
-                continue;
+            if (cleanPath.Contains("sheet")) continue;
 
             TextureImporter ti = AssetImporter.GetAtPath(cleanPath) as TextureImporter;
-            if (ti != null && (ti.textureType != TextureImporterType.Sprite || ti.spriteImportMode != SpriteImportMode.Single || ti.spritePixelsPerUnit != 16 || ti.filterMode != FilterMode.Point))
+            if (ti != null)
             {
-                ti.textureType = TextureImporterType.Sprite;
-                ti.spriteImportMode = SpriteImportMode.Single;
-                ti.spritePixelsPerUnit = 16;
-                ti.filterMode = FilterMode.Point;
-                ti.textureCompression = TextureImporterCompression.Uncompressed;
-                ti.SaveAndReimport();
-                reimportedAny = true;
+                bool dirty = false;
+                if (ti.textureType != TextureImporterType.Sprite || ti.spriteImportMode != SpriteImportMode.Single ||
+                    ti.spritePixelsPerUnit != 16 || ti.filterMode != FilterMode.Point ||
+                    ti.textureCompression != TextureImporterCompression.Uncompressed)
+                {
+                    ti.textureType = TextureImporterType.Sprite;
+                    ti.spriteImportMode = SpriteImportMode.Single;
+                    ti.spritePixelsPerUnit = 16;
+                    ti.filterMode = FilterMode.Point;
+                    ti.textureCompression = TextureImporterCompression.Uncompressed;
+                    dirty = true;
+                }
+                if (dirty)
+                {
+                    ti.SaveAndReimport();
+                }
+            }
+            AssetDatabase.ImportAsset(cleanPath, ImportAssetOptions.ForceUpdate);
+        }
+        AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+
+        // 2. Generate AnimatedTile assets for water
+        // Shallow Sea 01
+        AnimatedTile atShallow01 = CreateOrLoadAnimatedTile("sea_shallow_base_01", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_01_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_01_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_01_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_01_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/Sea/sea_shallow_base_01.png"] = atShallow01;
+
+        // Shallow Sea 02
+        AnimatedTile atShallow02 = CreateOrLoadAnimatedTile("sea_shallow_base_02", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_02_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_02_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_02_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_base_02_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/Sea/sea_shallow_base_02.png"] = atShallow02;
+
+        // Deep Ocean 01
+        AnimatedTile atDeep01 = CreateOrLoadAnimatedTile("sea_deep_base_01", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_01_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_01_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_01_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_01_f3.png"
+        }, Tile.ColliderType.Grid, 4f);
+        cache["Water/Sea/sea_deep_base_01.png"] = atDeep01;
+
+        // Deep Ocean 02
+        AnimatedTile atDeep02 = CreateOrLoadAnimatedTile("sea_deep_base_02", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_02_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_02_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_02_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_base_02_f3.png"
+        }, Tile.ColliderType.Grid, 4f);
+        cache["Water/Sea/sea_deep_base_02.png"] = atDeep02;
+
+        // River Water 01
+        AnimatedTile atRiver01 = CreateOrLoadAnimatedTile("river_water_base_01", new string[]
+        {
+            "Assets/Art/Terrain/Water/River/river_water_base_01_f0.png",
+            "Assets/Art/Terrain/Water/River/river_water_base_01_f1.png",
+            "Assets/Art/Terrain/Water/River/river_water_base_01_f2.png",
+            "Assets/Art/Terrain/Water/River/river_water_base_01_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/River/river_water_base_01.png"] = atRiver01;
+
+        // Shoreline Foam 01 (Rolling white surf along beach water)
+        AnimatedTile atShoreline = CreateOrLoadAnimatedTile("sea_shoreline_foam", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_shoreline_foam_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shoreline_foam_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shoreline_foam_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shoreline_foam_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/Sea/sea_shoreline_foam.png"] = atShoreline;
+
+        // River Animated Variations: Lilypad Lotus, Reeds, Pebbles
+        AnimatedTile atRiverLilypad = CreateOrLoadAnimatedTile("river_lilypad_lotus", new string[]
+        {
+            "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f0.png",
+            "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f1.png",
+            "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f2.png",
+            "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/River/river_lilypad_lotus.png"] = atRiverLilypad;
+
+        AnimatedTile atRiverReeds = CreateOrLoadAnimatedTile("river_reeds", new string[]
+        {
+            "Assets/Art/Terrain/Water/River/river_reeds_f0.png",
+            "Assets/Art/Terrain/Water/River/river_reeds_f1.png",
+            "Assets/Art/Terrain/Water/River/river_reeds_f2.png",
+            "Assets/Art/Terrain/Water/River/river_reeds_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/River/river_reeds.png"] = atRiverReeds;
+
+        AnimatedTile atRiverPebbles = CreateOrLoadAnimatedTile("river_pebbles", new string[]
+        {
+            "Assets/Art/Terrain/Water/River/river_pebbles_f0.png",
+            "Assets/Art/Terrain/Water/River/river_pebbles_f1.png",
+            "Assets/Art/Terrain/Water/River/river_pebbles_f2.png",
+            "Assets/Art/Terrain/Water/River/river_pebbles_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/River/river_pebbles.png"] = atRiverPebbles;
+
+        // Sea Shallow Animated Variations: Starfish, Pebbles
+        AnimatedTile atShallowStarfish = CreateOrLoadAnimatedTile("sea_shallow_starfish", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_starfish_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_starfish_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_starfish_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_starfish_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/Sea/sea_shallow_starfish.png"] = atShallowStarfish;
+
+        AnimatedTile atShallowPebbles = CreateOrLoadAnimatedTile("sea_shallow_pebbles", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_pebbles_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_pebbles_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_pebbles_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_shallow_pebbles_f3.png"
+        }, Tile.ColliderType.None, 4f);
+        cache["Water/Sea/sea_shallow_pebbles.png"] = atShallowPebbles;
+
+        // Sea Deep Animated Variations: Deep Pebbles
+        AnimatedTile atDeepPebbles = CreateOrLoadAnimatedTile("sea_deep_pebbles", new string[]
+        {
+            "Assets/Art/Terrain/Water/Sea/sea_deep_pebbles_f0.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_pebbles_f1.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_pebbles_f2.png",
+            "Assets/Art/Terrain/Water/Sea/sea_deep_pebbles_f3.png"
+        }, Tile.ColliderType.Grid, 4f);
+        cache["Water/Sea/sea_deep_pebbles.png"] = atDeepPebbles;
+
+        // Sand-Water Animated Transitions (Lapping foam wave edges on sand boundary)
+        string[] swPieces = new string[]
+        {
+            "edge_n_01", "edge_n_02", "edge_s_01", "edge_s_02", "edge_e", "edge_w",
+            "inner_bl", "inner_br", "inner_tl", "inner_tr",
+            "outer_bl", "outer_br", "outer_tl", "outer_tr"
+        };
+        foreach (string piece in swPieces)
+        {
+            string f0 = $"Assets/Art/Terrain/Transitions/Sand_Water/sand_water_{piece}_f0.png";
+            string f1 = $"Assets/Art/Terrain/Transitions/Sand_Water/sand_water_{piece}_f1.png";
+            string f2 = $"Assets/Art/Terrain/Transitions/Sand_Water/sand_water_{piece}_f2.png";
+            string f3 = $"Assets/Art/Terrain/Transitions/Sand_Water/sand_water_{piece}_f3.png";
+            if (File.Exists(f0) && File.Exists(f1) && File.Exists(f2) && File.Exists(f3))
+            {
+                AnimatedTile atSW = CreateOrLoadAnimatedTile($"sand_water_{piece}", new string[] { f0, f1, f2, f3 }, Tile.ColliderType.None, 4f);
+                cache[$"Transitions/Sand_Water/sand_water_{piece}.png"] = atSW;
             }
         }
 
-        if (reimportedAny)
-        {
-            AssetDatabase.Refresh();
-        }
-
+        // 3. Regular static tiles for terrain, transitions, and cliffs
         foreach (string pngPath in allPngs)
         {
             string cleanPath = pngPath.Replace("\\", "/");
             if (cleanPath.Contains("sheet") || cleanPath.Contains("_f1.") || cleanPath.Contains("_f2.") || cleanPath.Contains("_f3."))
                 continue;
+
+            string relKey = cleanPath.Replace("Assets/Art/Terrain/", "");
+            if (cache.ContainsKey(relKey))
+                continue; // Already assigned as AnimatedTile
 
             Sprite spr = AssetDatabase.LoadAssetAtPath<Sprite>(cleanPath);
             if (spr == null)
@@ -492,7 +788,6 @@ public class IslandTilemapBuilder : EditorWindow
                 continue;
             }
 
-            string relKey = cleanPath.Replace("Assets/Art/Terrain/", "");
             string tileAssetName = relKey.Replace("/", "_").Replace(".png", ".asset");
             string tileAssetPath = $"{TILES_FOLDER}/{tileAssetName}";
 
@@ -522,7 +817,7 @@ public class IslandTilemapBuilder : EditorWindow
 
                 AssetDatabase.CreateAsset(tile, tileAssetPath);
             }
-            else if (tile.sprite == null)
+            else
             {
                 tile.sprite = spr;
                 EditorUtility.SetDirty(tile);
@@ -535,16 +830,60 @@ public class IslandTilemapBuilder : EditorWindow
         return cache;
     }
 
-    private static Tile GetCachedTile(Dictionary<string, Tile> cache, string relPath)
+    private static AnimatedTile CreateOrLoadAnimatedTile(string baseName, string[] framePaths, Tile.ColliderType colType, float speed = 4f)
     {
-        if (cache.TryGetValue(relPath, out Tile t))
+        string tileAssetName = $"Animated_{baseName}.asset";
+        string tileAssetPath = $"{TILES_FOLDER}/{tileAssetName}";
+
+        AnimatedTile animTile = AssetDatabase.LoadAssetAtPath<AnimatedTile>(tileAssetPath);
+        if (animTile == null)
+        {
+            animTile = ScriptableObject.CreateInstance<AnimatedTile>();
+            AssetDatabase.CreateAsset(animTile, tileAssetPath);
+        }
+
+        List<Sprite> sprites = new List<Sprite>();
+        foreach (var fp in framePaths)
+        {
+            Sprite s = AssetDatabase.LoadAssetAtPath<Sprite>(fp);
+            if (s != null)
+            {
+                sprites.Add(s);
+            }
+        }
+
+        animTile.m_AnimatedSprites = sprites.ToArray();
+        animTile.m_MinSpeed = speed;
+        animTile.m_MaxSpeed = speed;
+        animTile.m_AnimationStartTime = 0f;
+        animTile.m_TileColliderType = colType;
+
+        EditorUtility.SetDirty(animTile);
+        return animTile;
+    }
+
+    private static TileBase GetCachedTile(Dictionary<string, TileBase> cache, string relPath)
+    {
+        if (cache.TryGetValue(relPath, out TileBase t))
         {
             return t;
         }
         return null;
     }
 
-    private static string SolveWang(List<List<int>> grid, int x, int y, Func<int, bool> isMatch, bool allowOuter = true)
+    private static int GetTileHash(int x, int y, int seed = 1337)
+    {
+        unchecked
+        {
+            uint h = ((uint)x * 0x1f1f1f1fu) ^ ((uint)y * 0x5b5b5b5bu) ^ (uint)seed;
+            h = ((h >> 16) ^ h) * 0x45d9f3bu;
+            h = ((h >> 16) ^ h) * 0x45d9f3bu;
+            h = (h >> 16) ^ h;
+            return (int)(h & 0x7fffffffu);
+        }
+    }
+
+    private static string SolveWang(List<List<int>> grid, int x, int y, Func<int, bool> isMatch, bool allowOuter = true, bool isRiverTransition = false)
     {
         int h = grid.Count;
         int w = grid[0].Count;
@@ -574,10 +913,20 @@ public class IslandTilemapBuilder : EditorWindow
         if (n && wt) return "inner_br";
 
         // 2. Straight edges (neighbor on ONE cardinal side)
-        if (s) return (x + y) % 2 == 0 ? "edge_n_01" : "edge_n_02";
-        if (n) return (x + y) % 2 == 0 ? "edge_s_01" : "edge_s_02";
-        if (e) return "edge_w";
-        if (wt) return "edge_e";
+        if (isRiverTransition)
+        {
+            if (s) return (x + y) % 2 == 0 ? "edge_s_01" : "edge_s_02";
+            if (n) return (x + y) % 2 == 0 ? "edge_n_01" : "edge_n_02";
+            if (e) return "edge_e";
+            if (wt) return "edge_w";
+        }
+        else
+        {
+            if (s) return (x + y) % 2 == 0 ? "edge_n_01" : "edge_n_02";
+            if (n) return (x + y) % 2 == 0 ? "edge_s_01" : "edge_s_02";
+            if (e) return "edge_w";
+            if (wt) return "edge_e";
+        }
 
         // 3. Concave corners (neighbor ONLY on one diagonal corner)
         if (allowOuter)
@@ -592,7 +941,7 @@ public class IslandTilemapBuilder : EditorWindow
     }
 
     #region Simple MiniJSON Parser
-    private static class MiniJsonParser
+    public static class MiniJsonParser
     {
         public static object Deserialize(string json)
         {

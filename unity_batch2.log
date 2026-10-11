@@ -1,0 +1,22 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.3f1 (c2eb47b3a2a9) revision 12774215'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26300) CoreSingleLanguage' Language: 'en' Physical Memory: 7521 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-11T06:19:08Z
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION" at "2026-10-11T06:19:08.2309Z"
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Unity.exe
+-projectpath
+D:\Unity\Projects\STRANDED
+-batchmode
+-quit
+-executeMethod
+IslandPlayModeSimulator.RunBatch2TestsAndCaptures
+-logFile
+D:\Unity\Projects\STRANDED\unity_batch2.log
+Successfully changed project path to: D:\Unity\Projects\STRANDED
+D:/Unity/Projects/STRANDED
+Exiting without the bug reporter. Application will terminate with return code 1

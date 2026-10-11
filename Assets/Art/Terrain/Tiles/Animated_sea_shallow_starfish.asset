@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c25996b49731243b150782900bdccd, type: 3}
+  m_Name: Animated_sea_shallow_starfish
+  m_EditorClassIdentifier: Assembly-CSharp::AnimatedTile
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 4709582f7c9c6e043816ac3fd173978a, type: 3}
+  - {fileID: 21300000, guid: d4c4de278d98dae44a752ba65c3f467b, type: 3}
+  - {fileID: 21300000, guid: f6fc7bf6ea1408249aefdd7e8719cc14, type: 3}
+  - {fileID: 21300000, guid: bdf1b337833cce145bbef14f34d7e469, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 4
+  m_AnimationStartTime: 0
+  m_TileColliderType: 0

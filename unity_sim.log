@@ -1,11 +1,11 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION" at "2026-10-10T12:51:55.5587115Z"
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION" at "2026-10-10T20:36:44.6726932Z"
 Built from '6000.5/staging' branch; Version is '6000.5.3f1 (c2eb47b3a2a9) revision 12774215'; Using compiler version '194234433'; Build Type 'Release'
 OS: 'Windows 11  (10.0.26300) CoreSingleLanguage' Language: 'en' Physical Memory: 7521 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-10-10T12:51:55Z
+Date: 2026-10-10T20:36:44Z
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Unity.exe
@@ -55,18 +55,18 @@ D:/Unity/Projects/STRANDED
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Logging is directed to a specific file, skipping project log.Player connection [18848]  Target information:
+Logging is directed to a specific file, skipping project log.Player connection [22000]  Target information:
 
-Player connection [18848]  * "[IP] 172.27.192.1 [Port] 55504 [Flags] 2 [Guid] 3368964628 [EditorId] 3368964628 [Version] 1048832 [Id] WindowsEditor(7,Arsheeslap) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [22000]  * "[IP] 172.27.192.1 [Port] 55504 [Flags] 2 [Guid] 2668815887 [EditorId] 2668815887 [Version] 1048832 [Id] WindowsEditor(7,Arsheeslap) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [18848]  * "[IP] 10.46.129.30 [Port] 55504 [Flags] 2 [Guid] 3368964628 [EditorId] 3368964628 [Version] 1048832 [Id] WindowsEditor(7,Arsheeslap) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [22000]  * "[IP] 10.46.129.30 [Port] 55504 [Flags] 2 [Guid] 2668815887 [EditorId] 2668815887 [Version] 1048832 [Id] WindowsEditor(7,Arsheeslap) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [18848] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [18848] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [22000] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [22000] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
-[Package Manager] Connected to IPC stream "Upm-42452" after 0.4 seconds.
+[Package Manager] Connected to IPC stream "Upm-14208" after 0.5 seconds.
 [Licensing::Module] Licensing is not yet initialized.
 [Licensing::Client] Error: HandshakeResponse reported an error:
 	ResponseCode: 505
@@ -74,19 +74,19 @@ Input System module state changed to: Initialized.
 [Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-PAVILION"
 [Licensing::IpcConnector] LicenseClient-PAVILION channel disconnected successfully.
 [Licensing::IpcConnector] Channel LicenseClient-PAVILION-6000.5.3 doesn't exist
-[Licensing::Module] Successfully launched the LicensingClient (PId: 30964)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION-6000.5.3" at "2026-10-10T12:51:58.769976Z"
-[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 30964, path: "C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] Successfully launched the LicensingClient (PId: 21676)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION-6000.5.3" at "2026-10-10T20:36:48.5273418Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 21676, path: "C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
 [Licensing::Module] LicensingClient has failed validation; ignoring
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id:              a2147b51384f4cffbb8253c7a8e140b9
-  Correlation Id:          a91e9f4216a94b560530578612abeba3
-  External correlation Id: 3049372195048653612
+  Session Id:              eabc3990ac804b649fe3d682b04282dc
+  Correlation Id:          089aba4db3691652f8900d4bfe89d29f
+  External correlation Id: 3680309239480997939
   Machine Id:              AG7afaxG1JpfRCvCxKExb45z/zQ=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-PAVILION-6000.5.3" (connect: 0.37s, validation: 0.19s, handshake: 0.01s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION-6000.5.3-notifications" at "2026-10-10T12:51:58.9751141Z"
-[Licensing::Module] Connected to LicensingClient (PId: 30964, launch time: 0.05, total connection time: 0.58s)
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-PAVILION-6000.5.3" (connect: 0.57s, validation: 0.10s, handshake: 0.02s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION-6000.5.3-notifications" at "2026-10-10T20:36:48.6475684Z"
+[Licensing::Module] Connected to LicensingClient (PId: 21676, launch time: 0.12, total connection time: 0.69s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
@@ -94,10 +94,10 @@ Input System module state changed to: Initialized.
   Product: Unity Personal
   Type: Assigned
   Expiration: Unlimited
-[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.02
 [Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] Licensing Background thread has ended after 3.47s
-[Licensing::Module] Licensing is initialized (took 1.61s).
+[Licensing::Module] Licensing Background thread has ended after 4.05s
+[Licensing::Module] Licensing is initialized (took 3.14s).
 [Licensing::Client] Successfully resolved entitlement details
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
@@ -106,7 +106,8 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 2.30 ms, found 0 plugins.
+Artifact Garbage Collection - Removed 1 unused hashed content files
+Refreshing native plugins compatible for Editor in 2.17 ms, found 0 plugins.
 Initialize engine version: 6000.5.3f1 (c2eb47b3a2a9)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Resources/UnitySubsystems
 [Subsystems] Discovering subsystems at path D:/Unity/Projects/STRANDED/Assets
@@ -124,7 +125,7 @@ Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Managed
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/BCLExtensions/runtime/netstandard2.1'
 Mono path[2] = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56452
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56208
 CodeReloadManager initialized
 ImportWorker Server TCP listen port: 0
 AcceleratorClientConnectionCallback - disconnected - :0
@@ -132,30 +133,30 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.004080 seconds.
+Registered in 0.010449 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
 Package Manager log level set to [2]
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.775 seconds
-Domain Reload Profiling: 1837ms
-	BeginReloadAssembly (396ms)
+- Finished resetting the current domain, in  0.661 seconds
+Domain Reload Profiling: 1894ms
+	BeginReloadAssembly (345ms)
 		CreateAndSetChildDomain (11ms)
-	RebuildCommonClasses (16ms)
-	RebuildNativeTypeToScriptingClass (38ms)
-	initialDomainReloadingComplete (127ms)
-	LoadAllAssembliesAndSetupDomain (479ms)
-		LoadAssemblies (378ms)
-		AnalyzeDomain (352ms)
-			TypeCache.Refresh (348ms)
-				TypeCache.ScanAssembly (323ms)
-	FinalizeReload (780ms)
+	RebuildCommonClasses (15ms)
+	RebuildNativeTypeToScriptingClass (40ms)
+	initialDomainReloadingComplete (191ms)
+	LoadAllAssembliesAndSetupDomain (638ms)
+		LoadAssemblies (325ms)
+		AnalyzeDomain (459ms)
+			TypeCache.Refresh (455ms)
+				TypeCache.ScanAssembly (422ms)
+	FinalizeReload (665ms)
 		SetupLoadedEditorAssemblies (0ms)
 			InitializePlatformSupportModulesInManaged (5ms)
-			BeforeProcessingInitializeOnLoad (176ms)
-			ProcessInitializeOnLoadAttributes (205ms)
-			ProcessInitializeOnLoadMethodAttributes (263ms)
+			BeforeProcessingInitializeOnLoad (155ms)
+			ProcessInitializeOnLoadAttributes (157ms)
+			ProcessInitializeOnLoadMethodAttributes (223ms)
 [Licensing::Client] Successfully resolved entitlement details
 Application.AssetDatabase Initial Refresh Start
 [Package Manager] Restoring resolved packages state from cache
@@ -234,178 +235,109 @@ Application.AssetDatabase Initial Refresh Start
     com.unity.mathematics@1.4.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.mathematics@981956d94fb6)
 [Subsystems] No new subsystems found in resolved package list.
 [Package Manager] Done registering packages in 0.04 seconds
-[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
-Refreshing native plugins compatible for Editor in 9.39 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 12.37 ms, found 6 plugins.
 Starting: C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
 WorkingDir: D:/Unity/Projects/STRANDED
 DisplayProgressbar: Compiling Scripts
-ExitCode: 0 Duration: 4s724ms
-[1309/1726  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[1718/1726  3s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
-[1719/1726  0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
-Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 143 defines and 379 references
-
-processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
-
-running Unity.Jobs.CodeGen.JobsILPostProcessor
-
-running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1720/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
-[1721/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
-[1722/1726  0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
-Assets\Editor\SetupPlayerHelper.cs(64,13): warning CS0618: 'TextureImporter.spritesheet' is obsolete: 'Support for accessing sprite meta data through spritesheet has been removed. Please use the UnityEditor.U2D.Sprites.ISpriteEditorDataProvider interface instead.'
-[1723/1726  0s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
-Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 141 defines and 403 references
-
-processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
-
-running Unity.Jobs.CodeGen.JobsILPostProcessor
-
-running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[1724/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
-[1725/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
-*** Tundra build success (4.64 seconds), 9 items updated, 1726 evaluated
-Assets\Editor\SetupPlayerHelper.cs(64,13): warning CS0618: 'TextureImporter.spritesheet' is obsolete: 'Support for accessing sprite meta data through spritesheet has been removed. Please use the UnityEditor.U2D.Sprites.ISpriteEditorDataProvider interface instead.'
-AssetDatabase: script compilation time: 5.724957s
+ExitCode: 0 Duration: 0s709ms
+[1311/1726  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.61 seconds), 1 items updated, 1726 evaluated
+AssetDatabase: script compilation time: 1.807964s
 Begin MonoManager ReloadAssembly
-Refreshing native plugins compatible for Editor in 11.14 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 10.21 ms, found 6 plugins.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.54 ms, found 6 plugins.
-Refreshing native plugins compatible for Editor in 26.28 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 5.82 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 21.68 ms, found 6 plugins.
 [Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
 [Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
 [Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
 ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in 11.525 seconds
-Domain Reload Profiling: 14200ms
-	BeginReloadAssembly (467ms)
-		DisableScriptedObjects (48ms)
-		CreateAndSetChildDomain (191ms)
-	RebuildCommonClasses (12ms)
-	RebuildNativeTypeToScriptingClass (23ms)
-	initialDomainReloadingComplete (164ms)
-	LoadAllAssembliesAndSetupDomain (1998ms)
-		LoadAssemblies (914ms)
-		AnalyzeDomain (932ms)
-			TypeCache.Refresh (748ms)
-				TypeCache.ScanAssembly (672ms)
-			BuildScriptInfoCaches (147ms)
-			ResolveRequiredComponents (27ms)
-	FinalizeReload (11536ms)
+- Finished resetting the current domain, in  9.703 seconds
+Domain Reload Profiling: 12524ms
+	BeginReloadAssembly (537ms)
+		DisableScriptedObjects (47ms)
+		CreateAndSetChildDomain (188ms)
+	RebuildCommonClasses (20ms)
+	RebuildNativeTypeToScriptingClass (32ms)
+	initialDomainReloadingComplete (166ms)
+	LoadAllAssembliesAndSetupDomain (2062ms)
+		LoadAssemblies (924ms)
+		AnalyzeDomain (834ms)
+			TypeCache.Refresh (660ms)
+				TypeCache.ScanAssembly (618ms)
+			BuildScriptInfoCaches (151ms)
+			ResolveRequiredComponents (14ms)
+	FinalizeReload (9707ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (4ms)
-			BeforeProcessingInitializeOnLoad (186ms)
-			ProcessInitializeOnLoadAttributes (7589ms)
-			ProcessInitializeOnLoadMethodAttributes (2901ms)
-			AfterProcessingInitializeOnLoad (20ms)
-			EditorAssembliesLoaded (12ms)
-		ExecutionOrderSort2 (3ms)
-		AwakeInstancesAfterBackupRestoration (158ms)
+			InitializePlatformSupportModulesInManaged (5ms)
+			BeforeProcessingInitializeOnLoad (203ms)
+			ProcessInitializeOnLoadAttributes (6600ms)
+			ProcessInitializeOnLoadMethodAttributes (2298ms)
+			AfterProcessingInitializeOnLoad (15ms)
+			EditorAssembliesLoaded (6ms)
+		AwakeInstancesAfterBackupRestoration (105ms)
 Starting new worker id: 0 with log in D:/Unity/Projects/STRANDED/Logs/AssetImportWorkerHW0.log
-Refreshing native plugins compatible for Editor in 15.77 ms, found 6 plugins.
 
-Asset Pipeline Refresh (id=512c4fa68270ed641acf489db7c3e4b1): Total: 27.865 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+Asset Pipeline Refresh (id=e15ffd8a3e096b247a4cc63edebcf879): Total: 19.171 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
 	(Values over 0.05ms)
 	Summary:
 		Imports: total=0 (actual=0, local cache=0, cache server=0)
-		Asset DB Process Time: managed=0 ms, native=15496 ms
-		Asset DB Callback time: managed=3408 ms, native=190 ms
-		Scripting: domain reloads=1, domain reload time=2911 ms, compile time=5730 ms, other=126 ms
-		Project Asset Count: scripts=2320, non-scripts=6568
-		Asset File Changes: new=0, changed=2, moved=0, deleted=0
+		Asset DB Process Time: managed=0 ms, native=13502 ms
+		Asset DB Callback time: managed=574 ms, native=48 ms
+		Scripting: domain reloads=1, domain reload time=3061 ms, compile time=1814 ms, other=169 ms
+		Project Asset Count: scripts=2320, non-scripts=6659
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
 		Scan Filter Count: 0
-	InvokePackagesCallback: 57.703ms
-	ApplyChangesToAssetFolders: 4.540ms
-	Scan: 862.725ms
-	Collect global state as custom dependencies: 15.927ms
-	OnSourceAssetsModified: 2.261ms
-	CategorizeScriptCompilationAssets: 159.310ms
-	ProcessAssetsWithTransientArtifactChanges: 223.593ms
-	CategorizeAssets: 1682.814ms
-	CompileScripts: 5729.893ms
-	ImportOutOfDateAssets: 11822.716ms (11655.743ms without children)
-		ReloadNativeAssets: 0.055ms
-		UnloadImportedAssets: 20.098ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 2.581ms
-		ImportSchedulerStart: 144.235ms
-	PostProcessAllAssets: 3428.339ms
-		VCAutoAddAssetPostprocess 8.925ms
-		XRBuildSystem.XRAssetImported 3.265ms
-		PostProcessCallbackCreateDeferredMaterials 0.988ms
-		ShaderAssetModifiedCallback 0.674ms
-		WindowTitlePostprocess 0.418ms
-		SpriteAtlasDatabase.OnAssetPostprocessCallback 0.232ms
-		AssemblyValidation.PostprocessAllAssets 0.228ms
-		MonoPostProcessAllAssets: 3407.896ms
-			AssetPostprocessor.OnPostprocessAllAssets 2657.695ms
-			AssetReferenceReimportMonitor.OnPostprocessAllAssets 42.650ms
-			StyleCatalogPostProcessor.OnPostprocessAllAssets 41.573ms
-			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 36.098ms
-			BuilderAssetPostprocessor.OnPostprocessAllAssets 12.527ms
-			SyncVS.PostprocessSyncProject 9.190ms
-			SpriteSlicePostprocessor.OnPostprocessAllAssets 8.747ms
-			SpeedTree9Postprocessor.OnPostprocessAllAssets 7.701ms
-			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 7.261ms
-			GraphRefreshPostprocessor.OnPostprocessAllAssets 6.369ms
-			AssetChangedListener.OnPostprocessAllAssets 4.901ms
-			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 4.693ms
-			EditModeScopePostprocessor.OnPostprocessAllAssets 4.444ms
-			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 4.350ms
-			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 3.804ms
-			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 3.595ms
-			MaterialPostprocessor.OnPostprocessAllAssets 3.459ms
-			TMPro_TexturePostProcessor.OnPostprocessAllAssets 3.428ms
-			InputActionAssetPostprocessor.OnPostprocessAllAssets 3.414ms
-			AssetProcessor.OnPostprocessAllAssets 3.306ms
-			SpriteShapeAssetPostProcessor.OnPostprocessAllAssets 3.096ms
-			ProjectSettingsPostprocessor.OnPostprocessAllAssets 3.039ms
-			PostProcessor.OnPostprocessAllAssets 2.937ms
-			AssetChangeDetector.OnPostprocessAllAssets 1.973ms
-			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 1.807ms
-			TextAssetPostProcessor.OnPostprocessAllAssets 1.552ms
-			SpriteLibraryAssetPostprocessor.OnPostprocessAllAssets 1.522ms
-			ModelAssetProcessor.OnPostprocessAllAssets 1.461ms
-			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 1.419ms
-			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 1.337ms
-			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 1.323ms
-			UVCSAssetPostprocessor.OnPostprocessAllAssets 1.306ms
-			AudioMixerPostprocessor.OnPostprocessAllAssets 1.295ms
-			SkillsProjectAssetPostprocessor.OnPostprocessAllAssets 1.065ms
-			PSDImportPostProcessor.OnPostprocessAllAssets 1.060ms
-			SpeedTreePostProcessor.OnPostprocessAllAssets 0.966ms
-			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 0.762ms
-			AudioContainerPostProcessor.OnPostprocessAllAssets 0.761ms
-			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.631ms
-			TrackSelectedAssetsProcessor.OnPostprocessAllAssets 0.545ms
-			AssetEvents.OnPostprocessAllAssets 0.446ms
-			SamplePostprocessor.OnPostprocessAllAssets 0.427ms
-			PSDImporterAssetPostProcessor.OnPostprocessAllAssets 0.308ms
-			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.267ms
-			ConfigAssetsTracker.OnPostprocessAllAssets 0.257ms
-			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.183ms
-	PostAssetChangesProfiler: 119.366ms
-	GatherAllCurrentPrimaryImportResultRevisions: 0.348ms
-	UnloadStreamsBegin: 12.471ms
-	PersistCurrentRevisions: 0.331ms
-	GenerateScriptTypeHashes: 8.039ms
-	GenerateScriptTypeSerializationHashes: 11.962ms
-	Untracked: 3724.116ms
+	InvokePackagesCallback: 53.739ms
+	ApplyChangesToAssetFolders: 3.054ms
+	Scan: 778.230ms
+	Collect global state as custom dependencies: 13.100ms
+	OnSourceAssetsModified: 0.765ms
+	CategorizeScriptCompilationAssets: 173.952ms
+	ProcessAssetsWithTransientArtifactChanges: 207.751ms
+	CategorizeAssets: 1427.829ms
+	CompileScripts: 1813.516ms
+	ImportOutOfDateAssets: 10024.835ms (9811.650ms without children)
+		ReloadNativeAssets: 0.069ms
+		UnloadImportedAssets: 5.950ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 4.329ms
+		ImportSchedulerStart: 202.552ms
+	PostProcessAllAssets: 575.099ms
+		MonoPostProcessAllAssets: 574.741ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 273.129ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 57.023ms
+			SyncVS.PostprocessSyncProject 32.621ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 27.705ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 20.802ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 12.384ms
+			AssetChangeDetector.OnPostprocessAllAssets 11.246ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 7.188ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 5.852ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 5.788ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 4.862ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 3.580ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 1.952ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.983ms
+	UnloadStreamsBegin: 8.574ms
+	PersistCurrentRevisions: 0.334ms
+	GenerateScriptTypeHashes: 8.043ms
+	GenerateScriptTypeSerializationHashes: 11.165ms
+	Untracked: 4076.284ms
 
 Application.AssetDatabase Initial Refresh End
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Scanning for USB devices : 20.446ms
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Scanning for USB devices : 13.476ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
 [MODES] Loading mode Default (0) for mode-current-id-STRANDED
 Unloading 68 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 10786 unused Assets / (23.1 MB). Loaded Objects now: 11728.
-Memory consumption went from 0.60 GB to 0.58 GB.
-Total: 109.757300 ms (FindLiveObjects: 2.363600 ms CreateObjectMapping: 7.527600 ms MarkObjects: 72.642300 ms  DeleteObjects: 26.697500 ms)
+Unloading 10787 unused Assets / (26.9 MB). Loaded Objects now: 11715.
+Memory consumption went from 0.59 GB to 0.56 GB.
+Total: 268.853500 ms (FindLiveObjects: 3.017200 ms CreateObjectMapping: 10.210700 ms MarkObjects: 190.449600 ms  DeleteObjects: 65.168600 ms)
 
-Worker ready: AssetImportWorkerHW0 0
 =================================================
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
@@ -440,18 +372,19 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 18)
 
 Opening scene 'Assets/Scenes/MainScene.unity'
+Worker ready: AssetImportWorkerHW0 0
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
 Loaded scene 'Assets/Scenes/MainScene.unity'
-	Deserialize:            542.328 ms
-	Integration:            2097.429 ms
-	Integration of assets:  0.225 ms
-	Thread Wait Time:       -0.199 ms
-	Total Operation Time:   2639.783 ms
-Unloading 4 unused Assets / (6.5 KB). Loaded Objects now: 11973.
-Memory consumption went from 0.58 GB to 0.58 GB.
-Total: 53.779500 ms (FindLiveObjects: 3.562100 ms CreateObjectMapping: 3.100800 ms MarkObjects: 44.752400 ms  DeleteObjects: 2.179300 ms)
+	Deserialize:            1456.036 ms
+	Integration:            4163.364 ms
+	Integration of assets:  0.995 ms
+	Thread Wait Time:       -0.876 ms
+	Total Operation Time:   5619.519 ms
+Unloading 4 unused Assets / (Unknown). Loaded Objects now: 12107.
+Memory consumption went from 0.59 GB to 0.59 GB.
+Total: 129.699700 ms (FindLiveObjects: 24.439600 ms CreateObjectMapping: 7.493300 ms MarkObjects: 88.987100 ms  DeleteObjects: 8.560400 ms)
 
-Layer [Tilemap_DeepOcean]: 1 tiles active.
+Layer [Tilemap_DeepOcean]: 3 tiles active.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -462,7 +395,7 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 54)
 
-Layer [Tilemap_ShallowWater]: 1 tiles active.
+Layer [Tilemap_ShallowWater]: 4 tiles active.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -473,7 +406,7 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 54)
 
-Layer [Tilemap_Ground]: 6 tiles active.
+Layer [Tilemap_Ground]: 15 tiles active.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -484,7 +417,7 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 54)
 
-Layer [Tilemap_Transitions]: 58 tiles active.
+Layer [Tilemap_Transitions]: 75 tiles active.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -495,7 +428,7 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 54)
 
-Layer [Tilemap_River]: 1 tiles active.
+Layer [Tilemap_River]: 4 tiles active.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -506,7 +439,7 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 54)
 
-Layer [Tilemap_Cliffs]: 22 tiles active.
+Layer [Tilemap_Cliffs]: 24 tiles active.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -638,89 +571,266 @@ IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulat
 
 (Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 144)
 
-Captured View [Starting Camp (Southwest Base)] -> scratch\play_view_starting_camp.png (64426 bytes)
+Captured View [Starting Camp (Southwest Base)] -> scratch\play_view_starting_camp.png (50828 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:153)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
-Captured View [Southern Beach & Ocean Shelf] -> scratch\play_view_south_beach.png (49671 bytes)
+Captured View [Southern Beach & Ocean Shelf] -> scratch\play_view_south_beach.png (58048 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:154)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
-Captured View [River Ford / Crossing] -> scratch\play_view_river_crossing.png (80416 bytes)
+Captured View [River Ford / Crossing] -> scratch\play_view_river_crossing.png (79046 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:155)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
-Captured View [Cliff Mud Steps Access] -> scratch\play_view_cliff_steps.png (77308 bytes)
+Captured View [Cliff Mud Steps Access] -> scratch\play_view_cliff_steps.png (70804 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:156)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
-Captured View [Eastern Plateau Interior] -> scratch\play_view_cliff_plateau.png (55485 bytes)
+Captured View [Eastern Plateau Interior] -> scratch\play_view_cliff_plateau.png (66510 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:157)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
-Captured View [River Estuary & Sandbar Delta] -> scratch\play_view_estuary_delta.png (53496 bytes)
+Captured View [River Estuary & Sandbar Delta] -> scratch\play_view_estuary_delta.png (70309 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:158)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
-Captured View [Southwest Deep Ocean Boundary Clamp] -> scratch\play_view_ocean_corner_clamp.png (43552 bytes)
+Captured View [Southwest Deep Ocean Boundary Clamp] -> scratch\play_view_ocean_corner_clamp.png (65333 bytes)
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:195)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
 IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:159)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 195)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+[WATER ANIMATION VERIFIED] River AnimatedTile active with 4 frames at 4 FPS.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:175)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 175)
+
+Captured View [River Crossing Animation Frame 0] -> scratch\play_view_river_anim_f0.png (79046 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:182)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [River Crossing Animation Frame 1] -> scratch\play_view_river_anim_f1.png (79941 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:182)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [River Crossing Animation Frame 2] -> scratch\play_view_river_anim_f2.png (79184 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:182)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [River Crossing Animation Frame 3] -> scratch\play_view_river_anim_f3.png (79381 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:182)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+[WATER ANIMATION VERIFIED] Shallow Sea AnimatedTile active with 4 frames at 4 FPS.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:191)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 191)
+
+Captured View [South Beach Shallow Sea Animation Frame 0] -> scratch\play_view_sea_anim_f0.png (58048 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:198)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [South Beach Shallow Sea Animation Frame 1] -> scratch\play_view_sea_anim_f1.png (58698 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:198)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [South Beach Shallow Sea Animation Frame 2] -> scratch\play_view_sea_anim_f2.png (58623 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:198)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [South Beach Shallow Sea Animation Frame 3] -> scratch\play_view_sea_anim_f3.png (57507 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:198)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+[SHORELINE ANIMATION VERIFIED] Sand-Water Transition AnimatedTile active: Animated_sand_water_inner_tr with 4 frames at 4 FPS.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:228)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 228)
+
+Captured View [Shoreline Wave Foam Frame 0] -> scratch\play_view_shoreline_anim_f0.png (58048 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:240)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [Shoreline Wave Foam Frame 1] -> scratch\play_view_shoreline_anim_f1.png (58617 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:240)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [Shoreline Wave Foam Frame 2] -> scratch\play_view_shoreline_anim_f2.png (58339 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:240)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
+
+Captured View [Shoreline Wave Foam Frame 3] -> scratch\play_view_shoreline_anim_f3.png (58869 bytes)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+IslandPlayModeSimulator:RenderCapture (UnityEngine.Camera,ExplorationCamera,UnityEngine.Vector3,string,string) (at Assets/Editor/IslandPlayModeSimulator.cs:283)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:240)
+
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 283)
 
 =================================================
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -729,9 +839,9 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:161)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:249)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 161)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 249)
 
 SIMULATION COMPLETED SUCCESSFULLY - ZERO ERRORS
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -740,9 +850,9 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:162)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:250)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 162)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 250)
 
 =================================================
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -751,61 +861,90 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:163)
+IslandPlayModeSimulator:RunSimulation () (at Assets/Editor/IslandPlayModeSimulator.cs:251)
 
-(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 163)
+(Filename: Assets/Editor/IslandPlayModeSimulator.cs Line: 251)
 
 Batchmode quit successfully invoked - shutting down!
 Importing 'GUID: 0000000000000000b000000000000000 - Path: ProjectSettings/EditorBuildSettings.asset' with importer (LibraryAssetImporter)
-Imported 'GUID: 0000000000000000b000000000000000' -> (Import Result ID: '9e24b975417481a7570a943525cb39cd') in 0.067 seconds [static dependencies only]. Details - ImportResultOutputID=4647dd083cfc32cebcd7526e8846440c DependenciesID=a725cd087964a4bdbee16886d99a5c32 StaticDependenciesID=d133bbc8c0ce60f6df07f9aa4ffc0a39 
-Refreshing native plugins compatible for Editor in 6.85 ms, found 6 plugins.
+Imported 'GUID: 0000000000000000b000000000000000' -> (Import Result ID: '9e24b975417481a7570a943525cb39cd') in 0.159 seconds [static dependencies only]. Details - ImportResultOutputID=4647dd083cfc32cebcd7526e8846440c DependenciesID=a725cd087964a4bdbee16886d99a5c32 StaticDependenciesID=d133bbc8c0ce60f6df07f9aa4ffc0a39 
+Refreshing native plugins compatible for Editor in 6.23 ms, found 6 plugins.
 
-Asset Pipeline Refresh (id=8f1f52a1434ba004f81a47060e36bbbb): Total: 2.005 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=3a7185a0491ffd54d890583ccc1d0fdb): Total: 3.142 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
 	(Values over 0.05ms)
 	Summary:
 		Imports: total=1 (actual=1, local cache=0, cache server=0)
-		Asset DB Process Time: managed=12 ms, native=1934 ms
-		Asset DB Callback time: managed=32 ms, native=25 ms
+		Asset DB Process Time: managed=63 ms, native=1277 ms
+		Asset DB Callback time: managed=1774 ms, native=26 ms
 		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
-		Project Asset Count: scripts=2320, non-scripts=6568
+		Project Asset Count: scripts=2320, non-scripts=6659
 		Asset File Changes: new=0, changed=0, moved=0, deleted=0
 		Scan Filter Count: 1
-	ApplyChangesToAssetFolders: 0.519ms
-	Scan: 56.404ms
-	Collect global state as custom dependencies: 0.467ms
-	ProcessAssetsWithTransientArtifactChanges: 1.783ms
-	CategorizeAssets: 1499.685ms
-	ImportOutOfDateAssets: 250.140ms (30.029ms without children)
-		ImportManagerImport: 76.321ms (4.604ms without children)
-		ReloadNativeAssets: 0.218ms
-		UnloadImportedAssets: 0.323ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.842ms
-		InitializingProgressBar: 0.185ms
-		ImportSchedulerStart: 141.219ms
-	PostProcessAllAssets: 50.129ms
-		XRBuildSystem.XRAssetImported 12.761ms
-		WindowTitlePostprocess 0.318ms
-		SpriteAtlasDatabase.OnAssetPostprocessCallback 0.193ms
-		MonoPostProcessAllAssets: 32.720ms
-			AssetPostprocessor.OnPostprocessAllAssets 23.087ms
-			SyncVS.PostprocessSyncProject 1.361ms
-			SpriteShapeAssetPostProcessor.OnPostprocessAllAssets 0.852ms
-			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 0.399ms
-			GraphRefreshPostprocessor.OnPostprocessAllAssets 0.396ms
-			AssetChangedListener.OnPostprocessAllAssets 0.310ms
-			AssetReferenceReimportMonitor.OnPostprocessAllAssets 0.295ms
-			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.266ms
-			ModelAssetProcessor.OnPostprocessAllAssets 0.242ms
-			SpriteSlicePostprocessor.OnPostprocessAllAssets 0.231ms
-			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.113ms
-			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.079ms
-	PostAssetChangesProfiler: 7.786ms
-	GatherAllCurrentPrimaryImportResultRevisions: 6.402ms
-	UnloadStreamsBegin: 5.652ms
-	PersistCurrentRevisions: 0.370ms
-	Untracked: 125.860ms
+	ApplyChangesToAssetFolders: 2.266ms
+	Scan: 78.864ms
+	Collect global state as custom dependencies: 1.984ms
+	ProcessAssetsWithTransientArtifactChanges: 6.541ms
+	CategorizeAssets: 607.339ms
+	ImportOutOfDateAssets: 359.348ms (38.554ms without children)
+		ImportManagerImport: 170.278ms (7.686ms without children)
+			UpdateCategorizedAssets: 0.068ms
+		ReloadNativeAssets: 0.383ms
+		UnloadImportedAssets: 0.726ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 3.433ms
+		ImportSchedulerStart: 145.960ms
+	PostProcessAllAssets: 1791.334ms
+		XRBuildSystem.XRAssetImported 11.369ms
+		WindowTitlePostprocess 0.456ms
+		SpriteAtlasDatabase.OnAssetPostprocessCallback 0.274ms
+		PostProcessCallbackCreateDeferredMaterials 0.190ms
+		MonoPostProcessAllAssets: 1774.053ms
+			AssetPostprocessor.OnPostprocessAllAssets 876.474ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 301.767ms
+			AssetReferenceReimportMonitor.OnPostprocessAllAssets 49.893ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 23.043ms
+			AssetChangedListener.OnPostprocessAllAssets 13.982ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 10.782ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 9.288ms
+			SyncVS.PostprocessSyncProject 9.200ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 7.911ms
+			SpriteShapeAssetPostProcessor.OnPostprocessAllAssets 6.212ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 5.461ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 4.896ms
+			MaterialPostprocessor.OnPostprocessAllAssets 4.851ms
+			PostProcessor.OnPostprocessAllAssets 3.833ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 3.670ms
+			SkillsProjectAssetPostprocessor.OnPostprocessAllAssets 3.615ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 2.935ms
+			ModelAssetProcessor.OnPostprocessAllAssets 2.587ms
+			SamplePostprocessor.OnPostprocessAllAssets 2.528ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 2.416ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 2.134ms
+			SpriteLibraryAssetPostprocessor.OnPostprocessAllAssets 2.029ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 1.653ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 1.124ms
+			AssetEvents.OnPostprocessAllAssets 1.057ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 1.030ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.979ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.942ms
+			PSDImportPostProcessor.OnPostprocessAllAssets 0.840ms
+			AssetProcessor.OnPostprocessAllAssets 0.828ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 0.814ms
+			TrackSelectedAssetsProcessor.OnPostprocessAllAssets 0.809ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.743ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.563ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 0.332ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.297ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.283ms
+			AssetChangeDetector.OnPostprocessAllAssets 0.232ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.226ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.225ms
+			PSDImporterAssetPostProcessor.OnPostprocessAllAssets 0.140ms
+	PostAssetChangesProfiler: 9.074ms
+	GatherAllCurrentPrimaryImportResultRevisions: 15.334ms
+	UnloadStreamsBegin: 21.454ms
+	PersistCurrentRevisions: 0.277ms
+	Untracked: 248.150ms
 
-Curl error 42: Callback aborted
 [Physics::Module] Cleanup current backend.
 [Physics::Module] Id: 0xf2b8ea05
 Input System module state changed to: ShutdownInProgress.

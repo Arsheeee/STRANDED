@@ -144,7 +144,6 @@ def generate_island_mask(seed=2026):
 
     for y in range(WORLD_H):
         for x in range(WORLD_W):
-            # Strict safety margin: at least 42 tiles of deep ocean around all edges
             if x < 42 or x > WORLD_W - 43 or y < 42 or y > WORLD_H - 43:
                 continue
 
@@ -202,7 +201,6 @@ def generate_island_mask(seed=2026):
 
             target_r = base_r * r_mod
 
-            # Multi-octave natural fractal noise
             n_macro = noise_macro.fbm(x * 0.018, y * 0.018, octaves=3) * 25.0
             n_det = noise_detail.fbm(x * 0.048, y * 0.048, octaves=3) * 11.0
             n_mic = noise_micro.sample(x * 0.12, y * 0.12) * 3.5
@@ -224,7 +222,7 @@ def generate_island_mask(seed=2026):
                     new_land[y][x] = True
         land_mask = new_land
 
-    # Connected Component Filtering: remove any tiny disconnected islands < 25 tiles
+    # Connected Component Filtering: remove any tiny disconnected islands < 30 tiles
     visited = [[False for _ in range(WORLD_W)] for _ in range(WORLD_H)]
     components = []
 
@@ -245,13 +243,10 @@ def generate_island_mask(seed=2026):
                                     q.append((nx, ny))
                 components.append(comp)
 
-    # Keep only significant components (largest main island)
     if components:
         components.sort(key=len, reverse=True)
-        main_island = components[0]
-        # Remove small specks
         for comp in components[1:]:
-            if len(comp) < 30: # Remove tiny noisy fragments
+            if len(comp) < 30:
                 for (cx_pt, cy_pt) in comp:
                     land_mask[cy_pt][cx_pt] = False
 
@@ -259,7 +254,7 @@ def generate_island_mask(seed=2026):
 
 
 def generate_base_island():
-    print("Generating finalized base island geometry (350x350)...")
+    print("Generating handcrafted tropical survival island geometry (350x350)...")
     land_mask = generate_island_mask(seed=2026)
     
     print("Calculating coastal distance fields...")
@@ -288,28 +283,31 @@ def generate_base_island():
             else:
                 nb = noise_beach.sample(x * 0.035, y * 0.035) * 2.5
                 beach_w = 4.5 + nb
-                if (80 < x < 140 and 200 < y < 265) or (140 < x < 220 and 60 < y < 115):
-                    beach_w += 5.0
+                # Wide expansive southern beach and southwest bay
+                if (130 < x < 210 and 55 < y < 110) or (80 < x < 135 and 195 < y < 265):
+                    beach_w += 5.5
+                # Narrow rocky cliff beaches on eastern shores
                 if (x > 260 and 150 < y < 245) or (y > 270 and 165 < x < 225):
                     beach_w = max(2.5, beach_w - 2.5)
 
                 if dist_to_water[y][x] <= beach_w:
                     world[y][x] = BEACH_SAND
                 else:
-                    world[y][x] = GRASS_BASE
+                    # Mud/Earth is the primary underlying soil and base ground across the island!
+                    world[y][x] = DIRT_PATH
 
-    # 2. Handcrafted Eastern Cliff Plateau (Stepped Terraces & River Canyon Gap)
-    print("Assembling Handcrafted Eastern Cliff Plateau with Stepped Terraces & River Gorge...")
+    # 2. Handcrafted Eastern Cliff Plateau (Warm Earth/Mud Rock)
+    print("Sculpting Handcrafted Eastern Cliff Plateau with Mud Steps & River Canyon Gap...")
     
-    # Mark Plateau Top (elevated walkable tableland)
+    # Plateau Top (elevated walkable tableland)
     for y in range(190, 236):
         for x in range(234, 278):
-            if world[y][x] in (GRASS_BASE, BEACH_SAND):
+            if world[y][x] in (DIRT_PATH, BEACH_SAND):
                 world[y][x] = CLIFF_TOP
 
-    # A. South Cliff Face (cols 235..276 at rows 188 & 189)
+    # South Cliff Face (cols 235..276 at rows 188 & 189)
     for x in range(235, 277):
-        if x in (244, 245): # Gap for Carved Mud Steps
+        if x in (244, 245): # Mud Steps Gap
             continue
         world[188][x] = CLIFF_WALL
         world[189][x] = CLIFF_WALL
@@ -323,7 +321,19 @@ def generate_base_island():
     cliff_sprites[(234, 188)] = "cliff_corner_sw_bot.png"
     cliff_sprites[(234, 189)] = "cliff_corner_sw_top.png"
 
-    # Mud Steps at X=244..245 (cutting cleanly through rows 188 & 189)
+    # Southeast Corner (X=277, rows 188 & 189)
+    world[188][277] = CLIFF_WALL
+    world[189][277] = CLIFF_WALL
+    cliff_sprites[(277, 188)] = "cliff_corner_se_bot.png"
+    cliff_sprites[(277, 189)] = "cliff_corner_se_top.png"
+
+    # Flanking Shoulders for Mud Steps (X=243 Left Shoulder, X=246 Right Shoulder)
+    cliff_sprites[(243, 188)] = "cliff_ramp_left_bot.png"
+    cliff_sprites[(243, 189)] = "cliff_ramp_left_top.png"
+    cliff_sprites[(246, 188)] = "cliff_ramp_right_bot.png"
+    cliff_sprites[(246, 189)] = "cliff_ramp_right_top.png"
+
+    # Carved Mud Steps at X=244..245 (cutting cleanly through rows 188 & 189)
     world[188][244] = DIRT_PATH
     world[189][244] = DIRT_PATH
     cliff_sprites[(244, 188)] = "cliff_mud_steps_01_bot.png"
@@ -334,16 +344,22 @@ def generate_base_island():
     cliff_sprites[(245, 188)] = "cliff_mud_steps_02_bot.png"
     cliff_sprites[(245, 189)] = "cliff_mud_steps_02_top.png"
 
-    # Southeast Corner (X=277, rows 188 & 189)
-    world[188][277] = CLIFF_WALL
-    world[189][277] = CLIFF_WALL
-    cliff_sprites[(277, 188)] = "cliff_corner_se_bot.png"
-    cliff_sprites[(277, 189)] = "cliff_corner_se_top.png"
+    # Mud Steps Apron (Approach ramp from South rows 185..187 and Exit on Plateau rows 190..192)
+    for sx in range(242, 248):
+        for sy in range(185, 188):
+            if world[sy][sx] in (GRASS_BASE, DIRT_PATH):
+                world[sy][sx] = DIRT_PATH
+        for sy in range(190, 193):
+            if world[sy][sx] in (CLIFF_TOP, GRASS_BASE):
+                world[sy][sx] = DIRT_PATH
 
-    # Step approach aprons
-    for sx in (244, 245):
-        world[187][sx] = DIRT_PATH
-        world[190][sx] = DIRT_PATH
+    # Southern Cliff Base Scree / Mud Apron (rows 185..187 along cliff base)
+    noise_cliff_base = ValueNoise2D(seed=7788)
+    for cx in range(232, 279):
+        apron_depth = int(round(2.0 + noise_cliff_base.sample(cx * 0.16, 188 * 0.16) * 1.5))
+        for ay in range(188 - apron_depth, 188):
+            if world[ay][cx] in (GRASS_BASE, DIRT_PATH):
+                world[ay][cx] = DIRT_PATH
 
     # West Vertical Wall (col 234, rows 190..232)
     for y in range(190, 232):
@@ -376,7 +392,7 @@ def generate_base_island():
     cliff_sprites[(277, 232)] = "cliff_outer_tr_top.png"
 
     # 3. Winding Natural River System
-    print("Simulating River System (Source to Estuary Delta)...")
+    print("Sculpting River System with Natural Alluvial Mud Banks...")
     waypoints = [
         (260, 226), # Highland spring pool on plateau
         (248, 220), # Highland river reach
@@ -417,7 +433,7 @@ def generate_base_island():
         r_rad = 1.25 + 0.95 * progress
         d_to_ford = math.hypot(rx - ford_center[0], ry - ford_center[1])
         if d_to_ford < 6.0:
-            r_rad = 0.95
+            r_rad = 0.95 # Narrower and shallower at central crossing
 
         irx, iry = int(round(rx)), int(round(ry))
         rad_ceil = int(math.ceil(r_rad))
@@ -428,7 +444,7 @@ def generate_base_island():
                     if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
                         river_mask[ty][tx] = True
 
-    # Spring Pool on plateau: circular pool at (260, 226)
+    # Spring Pool on plateau at (260, 226)
     for dy in range(-3, 4):
         for dx in range(-3, 4):
             if dx*dx + dy*dy <= 7.0:
@@ -441,6 +457,7 @@ def generate_base_island():
             if dx*dx + dy*dy <= 3.5:
                 delta_islet.add((191 + dx, 70 + dy))
 
+    # Apply River Water to Map
     for y in range(WORLD_H):
         for x in range(WORLD_W):
             if (x, y) in delta_islet:
@@ -449,98 +466,217 @@ def generate_base_island():
                 if world[y][x] not in (OCEAN_DEEP, OCEAN_SHALLOW):
                     world[y][x] = RIVER_WATER
 
-    # Mud banks at Central Ford (174, 155)
-    for fx in range(171, 178):
-        for fy in range(153, 158):
-            if world[fy][fx] == GRASS_BASE:
-                world[fy][fx] = DIRT_PATH
+    # Continuous Organic Muddy Riverbanks (1.5 to 3.5 tiles wide)
+    noise_riverbank = ValueNoise2D(seed=8899)
+    for y in range(WORLD_H):
+        for x in range(WORLD_W):
+            if river_mask[y][x] or world[y][x] in (OCEAN_DEEP, OCEAN_SHALLOW, BEACH_SAND, CLIFF_WALL):
+                continue
+            close_to_river = False
+            for dy in range(-4, 5):
+                for dx in range(-4, 5):
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < WORLD_W and 0 <= ny < WORLD_H and river_mask[ny][nx]:
+                        d = math.hypot(dx, dy)
+                        bank_w = 2.0 + 1.2 * noise_riverbank.sample(x * 0.12, y * 0.12)
+                        if math.hypot(x - 174, y - 155) < 9.0:
+                            bank_w += 2.0
+                        if math.hypot(x - 196, y - 126) < 8.0:
+                            bank_w += 1.8
 
-    # 4. Starting Camp Area & Exploration Paths
-    print("Carving Handcrafted Starting Camp & Natural 3-Tile Exploration Trails...")
-    camp_cx, camp_cy = 135, 120
-    
-    # Smooth, organic circular camp clearing (solid radius ~6.5 tiles)
-    for dy in range(-7, 8):
-        for dx in range(-7, 8):
-            d2 = dx*dx + dy*dy
-            tx, ty = camp_cx + dx, camp_cy + dy
-            if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
-                if world[ty][tx] in (GRASS_BASE, BEACH_SAND):
-                    if d2 <= 38.0:
+                        if d <= bank_w:
+                            close_to_river = True
+                            break
+                if close_to_river:
+                    break
+            if close_to_river and world[y][x] != RIVER_WATER:
+                world[y][x] = DIRT_PATH
+
+    # 4. Handcrafted Starting Camp & Radial Paths
+    print("Sculpting Multi-Zone Starting Camp & Camp Basin...")
+    camp_subzones = [
+        (135, 120, 6.8), # Hearth
+        (128, 121, 4.8), # Crafting
+        (134, 127, 4.4), # Sleeping
+        (141, 118, 4.2), # Storage
+    ]
+    noise_camp = ValueNoise2D(seed=5511)
+    for (zx, zy, zrad) in camp_subzones:
+        rad_ceil = int(math.ceil(zrad + 1))
+        for dy in range(-rad_ceil, rad_ceil + 1):
+            for dx in range(-rad_ceil, rad_ceil + 1):
+                tx, ty = zx + dx, zy + dy
+                if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
+                    d = math.hypot(dx, dy)
+                    wobble = noise_camp.sample(tx * 0.25, ty * 0.25) * 1.2
+                    if d <= zrad + wobble and world[ty][tx] not in (OCEAN_DEEP, OCEAN_SHALLOW, RIVER_WATER, CLIFF_WALL):
                         world[ty][tx] = DIRT_PATH
 
-    # Natural 3-tile wide solid trail rasterizer
-    def carve_smooth_trail(pts, radius=1.65):
+    # Helper: Natural Organic Grassland Region Sculptor
+    # Grass sits ON the mud!
+    def add_organic_grassland(cx, cy, rx, ry, seed_val=100, allow_cliff=False):
+        noise_gl = ValueNoise2D(seed=seed_val)
+        max_r = max(rx, ry) + 4
+        for dy in range(-int(max_r), int(max_r) + 1):
+            for dx in range(-int(max_r), int(max_r) + 1):
+                tx, ty = cx + dx, cy + dy
+                if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
+                    # Do not overwrite water, sand beaches, cliff walls, or the river
+                    if world[ty][tx] == DIRT_PATH or (allow_cliff and world[ty][tx] == CLIFF_TOP):
+                        # Elliptical normalized distance
+                        norm_d = ((dx / float(rx)) ** 2) + ((dy / float(ry)) ** 2)
+                        wobble = noise_gl.sample(tx * 0.18, ty * 0.18) * 0.35
+                        if norm_d <= 1.0 + wobble:
+                            world[ty][tx] = GRASS_BASE
+
+    # Helper: Natural Winding Exploration Trail Rasterizer
+    def carve_smooth_trail(pts, radius=1.65, seed_val=999):
+        noise_tr = ValueNoise2D(seed=seed_val)
         for i in range(len(pts) - 1):
             p1 = pts[i]
             p2 = pts[i + 1]
-            dist = int(math.hypot(p2[0] - p1[0], p2[1] - p1[1]) * 2.5) + 1
+            dist = int(math.hypot(p2[0] - p1[0], p2[1] - p1[1]) * 2.8) + 1
             for s in range(dist + 1):
                 t = s / float(dist)
                 px = p1[0] + (p2[0] - p1[0]) * t
                 py = p1[1] + (p2[1] - p1[1]) * t
                 ipx, ipy = int(round(px)), int(round(py))
-                rad_ceil = int(math.ceil(radius))
+                rad_ceil = int(math.ceil(radius + 1))
                 for dy in range(-rad_ceil, rad_ceil + 1):
                     for dx in range(-rad_ceil, rad_ceil + 1):
-                        if dx*dx + dy*dy <= radius * radius:
-                            tx, ty = ipx + dx, ipy + dy
-                            if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
+                        d = math.hypot(dx, dy)
+                        tx, ty = ipx + dx, ipy + dy
+                        if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
+                            wobble = noise_tr.sample(tx * 0.3, ty * 0.3) * 0.35
+                            if d <= radius + wobble:
                                 if world[ty][tx] in (GRASS_BASE, CLIFF_TOP):
                                     world[ty][tx] = DIRT_PATH
 
-    # 4 Cardinal Exploration Paths from Starting Camp:
-    # 1. South Trail (Camp -> South Beach)
-    carve_smooth_trail([(135, 114), (135, 104), (136, 94), (135, 86)], radius=1.65)
-    # 2. West Trail (Camp -> West Coastal Bay)
-    carve_smooth_trail([(128, 120), (116, 121), (104, 123), (90, 124)], radius=1.65)
-    # 3. East Trail (Camp -> Central River Crossing)
-    carve_smooth_trail([(142, 120), (153, 128), (163, 142), (172, 155)], radius=1.65)
-    # 4. North Trail (Camp -> Northern Jungle)
-    carve_smooth_trail([(135, 127), (138, 145), (144, 165), (148, 190)], radius=1.65)
+    # 5. Sculpt Handcrafted Grassland Regions on Top of the Mud
+    print("Sculpting Handcrafted Grassland Regions (Grass sitting on Mud)...")
+
+    # Region 1: Broad Central Sunlit Meadow (Multi-lobed natural expanse)
+    central_meadow = [
+        (156, 150, 15.0, 12.0, 301),
+        (165, 142, 13.0, 10.0, 302),
+        (148, 160, 12.0, 13.0, 303),
+        (166, 162, 11.0, 9.5, 304),
+        (172, 170, 9.0, 8.0, 305),
+        (152, 134, 11.0, 9.5, 306),
+    ]
+    for (cx, cy, rx, ry, s) in central_meadow:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 2: Western Coastal Savanna & Terraced Hill Meadow
+    west_grassland = [
+        (96, 155, 13.0, 16.0, 311),
+        (106, 172, 12.0, 14.0, 312),
+        (92, 136, 11.0, 12.0, 313),
+        (110, 148, 10.0, 10.0, 314),
+        (102, 188, 9.0, 10.0, 315),
+    ]
+    for (cx, cy, rx, ry, s) in west_grassland:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 3: Starting Camp Dappled Meadows (Soft grass islands around camp)
+    camp_meadows = [
+        (122, 108, 9.5, 8.0, 321),
+        (116, 102, 8.0, 7.0, 322),
+        (146, 134, 9.0, 7.5, 323),
+        (152, 138, 8.0, 7.0, 324),
+        (132, 96, 8.5, 7.0, 325),
+        (144, 94, 7.5, 6.0, 326),
+        (124, 132, 7.5, 6.5, 327),
+    ]
+    for (cx, cy, rx, ry, s) in camp_meadows:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 4: Northern Upland Prairie
+    north_prairie = [
+        (168, 240, 16.0, 12.5, 331),
+        (154, 248, 13.0, 11.0, 332),
+        (178, 232, 12.0, 10.0, 333),
+        (160, 224, 11.0, 9.0, 334),
+        (185, 245, 9.5, 8.0, 335),
+    ]
+    for (cx, cy, rx, ry, s) in north_prairie:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 5: Highland Plateau Meadow (elevated grassland surrounding spring)
+    highland_meadow = [
+        (258, 212, 13.0, 12.0, 341),
+        (268, 204, 10.5, 9.5, 342),
+        (250, 224, 9.5, 8.5, 343),
+        (264, 226, 8.5, 8.0, 344),
+    ]
+    for (cx, cy, rx, ry, s) in highland_meadow:
+        add_organic_grassland(cx, cy, rx, ry, s, allow_cliff=True)
+
+    # Region 6: Northwest Smuggler's Meadow
+    nw_meadow = [
+        (115, 230, 12.0, 11.0, 351),
+        (122, 240, 10.0, 9.0, 352),
+        (106, 220, 10.0, 9.0, 353),
+    ]
+    for (cx, cy, rx, ry, s) in nw_meadow:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 7: Southern Maritime Grassland (Maritime bluffs behind beach)
+    south_maritime = [
+        (154, 90, 12.0, 7.5, 361),
+        (168, 94, 11.0, 7.0, 362),
+        (138, 88, 10.0, 7.0, 363),
+    ]
+    for (cx, cy, rx, ry, s) in south_maritime:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 8: River Bluff Scenic Overlooks
+    river_bluffs = [
+        (166, 172, 8.5, 7.5, 371),
+        (162, 160, 7.5, 6.5, 372),
+        (188, 118, 9.0, 8.0, 373),
+        (182, 110, 8.0, 7.0, 374),
+        (204, 130, 9.5, 8.5, 375),
+    ]
+    for (cx, cy, rx, ry, s) in river_bluffs:
+        add_organic_grassland(cx, cy, rx, ry, s)
+
+    # Region 9: 90+ Scattered Natural Grass Knolls & Sunlit Understory Tufts
+    print("Scattering 90+ sunlit grass knolls & tufts across tropical forest floor...")
+    rng_gl = random.Random(707)
+    for _ in range(95):
+        px = rng_gl.randint(65, 285)
+        py = rng_gl.randint(65, 285)
+        if world[py][px] == DIRT_PATH and dist_to_water[py][px] > 3.0:
+            prx = rng_gl.uniform(2.8, 5.5)
+            pry = rng_gl.uniform(2.4, 4.8)
+            ps = rng_gl.randint(1000, 9999)
+            add_organic_grassland(px, py, prx, pry, ps)
+
+    # 6. Carve Primary Cardinal Exploration Trails Through Grassland
+    print("Carving natural winding exploration trails through terrain...")
+    # South Trail (Camp -> South Beach)
+    carve_smooth_trail([(135, 114), (135, 104), (136, 94), (135, 84)], radius=1.65, seed_val=101)
+    # West Trail (Camp -> West Coastal Bay)
+    carve_smooth_trail([(128, 120), (116, 121), (104, 123), (90, 124)], radius=1.65, seed_val=102)
+    # East Trail (Camp -> Central River Crossing)
+    carve_smooth_trail([(142, 120), (153, 128), (163, 142), (172, 155)], radius=1.65, seed_val=103)
+    # North Trail (Camp -> Northern Rainforest)
+    carve_smooth_trail([(135, 127), (138, 145), (144, 165), (148, 190)], radius=1.65, seed_val=104)
 
     # Connecting Routes:
     # Ford to Plateau Mud Steps:
-    carve_smooth_trail([(176, 155), (194, 162), (218, 172), (244, 186)], radius=1.65)
-    # North Jungle to Escape Cove:
-    carve_smooth_trail([(144, 165), (134, 188), (122, 210), (110, 230)], radius=1.65)
-    # Deep Jungle Trail:
-    carve_smooth_trail([(148, 190), (160, 215), (175, 238), (185, 255)], radius=1.65)
+    carve_smooth_trail([(176, 155), (194, 162), (218, 172), (244, 186)], radius=1.65, seed_val=105)
+    # North Rainforest to Escape Cove:
+    carve_smooth_trail([(144, 165), (134, 188), (122, 210), (110, 230)], radius=1.65, seed_val=106)
+    # Deep Rainforest Trail:
+    carve_smooth_trail([(148, 190), (160, 215), (175, 238), (185, 255)], radius=1.65, seed_val=107)
+    # Western Coastal Trail:
+    carve_smooth_trail([(90, 124), (88, 145), (92, 168), (96, 195)], radius=1.55, seed_val=108)
+    # River Bend to South Beach Trail:
+    carve_smooth_trail([(196, 126), (188, 108), (176, 92), (158, 85)], radius=1.55, seed_val=109)
 
-    # 5. Ecological Landmark Clearings:
-    # A. Northwest Escape Cove clearing at (108, 236)
-    for dy in range(-7, 8):
-        for dx in range(-7, 8):
-            if dx*dx + dy*dy <= 32.0:
-                tx, ty = 108 + dx, 236 + dy
-                if world[ty][tx] == GRASS_BASE:
-                    world[ty][tx] = DIRT_PATH
-
-    # B. Northern Jungle secluded glade at (175, 242)
-    for dy in range(-6, 7):
-        for dx in range(-6, 7):
-            if dx*dx + dy*dy <= 24.0:
-                tx, ty = 175 + dx, 242 + dy
-                if world[ty][tx] == GRASS_BASE:
-                    world[ty][tx] = DIRT_PATH
-
-    # C. Eastern Plateau spring sanctuary at (266, 222)
-    for dy in range(-6, 7):
-        for dx in range(-6, 7):
-            if dx*dx + dy*dy <= 26.0:
-                tx, ty = 266 + dx, 222 + dy
-                if world[ty][tx] == CLIFF_TOP:
-                    world[ty][tx] = DIRT_PATH
-
-    # D. River Bend Grove at (196, 126)
-    for dy in range(-5, 6):
-        for dx in range(-5, 6):
-            if dx*dx + dy*dy <= 18.0:
-                tx, ty = 196 + dx, 126 + dy
-                if world[ty][tx] == GRASS_BASE:
-                    world[ty][tx] = DIRT_PATH
-
-    print("Base island generation finished!")
+    print("Handcrafted base island generation completed successfully!")
     return world, land_mask, cliff_sprites
 
 
@@ -548,104 +684,130 @@ def generate_base_island():
 # AUTOTILE & SPRITE RENDERING ENGINE
 # ---------------------------------------------------------
 class TileRenderer:
-    def __init__(self):
-        self.cache = {}
+    def __init__(self, terrain_dir):
+        self.terrain_dir = terrain_dir
+        self.tile_cache = {}
 
     def get_tile(self, rel_path):
-        if rel_path not in self.cache:
-            full_path = os.path.join(TERRAIN_DIR, rel_path)
-            if os.path.exists(full_path):
-                self.cache[rel_path] = Image.open(full_path).convert("RGBA")
-            else:
-                self.cache[rel_path] = None
-        return self.cache[rel_path]
+        if rel_path in self.tile_cache:
+            return self.tile_cache[rel_path]
 
-    def solve_wang(self, world, x, y, neighbor_type):
+        full_path = os.path.join(self.terrain_dir, rel_path)
+        if not os.path.exists(full_path):
+            return None
+
+        img = Image.open(full_path).convert("RGBA")
+        self.tile_cache[rel_path] = img
+        return img
+
+    def solve_wang(self, grid, x, y, match_type, is_river=False):
+        h = len(grid)
+        w = len(grid[0])
+
         def is_type(tx, ty):
-            if 0 <= tx < WORLD_W and 0 <= ty < WORLD_H:
-                return world[ty][tx] == neighbor_type
+            if 0 <= tx < w and 0 <= ty < h:
+                return grid[ty][tx] == match_type
             return False
 
         n = is_type(x, y + 1)
         s = is_type(x, y - 1)
-        w = is_type(x - 1, y)
+        wt = is_type(x - 1, y)
         e = is_type(x + 1, y)
         nw = is_type(x - 1, y + 1)
         ne = is_type(x + 1, y + 1)
         sw = is_type(x - 1, y - 1)
         se = is_type(x + 1, y - 1)
 
-        # Inner corners
-        if s and w and not sw: return "inner_bl"
-        if s and e and not se: return "inner_br"
-        if n and w and not nw: return "inner_tl"
-        if n and e and not ne: return "inner_tr"
+        # 1. Convex corners (neighbor on TWO adjacent cardinal sides)
+        if s and e: return "inner_tl"
+        if s and wt: return "inner_tr"
+        if n and e: return "inner_bl"
+        if n and wt: return "inner_br"
 
-        # Straight edges
-        if s and not n: return "edge_s_01" if (x + y) % 2 == 0 else "edge_s_02"
-        if n and not s: return "edge_n_01" if (x + y) % 2 == 0 else "edge_n_02"
-        if e and not w: return "edge_e"
-        if w and not e: return "edge_w"
+        # 2. Straight edges (neighbor on ONE cardinal side)
+        if is_river:
+            if s: return "edge_s_01" if (x + y) % 2 == 0 else "edge_s_02"
+            if n: return "edge_n_01" if (x + y) % 2 == 0 else "edge_n_02"
+            if e: return "edge_e"
+            if wt: return "edge_w"
+        else:
+            if s: return "edge_n_01" if (x + y) % 2 == 0 else "edge_n_02"
+            if n: return "edge_s_01" if (x + y) % 2 == 0 else "edge_s_02"
+            if e: return "edge_w"
+            if wt: return "edge_e"
 
-        # Outer corners
-        if nw and not n and not w: return "outer_br"
-        if ne and not n and not e: return "outer_bl"
-        if sw and not s and not w: return "outer_tr"
+        # 3. Concave corners (neighbor ONLY on one diagonal corner)
+        if sw and not s and not wt: return "outer_tr"
         if se and not s and not e: return "outer_tl"
+        if nw and not n and not wt: return "outer_br"
+        if ne and not n and not e: return "outer_bl"
 
         return None
 
 
-def export_map_json(world, cliff_sprites, out_path="Assets/Art/Terrain/island_world_350.json"):
+def export_map_json(world, cliff_sprites, out_path):
     print(f"Exporting map data to {out_path}...")
-    
-    # Format cliff sprites as serializable dict: "x,y": "sprite_name"
-    cs_dict = {f"{k[0]},{k[1]}": v for k, v in cliff_sprites.items()}
-
+    serializable_cliffs = {f"{k[0]},{k[1]}": v for k, v in cliff_sprites.items()}
     data = {
-        "title": "STRANDED Handcrafted Base Island",
+        "title": "STRANDED Handcrafted Island",
         "width": WORLD_W,
         "height": WORLD_H,
         "tileSize": TILE_SIZE,
-        "playerSpawn": {
-            "x": 135,
-            "y": 120
-        },
-        "legend": {
-            0: "OCEAN_DEEP",
-            1: "OCEAN_SHALLOW",
-            2: "BEACH_SAND",
-            3: "GRASS_BASE",
-            4: "DIRT_PATH",
-            5: "RIVER_WATER",
-            6: "CLIFF_WALL",
-            7: "CLIFF_TOP"
-        },
+        "playerSpawn": {"x": 135, "y": 120},
         "tiles": world,
-        "cliffSprites": cs_dict
+        "cliffSprites": serializable_cliffs
     }
-
     with open(out_path, "w") as f:
         json.dump(data, f)
-    print(f"Map JSON successfully saved! Size: {os.path.getsize(out_path)} bytes")
+    print("Map JSON export complete!")
 
 
 def render_full_island(world, cliff_sprites, crop_boxes=None):
-    print("Rendering high-fidelity tilemap with authentic sprites and transitions...")
-    renderer = TileRenderer()
+    print("Rendering high-resolution full island preview canvas...")
+    renderer = TileRenderer(TERRAIN_DIR)
 
-    # Pre-fetch base tiles
-    t_deep = renderer.get_tile("Water/Sea/sea_deep_base_01.png")
-    t_shallow = renderer.get_tile("Water/Sea/sea_shallow_base_01.png")
+    canvas_w = WORLD_W * TILE_SIZE
+    canvas_h = WORLD_H * TILE_SIZE
+    canvas = Image.new("RGBA", (canvas_w, canvas_h), (8, 20, 36, 255))
+
+    t_deep01 = renderer.get_tile("Water/Sea/sea_deep_base_01.png")
+    t_deep02 = renderer.get_tile("Water/Sea/sea_deep_base_02.png")
+    t_deep_pebbles = renderer.get_tile("Water/Sea/sea_deep_pebbles_f0.png")
+
+    t_shallow01 = renderer.get_tile("Water/Sea/sea_shallow_base_01.png")
+    t_shallow02 = renderer.get_tile("Water/Sea/sea_shallow_base_02.png")
+    t_shallow_pebbles = renderer.get_tile("Water/Sea/sea_shallow_pebbles_f0.png")
+    t_shallow_starfish = renderer.get_tile("Water/Sea/sea_shallow_starfish_f0.png")
+
     t_sand01 = renderer.get_tile("Sand/sand_base_01.png")
     t_sand02 = renderer.get_tile("Sand/sand_base_02.png")
+    t_sand_slate = renderer.get_tile("Sand/sand_pebble_slate.png")
+    t_sand_seashell = renderer.get_tile("Sand/sand_seashell.png")
+    t_sand_starfish = renderer.get_tile("Sand/sand_starfish.png")
+
     t_grass01 = renderer.get_tile("Grass/grass_base_01.png")
     t_grass02 = renderer.get_tile("Grass/grass_base_02.png")
+    t_grass_tuft = renderer.get_tile("Grass/grass_tuft_lush.png")
+    t_grass_flower_blue = renderer.get_tile("Grass/grass_wildflower_blue.png")
+    t_grass_flower_pink = renderer.get_tile("Grass/grass_wildflower_pink.png")
+
     t_dirt01 = renderer.get_tile("Dirt/mud_base_01.png")
     t_dirt02 = renderer.get_tile("Dirt/mud_base_02.png")
-    t_river = renderer.get_tile("Water/River/river_water_base_01.png")
+    t_mud_pebbles = renderer.get_tile("Dirt/mud_pebbles.png")
+    t_mud_crater = renderer.get_tile("Dirt/mud_crater.png")
+    t_mud_tuft = renderer.get_tile("Dirt/mud_tuft.png")
 
-    canvas = Image.new("RGBA", (WORLD_W * TILE_SIZE, WORLD_H * TILE_SIZE), (18, 52, 88, 255))
+    t_river01 = renderer.get_tile("Water/River/river_water_base_01.png")
+    t_river_lilypad = renderer.get_tile("Water/River/river_lilypad_lotus_f0.png")
+    t_river_reeds = renderer.get_tile("Water/River/river_reeds_f0.png")
+    t_river_pebbles = renderer.get_tile("Water/River/river_pebbles_f0.png")
+
+    def get_tile_hash(x, y, seed=1337):
+        h = (x * 0x1f1f1f1f) ^ (y * 0x5b5b5b5b) ^ seed
+        h = ((h >> 16) ^ h) * 0x45d9f3b & 0xffffffff
+        h = ((h >> 16) ^ h) * 0x45d9f3b & 0xffffffff
+        h = (h >> 16) ^ h
+        return h & 0x7fffffff
 
     # Pass 1: Base ground layer
     for y in range(WORLD_H):
@@ -655,12 +817,33 @@ def render_full_island(world, cliff_sprites, crop_boxes=None):
             c = world[y][x]
 
             if c == OCEAN_DEEP:
-                canvas.paste(t_deep, (px, py))
+                val = get_tile_hash(x, y, 808) % 1000
+                if val < 5:
+                    deep_t = t_deep_pebbles
+                else:
+                    deep_t = t_deep01 if (get_tile_hash(x, y, 850) % 2 == 0) else t_deep02
+                canvas.paste(deep_t, (px, py))
             elif c == OCEAN_SHALLOW:
-                canvas.paste(t_shallow, (px, py))
+                val = get_tile_hash(x, y, 707) % 1000
+                if val < 10:
+                    shallow_t = t_shallow_starfish
+                elif val < 22:
+                    shallow_t = t_shallow_pebbles
+                else:
+                    shallow_t = t_shallow01 if (get_tile_hash(x, y, 750) % 2 == 0) else t_shallow02
+                canvas.paste(shallow_t, (px, py))
             elif c == BEACH_SAND:
-                sand_t = t_sand01 if (x * 7 + y * 13) % 2 == 0 else t_sand02
+                val = get_tile_hash(x, y, 404) % 1000
+                if val < 12:
+                    sand_t = t_sand_seashell
+                elif val < 18:
+                    sand_t = t_sand_starfish
+                elif val < 28:
+                    sand_t = t_sand_slate
+                else:
+                    sand_t = t_sand01 if (get_tile_hash(x, y, 450) % 2 == 0) else t_sand02
                 canvas.paste(sand_t, (px, py))
+
                 # Transition to Shallow Water
                 sw_code = renderer.solve_wang(world, x, y, OCEAN_SHALLOW)
                 if sw_code:
@@ -668,32 +851,73 @@ def render_full_island(world, cliff_sprites, crop_boxes=None):
                     if trans_tile:
                         canvas.paste(trans_tile, (px, py), trans_tile)
             elif c in (GRASS_BASE, CLIFF_TOP, CLIFF_WALL):
-                grass_t = t_grass01 if (x * 11 + y * 17) % 2 == 0 else t_grass02
+                val = get_tile_hash(x, y, 101) % 1000
+                if val < 8:
+                    grass_t = t_grass_flower_blue
+                elif val < 16:
+                    grass_t = t_grass_flower_pink
+                elif val < 36:
+                    grass_t = t_grass_tuft
+                else:
+                    grass_t = t_grass01 if (get_tile_hash(x, y, 150) % 2 == 0) else t_grass02
                 canvas.paste(grass_t, (px, py))
-                # Transition to Sand
-                gs_code = renderer.solve_wang(world, x, y, BEACH_SAND)
-                if gs_code:
-                    trans_tile = renderer.get_tile(f"Transitions/Grass_Sand/grass_sand_{gs_code}.png")
-                    if trans_tile:
-                        canvas.paste(trans_tile, (px, py), trans_tile)
+
                 # Transition to River Water
-                gr_code = renderer.solve_wang(world, x, y, RIVER_WATER)
+                gr_code = renderer.solve_wang(world, x, y, RIVER_WATER, is_river=True)
                 if gr_code:
                     trans_tile = renderer.get_tile(f"Transitions/Grass_RiverWater/grass_riverwater_{gr_code}.png")
                     if trans_tile:
                         canvas.paste(trans_tile, (px, py), trans_tile)
+                else:
+                    # Transition to Sand
+                    gs_code = renderer.solve_wang(world, x, y, BEACH_SAND)
+                    if gs_code:
+                        trans_tile = renderer.get_tile(f"Transitions/Grass_Sand/grass_sand_{gs_code}.png")
+                        if trans_tile:
+                            canvas.paste(trans_tile, (px, py), trans_tile)
+                    else:
+                        # Transition to Mud / Dirt
+                        gd_code = renderer.solve_wang(world, x, y, DIRT_PATH)
+                        if gd_code:
+                            trans_tile = renderer.get_tile(f"Transitions/Grass_Dirt/grass_dirt_{gd_code}.png")
+                            if trans_tile:
+                                canvas.paste(trans_tile, (px, py), trans_tile)
             elif c == DIRT_PATH:
-                dirt_t = t_dirt01 if (x * 5 + y * 9) % 2 == 0 else t_dirt02
-                canvas.paste(t_grass01, (px, py))
+                val = get_tile_hash(x, y, 303) % 1000
+                if val < 18:
+                    dirt_t = t_mud_pebbles
+                elif val < 32:
+                    dirt_t = t_mud_tuft
+                elif val < 42:
+                    dirt_t = t_mud_crater
+                else:
+                    dirt_t = t_dirt01 if (get_tile_hash(x, y, 350) % 2 == 0) else t_dirt02
                 canvas.paste(dirt_t, (px, py))
-                # Transition to Grass
-                gd_code = renderer.solve_wang(world, x, y, GRASS_BASE)
-                if gd_code:
-                    trans_tile = renderer.get_tile(f"Transitions/Grass_Dirt/grass_dirt_{gd_code}.png")
+
+                # Transition to River
+                dr_code = renderer.solve_wang(world, x, y, RIVER_WATER, is_river=True)
+                if dr_code:
+                    trans_tile = renderer.get_tile(f"Transitions/Dirt_RiverWater/dirt_riverwater_{dr_code}.png")
                     if trans_tile:
                         canvas.paste(trans_tile, (px, py), trans_tile)
+                else:
+                    # Transition to Sand
+                    ds_code = renderer.solve_wang(world, x, y, BEACH_SAND)
+                    if ds_code:
+                        trans_tile = renderer.get_tile(f"Transitions/Dirt_Sand/dirt_sand_{ds_code}.png")
+                        if trans_tile:
+                            canvas.paste(trans_tile, (px, py), trans_tile)
             elif c == RIVER_WATER:
-                canvas.paste(t_river, (px, py))
+                val = get_tile_hash(x, y, 505) % 1000
+                if val < 15:
+                    river_t = t_river_lilypad
+                elif val < 28:
+                    river_t = t_river_reeds
+                elif val < 42:
+                    river_t = t_river_pebbles
+                else:
+                    river_t = t_river01
+                canvas.paste(river_t, (px, py))
 
     # Pass 2: Cliff Sprites
     for (cx, cy), sname in cliff_sprites.items():
