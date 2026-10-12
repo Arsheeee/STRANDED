@@ -83,12 +83,15 @@ public class VineResourcePlacer : EditorWindow
             SerializedObject so = new SerializedObject(node);
             so.FindProperty("resourceType").enumValueIndex = (int)ResourceType.Vines;
             so.FindProperty("nodeDisplayName").stringValue = "Jungle Vine Cluster";
-            so.FindProperty("requiredTool").enumValueIndex = (int)ToolType.StoneKnife;
+            so.FindProperty("requiredTool").enumValueIndex = (int)ToolType.StoneAxe;
+            so.FindProperty("nodeCategory").enumValueIndex = (int)ResourceCategory.Bush;
+            so.FindProperty("nodeSize").enumValueIndex = (int)ResourceSize.Medium;
             so.FindProperty("yieldAmount").intValue = 2;
             so.FindProperty("interactionRange").floatValue = 1.6f;
             so.FindProperty("isHarvestable").boolValue = true;
             so.FindProperty("depleteOnHarvest").boolValue = true;
             so.FindProperty("destroyOnDeplete").boolValue = false;
+            so.FindProperty("regrowthDuration").floatValue = 45f;
             so.FindProperty("availableSprite").objectReferenceValue = bushSprite;
             so.FindProperty("depletedSprite").objectReferenceValue = depletedSprite;
             so.ApplyModifiedPropertiesWithoutUndo();

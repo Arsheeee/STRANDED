@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
     {
         if (grantStartingTools && IsEntireInventoryEmpty())
         {
-            EquipInitialTestingTools();
+            EquipStartingInventory();
         }
     }
 
@@ -74,22 +74,39 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// Grants primitive stone tools into the first 4 hotbar slots if empty.
+    /// Grants the designated starting inventory for a fresh new game:
+    /// Exactly one Stone Knife in hotbar slot 0, and no other tools or materials.
+    /// Safe against duplicates: if a Stone Knife is already present in inventory, none will be added.
     /// </summary>
-    public void EquipInitialTestingTools()
+    public void EquipStartingInventory()
     {
         ItemDatabase.EnsureInitialized();
         ItemData knife = ItemDatabase.GetToolItem(ToolType.StoneKnife);
-        ItemData axe = ItemDatabase.GetToolItem(ToolType.StoneAxe);
-        ItemData pick = ItemDatabase.GetToolItem(ToolType.StonePickaxe);
-        ItemData rod = ItemDatabase.GetToolItem(ToolType.FishingRod);
 
-        if (knife != null && slots[0].IsEmpty) slots[0].Set(knife, 1);
-        if (axe != null && slots[1].IsEmpty) slots[1].Set(axe, 1);
-        if (pick != null && slots[2].IsEmpty) slots[2].Set(pick, 1);
-        if (rod != null && slots[3].IsEmpty) slots[3].Set(rod, 1);
+        if (knife != null)
+        {
+            // Only equip if the inventory does not already possess a Stone Knife
+            if (!HasItem(knife.ItemId))
+            {
+                if (slots != null && slots.Length > 0 && slots[0].IsEmpty)
+                {
+                    slots[0].Set(knife, 1);
+                }
+                else
+                {
+                    AddItem(knife, 1);
+                }
+                NotifyChanged();
+            }
+        }
+    }
 
-        NotifyChanged();
+    /// <summary>
+    /// Backward-compatible alias for EquipStartingInventory().
+    /// </summary>
+    public void EquipInitialTestingTools()
+    {
+        EquipStartingInventory();
     }
 
     public bool IsEntireInventoryEmpty()
@@ -245,6 +262,33 @@ public class Inventory : MonoBehaviour
     {
         if (item == null) return false;
         return GetItemCount(item) >= amount;
+    }
+
+    /// <summary>
+    /// Checks whether the inventory has at least the required amount of an item ID.
+    /// </summary>
+    public bool HasItem(string itemId, int amount = 1)
+    {
+        if (string.IsNullOrEmpty(itemId)) return false;
+        return GetItemCount(itemId) >= amount;
+    }
+
+    /// <summary>
+    /// Gets total count of an item ID currently in inventory across all slots.
+    /// </summary>
+    public int GetItemCount(string itemId)
+    {
+        if (string.IsNullOrEmpty(itemId) || slots == null) return 0;
+        int count = 0;
+        for (int i = 0; i < slots.Length; i++)
+        {
+            var slot = slots[i];
+            if (slot != null && !slot.IsEmpty && slot.Item != null && slot.Item.ItemId == itemId)
+            {
+                count += slot.Quantity;
+            }
+        }
+        return count;
     }
 
     /// <summary>

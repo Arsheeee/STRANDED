@@ -56,8 +56,8 @@ public class PlayerInteraction : MonoBehaviour
     private Tilemap shallowOceanTilemap;
     private Tilemap deepOceanTilemap;
 
-    public Inventory Inventory => inventory;
-    public SurvivalStats Survival => survivalStats;
+    public Inventory Inventory => inventory != null ? inventory : (inventory = GetComponent<Inventory>());
+    public SurvivalStats Survival => survivalStats != null ? survivalStats : (survivalStats = GetComponent<SurvivalStats>());
     public FishingSpot ActiveFishingSpot => activeFishingSpot;
     public FishingSpot CurrentTargetSpot => currentTargetSpot;
     public BoatConstructionSite CurrentTargetBoatSite => currentTargetBoatSite;
@@ -135,6 +135,7 @@ public class PlayerInteraction : MonoBehaviour
         LocateWaterTilemaps();
         FishingSpot.EnsureDefaultFishingSpotsExist();
         ResourceNode.EnsureDefaultVineNodesExist();
+        ResourceNode.EnsureStartingCampResourcesExist();
         BoatConstructionSite.EnsureDefaultSiteExists();
         ObjectiveManager.EnsureExists();
         EscapeEndingController.EnsureExists();
@@ -526,7 +527,14 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else
                 {
-                    TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] {currentTargetNode.DisplayName} (Requires {currentTargetNode.RequiredTool.ToDisplayName()})");
+                    if (currentTool == ToolType.StoneKnife)
+                    {
+                        TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] {currentTargetNode.DisplayName} (Knife too weak)");
+                    }
+                    else
+                    {
+                        TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] {currentTargetNode.DisplayName} (Requires {currentTargetNode.RequiredTool.ToDisplayName()})");
+                    }
                 }
             }
             else

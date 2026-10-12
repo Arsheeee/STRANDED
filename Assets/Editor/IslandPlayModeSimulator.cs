@@ -553,7 +553,7 @@ public static class IslandPlayModeSimulator
         }
 
         inv.Clear();
-        inv.EquipInitialTestingTools();
+        inv.EquipStartingInventory();
 
         var slot0 = inv.GetSlot(0);
         var slot1 = inv.GetSlot(1);
@@ -561,14 +561,17 @@ public static class IslandPlayModeSimulator
         var slot3 = inv.GetSlot(3);
 
         if (slot0.IsEmpty || slot0.Item.ToolType != ToolType.StoneKnife ||
-            slot1.IsEmpty || slot1.Item.ToolType != ToolType.StoneAxe ||
-            slot2.IsEmpty || slot2.Item.ToolType != ToolType.StonePickaxe ||
-            slot3.IsEmpty || slot3.Item.ToolType != ToolType.FishingRod)
+            !slot1.IsEmpty || !slot2.IsEmpty || !slot3.IsEmpty)
         {
-            Debug.LogError("TEST FAILED: Starting equipment tools (Knife, Axe, Pickaxe, Rod) not assigned to hotbar slots 0-3!");
+            Debug.LogError("TEST FAILED: Starting equipment must contain strictly ONE Stone Knife in hotbar slot 0 and no other tools!");
             return;
         }
-        Debug.Log("  [OK] Inventory initialized with 36 slots. Hotbar slots 0-3 assigned primitive starting tools.");
+        Debug.Log("  [OK] Inventory initialized with 36 slots. Strictly 1 Stone Knife in slot 0 and no free advanced tools.");
+
+        // Equip testing tools into slots 1-3 to validate tool switching and interaction hooks
+        inv.SetSlot(1, ItemDatabase.GetToolItem(ToolType.StoneAxe), 1);
+        inv.SetSlot(2, ItemDatabase.GetToolItem(ToolType.StonePickaxe), 1);
+        inv.SetSlot(3, ItemDatabase.GetToolItem(ToolType.FishingRod), 1);
 
         // 4. Test Hotbar Selection & Tool Synchronization
         Debug.Log("--- 2. Testing Hotbar Slot Selection & Player Tool Synchronization ---");
@@ -780,8 +783,8 @@ public static class IslandPlayModeSimulator
         sampleBush.Regrow();
         samplePalm.Regrow();
         inv.Clear();
-        inv.EquipInitialTestingTools();
-        hotbar.SelectSlot(1);
+        inv.EquipStartingInventory();
+        hotbar.SelectSlot(0);
 
         Debug.Log("=====================================================================");
         Debug.Log("BATCH 4 INVENTORY TEST SUITE COMPLETED - ALL 38 CHECKS PASSED!");

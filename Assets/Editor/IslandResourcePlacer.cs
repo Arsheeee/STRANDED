@@ -90,6 +90,7 @@ public class IslandResourcePlacer : EditorWindow
         Sprite spPalmFull = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/palm_coconut_full.png");
         Sprite spPalmEmpty = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/palm_coconut_empty.png");
         Sprite spDriftwood = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/driftwood_log.png");
+        Sprite spDriftwoodSmall = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/driftwood_small.png");
 
         Sprite spBoulder = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Rocks/rock_boulder_large.png");
         Sprite spRockMed = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Rocks/rock_slate_medium.png");
@@ -315,7 +316,14 @@ public class IslandResourcePlacer : EditorWindow
                     {
                         if (CanPlace(pos, 3.5f))
                         {
-                            CreateDriftwood(pos, spDriftwood, pDriftwood);
+                            if (GetNoise(x, y, 77) < 0.5f && spDriftwoodSmall != null)
+                            {
+                                CreateVerySmallLog(pos, spDriftwoodSmall, pDriftwood);
+                            }
+                            else
+                            {
+                                CreateDriftwood(pos, spDriftwood, pDriftwood);
+                            }
                             RegisterPlaced(pos);
                             countDriftwood++;
                         }
@@ -646,6 +654,7 @@ public class IslandResourcePlacer : EditorWindow
         }
 
         VineResourcePlacer.PlaceVineResources();
+        ResourceNode.EnsureStartingCampResourcesExist();
 
         // 6. Save Scene
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
@@ -693,6 +702,8 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Wood);
         SetSerializedField(node, "requiredTool", (int)ToolType.StoneAxe);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Tree);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Large);
         SetSerializedField(node, "nodeDisplayName", treeName);
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.6f);
@@ -700,6 +711,7 @@ public class IslandResourcePlacer : EditorWindow
         SetSerializedField(node, "depletedSprite", stump);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", false);
+        SetSerializedField(node, "regrowthDuration", 90f);
 
         node.UpdateSortingOrder();
     }
@@ -721,6 +733,8 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Coconut);
         SetSerializedField(node, "requiredTool", (int)ToolType.None);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Palm);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Large);
         SetSerializedField(node, "nodeDisplayName", "Coconut Palm");
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.6f);
@@ -728,6 +742,7 @@ public class IslandResourcePlacer : EditorWindow
         SetSerializedField(node, "depletedSprite", empty);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", false);
+        SetSerializedField(node, "regrowthDuration", 60f);
 
         node.UpdateSortingOrder();
     }
@@ -749,6 +764,8 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Stone);
         SetSerializedField(node, "requiredTool", (int)ToolType.StonePickaxe);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Rock);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Large);
         SetSerializedField(node, "nodeDisplayName", "Large Boulder");
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.5f);
@@ -756,6 +773,7 @@ public class IslandResourcePlacer : EditorWindow
         SetSerializedField(node, "depletedSprite", smallPebble);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", false);
+        SetSerializedField(node, "regrowthDuration", 90f);
 
         node.UpdateSortingOrder();
     }
@@ -777,12 +795,15 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Stone);
         SetSerializedField(node, "requiredTool", (int)ToolType.StonePickaxe);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Rock);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Medium);
         SetSerializedField(node, "nodeDisplayName", "Slate Rock");
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.4f);
         SetSerializedField(node, "availableSprite", rock);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 60f);
 
         node.UpdateSortingOrder();
     }
@@ -803,13 +824,16 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Stone);
-        SetSerializedField(node, "requiredTool", (int)ToolType.StonePickaxe);
-        SetSerializedField(node, "nodeDisplayName", "Loose Stones");
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Rock);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.VerySmall);
+        SetSerializedField(node, "nodeDisplayName", "Small Pebble");
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.3f);
         SetSerializedField(node, "availableSprite", rock);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 45f);
 
         node.UpdateSortingOrder();
     }
@@ -831,6 +855,8 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Berries);
         SetSerializedField(node, "requiredTool", (int)ToolType.None);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Bush);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Medium);
         SetSerializedField(node, "nodeDisplayName", "Berry Bush");
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.4f);
@@ -838,6 +864,7 @@ public class IslandResourcePlacer : EditorWindow
         SetSerializedField(node, "depletedSprite", empty);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", false);
+        SetSerializedField(node, "regrowthDuration", 45f);
 
         node.UpdateSortingOrder();
     }
@@ -858,13 +885,16 @@ public class IslandResourcePlacer : EditorWindow
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Fiber);
-        SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneAxe);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Bush);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Medium);
         SetSerializedField(node, "nodeDisplayName", name);
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.3f);
         SetSerializedField(node, "availableSprite", bushSprite);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 45f);
 
         node.UpdateSortingOrder();
     }
@@ -887,12 +917,15 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Fiber);
         SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Bush);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.VerySmall);
         SetSerializedField(node, "nodeDisplayName", name);
         SetSerializedField(node, "yieldAmount", 1);
         SetSerializedField(node, "interactionRange", 1.2f);
         SetSerializedField(node, "availableSprite", plantSprite);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 45f);
 
         node.UpdateSortingOrder();
     }
@@ -914,12 +947,45 @@ public class IslandResourcePlacer : EditorWindow
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Wood);
         SetSerializedField(node, "requiredTool", (int)ToolType.StoneAxe);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Log);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.Medium);
         SetSerializedField(node, "nodeDisplayName", "Driftwood Log");
         SetSerializedField(node, "yieldAmount", 2);
         SetSerializedField(node, "interactionRange", 1.3f);
         SetSerializedField(node, "availableSprite", logSprite);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 60f);
+
+        node.UpdateSortingOrder();
+    }
+
+    private static void CreateVerySmallLog(Vector2 pos, Sprite logSprite, Transform parent)
+    {
+        GameObject go = new GameObject($"Driftwood_Branch_{pos.x:F0}_{pos.y:F0}");
+        go.transform.position = new Vector3(pos.x, pos.y, 0f);
+        go.transform.SetParent(parent);
+
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = logSprite;
+        sr.sortingOrder = ResourceNode.BASE_SORTING_ORDER + Mathf.RoundToInt(-pos.y * 10f);
+
+        BoxCollider2D col = go.AddComponent<BoxCollider2D>();
+        col.size = new Vector2(0.50f, 0.22f);
+        col.offset = new Vector2(0f, 0.11f);
+
+        ResourceNode node = go.AddComponent<ResourceNode>();
+        SetSerializedField(node, "resourceType", (int)ResourceType.Wood);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Log);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.VerySmall);
+        SetSerializedField(node, "nodeDisplayName", "Small Log");
+        SetSerializedField(node, "yieldAmount", 1);
+        SetSerializedField(node, "interactionRange", 1.3f);
+        SetSerializedField(node, "availableSprite", logSprite);
+        SetSerializedField(node, "depleteOnHarvest", true);
+        SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 45f);
 
         node.UpdateSortingOrder();
     }
