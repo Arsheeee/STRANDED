@@ -297,6 +297,7 @@ public class FishingSpot : MonoBehaviour
         SetVisualsState(FishingState.BiteAlert);
 
         TemporaryResourceHUD.Instance?.ShowNotification("! FISH ON THE LINE! Press [E] to Reel In!", new Color(1.0f, 0.85f, 0.2f));
+        AudioManager.Instance?.PlayFishBite();
         Debug.Log($"[STRANDED Fishing] Fish biting at '{spotName}'! Reaction window: {reactionWindow:F1}s");
     }
 
@@ -439,6 +440,8 @@ public class FishingSpot : MonoBehaviour
         activePlayer.TriggerToolAction(ToolType.FishingRod);
 
         TemporaryResourceHUD.Instance?.ShowNotification("Caught Raw Fish!", new Color(0.35f, 0.95f, 0.45f));
+        AudioManager.Instance?.PlayFishCatch();
+        AudioManager.Instance?.PlayItemCollect();
         Debug.Log($"[STRANDED Fishing] Player successfully caught Raw Fish at '{spotName}'!");
 
         FinishAttempt(true);
@@ -447,6 +450,7 @@ public class FishingSpot : MonoBehaviour
     private void FailCatch(string message)
     {
         TemporaryResourceHUD.Instance?.ShowNotification(message, new Color(0.9f, 0.55f, 0.45f));
+        AudioManager.Instance?.PlayCraftFail();
         FinishAttempt(false);
     }
 

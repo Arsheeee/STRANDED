@@ -379,8 +379,18 @@ public class IslandTilemapBuilder : EditorWindow
                     {
                         riverT = tRiver01;
                     }
-                    posRiver.Add(pos);
-                    tilesRiver.Add(riverT);
+
+                    // Crossing ford (X=174, Y=151..156) is placed on Shallow Water map so it has no solid blocking collider and can be waded across
+                    if (x == 174 && y >= 151 && y <= 156)
+                    {
+                        posShallow.Add(pos);
+                        tilesShallow.Add(riverT);
+                    }
+                    else
+                    {
+                        posRiver.Add(pos);
+                        tilesRiver.Add(riverT);
+                    }
                 }
                 else if (c == 6) // CLIFF_WALL
                 {
@@ -423,6 +433,7 @@ public class IslandTilemapBuilder : EditorWindow
         // 4. Setup Colliders
         EditorUtility.DisplayProgressBar("STRANDED Island Builder", "Configuring Colliders...", 0.88f);
         SetupTilemapCollider(tmDeep);
+        SetupTilemapCollider(tmRiver);
         SetupCliffCollider(tmCliffs);
 
         // 5. Setup Player Position at Starting Camp
@@ -667,7 +678,7 @@ public class IslandTilemapBuilder : EditorWindow
             "Assets/Art/Terrain/Water/River/river_water_base_01_f1.png",
             "Assets/Art/Terrain/Water/River/river_water_base_01_f2.png",
             "Assets/Art/Terrain/Water/River/river_water_base_01_f3.png"
-        }, Tile.ColliderType.None, 4f);
+        }, Tile.ColliderType.Grid, 4f);
         cache["Water/River/river_water_base_01.png"] = atRiver01;
 
         // Shoreline Foam 01 (Rolling white surf along beach water)
@@ -687,7 +698,7 @@ public class IslandTilemapBuilder : EditorWindow
             "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f1.png",
             "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f2.png",
             "Assets/Art/Terrain/Water/River/river_lilypad_lotus_f3.png"
-        }, Tile.ColliderType.None, 4f);
+        }, Tile.ColliderType.Grid, 4f);
         cache["Water/River/river_lilypad_lotus.png"] = atRiverLilypad;
 
         AnimatedTile atRiverReeds = CreateOrLoadAnimatedTile("river_reeds", new string[]
@@ -696,7 +707,7 @@ public class IslandTilemapBuilder : EditorWindow
             "Assets/Art/Terrain/Water/River/river_reeds_f1.png",
             "Assets/Art/Terrain/Water/River/river_reeds_f2.png",
             "Assets/Art/Terrain/Water/River/river_reeds_f3.png"
-        }, Tile.ColliderType.None, 4f);
+        }, Tile.ColliderType.Grid, 4f);
         cache["Water/River/river_reeds.png"] = atRiverReeds;
 
         AnimatedTile atRiverPebbles = CreateOrLoadAnimatedTile("river_pebbles", new string[]
@@ -705,7 +716,7 @@ public class IslandTilemapBuilder : EditorWindow
             "Assets/Art/Terrain/Water/River/river_pebbles_f1.png",
             "Assets/Art/Terrain/Water/River/river_pebbles_f2.png",
             "Assets/Art/Terrain/Water/River/river_pebbles_f3.png"
-        }, Tile.ColliderType.None, 4f);
+        }, Tile.ColliderType.Grid, 4f);
         cache["Water/River/river_pebbles.png"] = atRiverPebbles;
 
         // Sea Shallow Animated Variations: Starfish, Pebbles

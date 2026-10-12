@@ -122,6 +122,11 @@ public class CraftingUI : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            AudioManager.Instance?.PlayInventoryOpen();
+        }
+        else
+        {
+            AudioManager.Instance?.PlayInventoryClose();
         }
     }
 
@@ -458,6 +463,7 @@ public class CraftingUI : MonoBehaviour
             {
                 if (GUI.Button(craftBtnRect, $"CRAFT {selectedRecipe.DisplayName.ToUpper()}", craftBtnStyle))
                 {
+                    AudioManager.Instance?.PlayButtonClick();
                     craftingManager.Craft(selectedRecipe, inventory, out _);
                 }
             }

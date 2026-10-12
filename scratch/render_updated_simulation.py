@@ -11,7 +11,7 @@ def render():
     
     tree_tropical = Image.open('Assets/Art/Environment/Trees/tree_tropical_mature.png').convert('RGBA')
     tree_pine = Image.open('Assets/Art/Environment/Trees/tree_pine_mature.png').convert('RGBA')
-    tree_sakura = Image.open('Assets/Art/Environment/Trees/tree_sakura_mature.png').convert('RGBA')
+    tree_spruce = Image.open('Assets/Art/Environment/Trees/tree_spruce_mature.png').convert('RGBA')
     tree_birch = Image.open('Assets/Art/Environment/Trees/tree_birch_mature.png').convert('RGBA')
     tree_palm = Image.open('Assets/Art/Environment/Trees/palm_coconut_full.png').convert('RGBA')
     
@@ -64,7 +64,7 @@ def render():
     tree_defs = [
         ("Tropical Oak", tree_tropical, 30, "Lush Forest & Camp"),
         ("Conifer Pine", tree_pine, 190, "Plateau & Highlands"),
-        ("Pink Sakura", tree_sakura, 350, "Scenic Groves & Meadows"),
+        ("Emerald Spruce", tree_spruce, 350, "Scenic Groves & Meadows"),
         ("Slender Birch", tree_birch, 520, "Forest & Clearings"),
         ("Coconut Palm", tree_palm, 670, "Tropical Beaches"),
     ]

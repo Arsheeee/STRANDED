@@ -189,6 +189,7 @@ public class EscapeEndingController : MonoBehaviour
         // 2. Clear HUD prompts and announce departure
         TemporaryResourceHUD.Instance?.SetInteractionPrompt("");
         TemporaryResourceHUD.Instance?.ShowNotification("Setting sail! Launching escape boat...", new Color(0.35f, 1.0f, 0.55f));
+        AudioManager.Instance?.PlayBoatLaunch();
 
         // 3. Disable player movement and interactions during ending
         if (activePlayer != null)
@@ -268,6 +269,8 @@ public class EscapeEndingController : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+        AudioManager.Instance?.PlayVictory();
 
         Debug.Log("[STRANDED Escape] Departure sequence complete! Presenting Victory Screen.");
         OnVictoryReached?.Invoke();
@@ -375,6 +378,7 @@ public class EscapeEndingController : MonoBehaviour
         Rect restartRect = new Rect(modalX + 32, btnY, btnW, btnH);
         if (GUI.Button(restartRect, "RESTART GAME", restartBtnStyle))
         {
+            AudioManager.Instance?.PlayButtonClick();
             RestartGame();
         }
 

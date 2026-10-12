@@ -129,6 +129,22 @@ public class SaveManager : MonoBehaviour
 
     /// <summary>
     /// Saves current game state to JSON on disk under Application.persistentDataPath.
+    /// </summary>
+    public bool SaveGame()
+    {
+        return SaveGame(out _);
+    }
+
+    /// <summary>
+    /// Restores game state from JSON on disk.
+    /// </summary>
+    public bool LoadGame()
+    {
+        return LoadGame(out _);
+    }
+
+    /// <summary>
+    /// Saves current game state to JSON on disk under Application.persistentDataPath.
     /// Serializes player position, inventory slots, survival stats, objectives, and boat stages.
     /// </summary>
     public bool SaveGame(out string message)
@@ -233,6 +249,7 @@ public class SaveManager : MonoBehaviour
 
             message = "Game Saved Successfully!";
             TemporaryResourceHUD.Instance?.ShowNotification(message, new Color(0.35f, 1.0f, 0.55f));
+            AudioManager.Instance?.PlaySaveSuccess();
             Debug.Log($"[STRANDED Save] Game saved successfully to: {SaveFilePath}");
 
             OnGameSaved?.Invoke(data);
@@ -385,6 +402,7 @@ public class SaveManager : MonoBehaviour
 
         message = "Game Loaded Successfully!";
         TemporaryResourceHUD.Instance?.ShowNotification(message, new Color(0.40f, 0.90f, 1.0f));
+        AudioManager.Instance?.PlayLoadSuccess();
         Debug.Log("[STRANDED Save] Game state loaded successfully.");
 
         OnGameLoaded?.Invoke(data);

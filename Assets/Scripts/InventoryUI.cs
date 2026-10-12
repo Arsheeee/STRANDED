@@ -123,10 +123,12 @@ public class InventoryUI : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            AudioManager.Instance?.PlayInventoryOpen();
         }
         else
         {
             Cursor.visible = true;
+            AudioManager.Instance?.PlayInventoryClose();
         }
     }
 
@@ -367,6 +369,7 @@ public class InventoryUI : MonoBehaviour
         Rect saveBtnRect = new Rect(saveX + 16, cardY + 34, saveFrame.width - 32, 28);
         if (GUI.Button(saveBtnRect, "SAVE GAME (F5)", saveBtnStyle ?? GUI.skin.button))
         {
+            AudioManager.Instance?.PlayButtonClick();
             saveMgr?.SaveGame(out _);
             e.Use();
         }
@@ -376,6 +379,7 @@ public class InventoryUI : MonoBehaviour
         GUI.enabled = hasSave;
         if (GUI.Button(loadBtnRect, "LOAD GAME (F9)", saveBtnStyle ?? GUI.skin.button))
         {
+            AudioManager.Instance?.PlayButtonClick();
             saveMgr?.LoadGame(out _);
             e.Use();
         }

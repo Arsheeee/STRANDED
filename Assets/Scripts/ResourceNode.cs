@@ -190,6 +190,7 @@ public class ResourceNode : MonoBehaviour
             // Requirement not met: Reject harvest and display clear feedback
             string reqName = requiredTool.ToDisplayName();
             TemporaryResourceHUD.ShowRequirementFeedback($"Requires {reqName}");
+            AudioManager.Instance?.PlayCraftFail();
             return 0;
         }
 
@@ -203,6 +204,7 @@ public class ResourceNode : MonoBehaviour
             {
                 // Inventory is full: reject harvest atomically, preserve node state, show clear feedback
                 TemporaryResourceHUD.ShowRequirementFeedback("Inventory Full");
+                AudioManager.Instance?.PlayCraftFail();
                 return 0;
             }
         }
@@ -221,9 +223,11 @@ public class ResourceNode : MonoBehaviour
             playerInv.AddItem(resItem, collected);
         }
 
-        // Display inventory collection feedback
+        // Display inventory collection feedback and trigger audio
         string itemDisplayName = resItem != null ? resItem.DisplayName : DisplayName;
         TemporaryResourceHUD.RecordCollection(resourceType, collected, itemDisplayName);
+        AudioManager.Instance?.PlayResourceGather(resourceType);
+        AudioManager.Instance?.PlayItemCollect();
 
         // Visual bounce feedback on interaction
         if (gameObject.activeInHierarchy)

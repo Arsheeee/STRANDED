@@ -71,8 +71,21 @@ public class IslandResourcePlacer : EditorWindow
         Sprite spPineStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_pine_stump.png");
         Sprite spBirchMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_birch_mature.png");
         Sprite spBirchStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_birch_stump.png");
-        Sprite spSakuraMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_sakura_mature.png");
-        Sprite spSakuraStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_sakura_stump.png");
+        Sprite spMapleMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_maple_mature.png");
+        Sprite spMapleStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_maple_stump.png");
+        Sprite spMahoganyMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_mahogany_mature.png");
+        Sprite spMahoganyStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_mahogany_stump.png");
+        Sprite spSpruceMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_spruce_mature.png");
+        Sprite spSpruceStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_spruce_stump.png");
+
+        Sprite spFirMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_fir_mature.png");
+        Sprite spFirStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_fir_stump.png");
+        Sprite spCedarMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_cedar_mature.png");
+        Sprite spCedarStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_cedar_stump.png");
+        Sprite spMossyOakMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_mossy_oak_mature.png");
+        Sprite spMossyOakStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_mossy_oak_stump.png");
+        Sprite spFruitMature = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_fruit_mature.png");
+        Sprite spFruitStump = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/tree_fruit_stump.png");
 
         Sprite spPalmFull = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/palm_coconut_full.png");
         Sprite spPalmEmpty = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Trees/palm_coconut_empty.png");
@@ -84,15 +97,44 @@ public class IslandResourcePlacer : EditorWindow
 
         Sprite spBerryFull = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_berry_full.png");
         Sprite spBerryEmpty = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_berry_empty.png");
+        Sprite spBushSmall = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_shrub_small.png");
+        Sprite spBushMed = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_foliage_medium.png");
+        Sprite spBushPink = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_flowering_pink.png");
+        Sprite spBushWhite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_flowering_white.png");
+        Sprite spBushGolden = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/bush_autumn_golden.png");
         Sprite spFiberFern = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/plant_fiber_fern.png");
         Sprite spFiberTuft = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/plant_fiber_tuft.png");
+        Sprite spGrassWild = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/plant_grass_wild.png");
 
-        if (spMatureTree == null || spBoulder == null || spBerryFull == null || spPalmFull == null || spFiberFern == null || spPineMature == null || spBirchMature == null || spSakuraMature == null)
+        if (spMatureTree == null || spBoulder == null || spBerryFull == null || spPalmFull == null || spFiberFern == null || spPineMature == null || spBirchMature == null)
         {
             EditorUtility.ClearProgressBar();
             Debug.LogError("One or more required environmental sprite assets are missing! Re-import Assets/Art/Environment.");
             return;
         }
+
+        // Tree Specifications for Clustered Forest Biomes & Diverse Roster
+        var allTreeSpecs = new List<(string name, Sprite mature, Sprite stump, float colWidth, float colHeight)>
+        {
+            ("Vibrant Emerald Fir", spFirMature != null ? spFirMature : spPineMature, spFirStump != null ? spFirStump : spPineStump, 0.65f, 0.30f),
+            ("Pinecone Cedar", spCedarMature != null ? spCedarMature : spPineMature, spCedarStump != null ? spCedarStump : spPineStump, 0.65f, 0.30f),
+            ("Emerald Spruce Tree", spSpruceMature != null ? spSpruceMature : spPineMature, spSpruceStump != null ? spSpruceStump : spPineStump, 0.70f, 0.30f),
+            ("Mountain Pine", spPineMature, spPineStump, 0.65f, 0.30f),
+            ("Slender Birch Tree", spBirchMature, spBirchStump, 0.55f, 0.28f),
+            ("Mossy Ancient Oak", spMossyOakMature != null ? spMossyOakMature : spMatureTree, spMossyOakStump != null ? spMossyOakStump : spTreeStump, 0.80f, 0.35f),
+            ("Golden Fruit Tree", spFruitMature != null ? spFruitMature : spMatureTree, spFruitStump != null ? spFruitStump : spTreeStump, 0.75f, 0.32f),
+            ("Amber Maple Tree", spMapleMature != null ? spMapleMature : spMatureTree, spMapleStump != null ? spMapleStump : spTreeStump, 0.75f, 0.32f),
+            ("Mahogany Tree", spMahoganyMature != null ? spMahoganyMature : spMatureTree, spMahoganyStump != null ? spMahoganyStump : spTreeStump, 0.75f, 0.32f),
+            ("Tropical Oak", spMatureTree, spTreeStump, 0.80f, 0.35f)
+        };
+
+        var highlandTreeSpecs = new List<(string name, Sprite mature, Sprite stump, float colWidth, float colHeight)>
+        {
+            ("Mountain Pine", spPineMature, spPineStump, 0.65f, 0.30f),
+            ("Vibrant Emerald Fir", spFirMature != null ? spFirMature : spPineMature, spFirStump != null ? spFirStump : spPineStump, 0.65f, 0.30f),
+            ("Pinecone Cedar", spCedarMature != null ? spCedarMature : spPineMature, spCedarStump != null ? spCedarStump : spPineStump, 0.65f, 0.30f),
+            ("Emerald Spruce Tree", spSpruceMature != null ? spSpruceMature : spPineMature, spSpruceStump != null ? spSpruceStump : spPineStump, 0.70f, 0.30f)
+        };
 
         // 2. Prepare Root Hierarchy
         EditorUtility.DisplayProgressBar("STRANDED Resource Placement", "Setting up Environment hierarchy...", 0.3f);
@@ -206,7 +248,7 @@ public class IslandResourcePlacer : EditorWindow
         CreateTree(new Vector2(131.5f, 124.5f), spMatureTree, spTreeStump, pTrees, "Tropical Tree", 0.80f, 0.35f);
         RegisterPlaced(new Vector2(131.5f, 124.5f)); countTrees++;
 
-        CreateTree(new Vector2(140.5f, 125.5f), spSakuraMature, spSakuraStump, pTrees, "Sakura Blossom Tree", 0.70f, 0.30f);
+        CreateTree(new Vector2(140.5f, 125.5f), spSpruceMature != null ? spSpruceMature : spMatureTree, spSpruceStump != null ? spSpruceStump : spTreeStump, pTrees, "Emerald Spruce Tree", 0.70f, 0.30f);
         RegisterPlaced(new Vector2(140.5f, 125.5f)); countTrees++;
 
         CreateBerryBush(new Vector2(138.5f, 116.5f), spBerryFull, spBerryEmpty, pBushes);
@@ -376,12 +418,15 @@ public class IslandResourcePlacer : EditorWindow
                             countFiber++;
                         }
                     }
-                    // Hardy mountain pine trees on rocky plateau
-                    else if (localVal < 0.29f)
+                    // Hardy mountain conifers on rocky plateau
+                    else if (localVal < 0.22f)
                     {
-                        if (CanPlace(pos, 4.0f))
+                        if (CanPlace(pos, 2.8f))
                         {
-                            CreateTree(pos, spPineMature, spPineStump, pTrees, "Mountain Pine", 0.65f, 0.30f);
+                            float hNoise = GetNoise(x, y, 88);
+                            int hIdx = Mathf.Clamp(Mathf.FloorToInt(hNoise * highlandTreeSpecs.Count), 0, highlandTreeSpecs.Count - 1);
+                            var spec = highlandTreeSpecs[hIdx];
+                            CreateTree(pos, spec.mature, spec.stump, pTrees, spec.name, spec.colWidth, spec.colHeight);
                             RegisterPlaced(pos);
                             countTrees++;
                         }
@@ -390,38 +435,73 @@ public class IslandResourcePlacer : EditorWindow
                 // --- BIOME 4: FOREST & MEADOWS (Tile 3: Grass) ---
                 else if (t == 3)
                 {
-                    // Varied tree species in lush groves and clearings
-                    if (clusterVal > 0.48f && localVal < 0.11f)
+                    bool placeTree = false;
+                    float treeSpacing = 2.4f;
+
+                    // Dense forest groves & clusters
+                    if (clusterVal > 0.32f && localVal < 0.32f)
                     {
-                        if (CanPlace(pos, 3.8f))
+                        placeTree = true;
+                        treeSpacing = 2.4f;
+                    }
+                    // Open meadows & scattered clearings
+                    else if (clusterVal <= 0.32f && localVal < 0.08f)
+                    {
+                        placeTree = true;
+                        treeSpacing = 3.2f;
+                    }
+
+                    if (placeTree && CanPlace(pos, treeSpacing))
+                    {
+                        // Forest grove clustering algorithm:
+                        // Regional macro noise creates continuous forest biomes/groves of the same tree type
+                        float groveSpecies = GetNoise(x / 14, y / 14, 555);
+                        float grovePurity = GetNoise(x / 8, y / 8, 333);
+
+                        int specIdx;
+                        if (grovePurity > 0.25f)
                         {
-                            float varNoise = GetNoise(x, y, 77);
-                            if (varNoise < 0.28f)
+                            // Coherent species grove (clusters of same type of trees creating a forest-like terrain)
+                            specIdx = Mathf.Clamp(Mathf.FloorToInt(groveSpecies * allTreeSpecs.Count), 0, allTreeSpecs.Count - 1);
+                        }
+                        else
+                        {
+                            // Organic mixed woodland transition
+                            float mixNoise = GetNoise(x, y, 77);
+                            specIdx = Mathf.Clamp(Mathf.FloorToInt(mixNoise * allTreeSpecs.Count), 0, allTreeSpecs.Count - 1);
+                        }
+
+                        var spec = allTreeSpecs[specIdx];
+                        CreateTree(pos, spec.mature, spec.stump, pTrees, spec.name, spec.colWidth, spec.colHeight);
+                        RegisterPlaced(pos);
+                        countTrees++;
+                    }
+                    // Diverse Bushes in forest clearings
+                    else if (clusterVal > 0.35f && localVal < 0.055f)
+                    {
+                        if (CanPlace(pos, 2.5f))
+                        {
+                            float bushNoise = GetNoise(x, y, 62);
+                            if (bushNoise < 0.35f)
                             {
-                                CreateTree(pos, spSakuraMature, spSakuraStump, pTrees, "Sakura Blossom Tree", 0.70f, 0.30f);
+                                CreateBerryBush(pos, spBerryFull, spBerryEmpty, pBushes);
                             }
-                            else if (varNoise < 0.54f)
+                            else if (bushNoise < 0.55f && spBushPink != null)
                             {
-                                CreateTree(pos, spBirchMature, spBirchStump, pTrees, "Birch Tree", 0.55f, 0.28f);
+                                CreateFoliageBush(pos, spBushPink, pBushes, "Flowering Pink Bush");
                             }
-                            else if (varNoise < 0.72f)
+                            else if (bushNoise < 0.75f && spBushWhite != null)
                             {
-                                CreateTree(pos, spPineMature, spPineStump, pTrees, "Pine Tree", 0.65f, 0.30f);
+                                CreateFoliageBush(pos, spBushWhite, pBushes, "Flowering White Bush");
+                            }
+                            else if (spBushMed != null)
+                            {
+                                CreateFoliageBush(pos, spBushMed, pBushes, "Foliage Bush");
                             }
                             else
                             {
-                                CreateTree(pos, spMatureTree, spTreeStump, pTrees, "Tropical Tree", 0.80f, 0.35f);
+                                CreateBerryBush(pos, spBerryFull, spBerryEmpty, pBushes);
                             }
-                            RegisterPlaced(pos);
-                            countTrees++;
-                        }
-                    }
-                    // Berry Bushes in forest clearings
-                    else if (clusterVal > 0.35f && localVal < 0.045f)
-                    {
-                        if (CanPlace(pos, 2.8f))
-                        {
-                            CreateBerryBush(pos, spBerryFull, spBerryEmpty, pBushes);
                             RegisterPlaced(pos);
                             countBushes++;
                         }
@@ -429,7 +509,7 @@ public class IslandResourcePlacer : EditorWindow
                     // Forest Fiber plants
                     else if (localVal < 0.055f)
                     {
-                        if (CanPlace(pos, 2.2f))
+                        if (CanPlace(pos, 2.0f))
                         {
                             CreateFiberPlant(pos, spFiberFern, pFiber, "Forest Fern");
                             RegisterPlaced(pos);
@@ -456,13 +536,21 @@ public class IslandResourcePlacer : EditorWindow
                         if (CanPlace(pos, 4.0f))
                         {
                             float varNoise = GetNoise(x, y, 88);
-                            if (varNoise < 0.35f)
+                            if (varNoise < 0.22f)
                             {
                                 CreateTree(pos, spBirchMature, spBirchStump, pTrees, "Birch Tree", 0.55f, 0.28f);
                             }
-                            else if (varNoise < 0.65f)
+                            else if (varNoise < 0.44f && spMapleMature != null)
+                            {
+                                CreateTree(pos, spMapleMature, spMapleStump, pTrees, "Amber Maple Tree", 0.70f, 0.30f);
+                            }
+                            else if (varNoise < 0.66f)
                             {
                                 CreateTree(pos, spPineMature, spPineStump, pTrees, "Pine Tree", 0.65f, 0.30f);
+                            }
+                            else if (varNoise < 0.85f && spSpruceMature != null)
+                            {
+                                CreateTree(pos, spSpruceMature, spSpruceStump, pTrees, "Mountain Spruce", 0.65f, 0.30f);
                             }
                             else
                             {
@@ -472,34 +560,50 @@ public class IslandResourcePlacer : EditorWindow
                             countTrees++;
                         }
                     }
-                    // Occasional interior boulders
-                    else if (clusterVal < 0.22f && localVal < 0.03f)
+                    // Interior bushes and shrubs (NO large boulders in interior plains!)
+                    else if (localVal < 0.065f)
                     {
-                        if (CanPlace(pos, 3.2f))
+                        if (CanPlace(pos, 2.6f))
                         {
-                            CreateBoulder(pos, spBoulder, spRockSmall, pRocks);
+                            float bushNoise = GetNoise(x, y, 94);
+                            if (bushNoise < 0.40f)
+                            {
+                                CreateBerryBush(pos, spBerryFull, spBerryEmpty, pBushes);
+                            }
+                            else if (bushNoise < 0.70f && spBushSmall != null)
+                            {
+                                CreateFoliageBush(pos, spBushSmall, pBushes, "Green Shrub");
+                            }
+                            else if (spBushGolden != null)
+                            {
+                                CreateFoliageBush(pos, spBushGolden, pBushes, "Golden Shrub");
+                            }
+                            else
+                            {
+                                CreateBerryBush(pos, spBerryFull, spBerryEmpty, pBushes);
+                            }
                             RegisterPlaced(pos);
-                            countBoulders++;
+                            countBushes++;
                         }
                     }
-                    // Interior fiber
+                    // Interior fiber & ferns
                     else if (localVal < 0.045f)
                     {
-                        if (CanPlace(pos, 2.2f))
+                        if (CanPlace(pos, 2.0f))
                         {
                             CreateFiberPlant(pos, spFiberFern, pFiber, "Wild Fern");
                             RegisterPlaced(pos);
                             countFiber++;
                         }
                     }
-                    // Interior berry bushes
-                    else if (localVal < 0.065f)
+                    // Small stone pebbles and slate rocks (replaces boulders on interior plains)
+                    else if (clusterVal < 0.22f && localVal < 0.035f)
                     {
-                        if (CanPlace(pos, 2.8f))
+                        if (CanPlace(pos, 2.5f))
                         {
-                            CreateBerryBush(pos, spBerryFull, spBerryEmpty, pBushes);
+                            CreateSmallRock(pos, spRockSmall, pRocks);
                             RegisterPlaced(pos);
-                            countBushes++;
+                            countRocksSmall++;
                         }
                     }
                 }
@@ -738,6 +842,33 @@ public class IslandResourcePlacer : EditorWindow
         node.UpdateSortingOrder();
     }
 
+    private static void CreateFoliageBush(Vector2 pos, Sprite bushSprite, Transform parent, string name)
+    {
+        GameObject go = new GameObject($"Bush_{name.Replace(" ", "")}_{pos.x:F0}_{pos.y:F0}");
+        go.transform.position = new Vector3(pos.x, pos.y, 0f);
+        go.transform.SetParent(parent);
+
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = bushSprite;
+        sr.sortingOrder = ResourceNode.BASE_SORTING_ORDER + Mathf.RoundToInt(-pos.y * 10f);
+
+        BoxCollider2D col = go.AddComponent<BoxCollider2D>();
+        col.size = new Vector2(0.60f, 0.30f);
+        col.offset = new Vector2(0f, 0.15f);
+
+        ResourceNode node = go.AddComponent<ResourceNode>();
+        SetSerializedField(node, "resourceType", (int)ResourceType.Fiber);
+        SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
+        SetSerializedField(node, "nodeDisplayName", name);
+        SetSerializedField(node, "yieldAmount", 1);
+        SetSerializedField(node, "interactionRange", 1.3f);
+        SetSerializedField(node, "availableSprite", bushSprite);
+        SetSerializedField(node, "depleteOnHarvest", true);
+        SetSerializedField(node, "destroyOnDeplete", true);
+
+        node.UpdateSortingOrder();
+    }
+
     private static void CreateFiberPlant(Vector2 pos, Sprite plantSprite, Transform parent, string name)
     {
         GameObject go = new GameObject($"Plant_Fiber_{pos.x:F0}_{pos.y:F0}");
@@ -748,17 +879,17 @@ public class IslandResourcePlacer : EditorWindow
         sr.sprite = plantSprite;
         sr.sortingOrder = ResourceNode.BASE_SORTING_ORDER + Mathf.RoundToInt(-pos.y * 10f);
 
-        // Small circle collider for approaching and harvesting
+        // Small circle collider for approaching and harvesting (adjusted for shrunk size)
         CircleCollider2D col = go.AddComponent<CircleCollider2D>();
-        col.radius = 0.35f;
-        col.offset = new Vector2(0f, 0.18f);
+        col.radius = 0.22f;
+        col.offset = new Vector2(0f, 0.10f);
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Fiber);
         SetSerializedField(node, "requiredTool", (int)ToolType.StoneKnife);
         SetSerializedField(node, "nodeDisplayName", name);
         SetSerializedField(node, "yieldAmount", 1);
-        SetSerializedField(node, "interactionRange", 1.4f);
+        SetSerializedField(node, "interactionRange", 1.2f);
         SetSerializedField(node, "availableSprite", plantSprite);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
@@ -777,15 +908,15 @@ public class IslandResourcePlacer : EditorWindow
         sr.sortingOrder = ResourceNode.BASE_SORTING_ORDER + Mathf.RoundToInt(-pos.y * 10f);
 
         BoxCollider2D col = go.AddComponent<BoxCollider2D>();
-        col.size = new Vector2(1.20f, 0.45f);
-        col.offset = new Vector2(0f, 0.22f);
+        col.size = new Vector2(0.70f, 0.28f);
+        col.offset = new Vector2(0f, 0.14f);
 
         ResourceNode node = go.AddComponent<ResourceNode>();
         SetSerializedField(node, "resourceType", (int)ResourceType.Wood);
         SetSerializedField(node, "requiredTool", (int)ToolType.StoneAxe);
         SetSerializedField(node, "nodeDisplayName", "Driftwood Log");
         SetSerializedField(node, "yieldAmount", 2);
-        SetSerializedField(node, "interactionRange", 1.5f);
+        SetSerializedField(node, "interactionRange", 1.3f);
         SetSerializedField(node, "availableSprite", logSprite);
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);

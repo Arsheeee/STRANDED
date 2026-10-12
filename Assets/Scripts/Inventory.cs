@@ -321,6 +321,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void ClearSlot(int index)
     {
+        InitializeSlots();
         if (index < 0 || index >= slots.Length) return;
         slots[index]?.Clear();
         OnSlotChanged?.Invoke(index);
@@ -332,6 +333,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void Clear()
     {
+        InitializeSlots();
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i]?.Clear();
@@ -345,6 +347,7 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void SetSlot(int index, ItemData item, int quantity)
     {
+        InitializeSlots();
         if (index < 0 || index >= slots.Length) return;
         if (slots[index] == null) slots[index] = new InventorySlot();
         slots[index].Set(item, quantity);

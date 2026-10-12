@@ -47,7 +47,7 @@ def main():
     bush = Image.open('Assets/Art/Environment/Plants/bush_berry_full.png').convert('RGBA')
     tree_tropical = Image.open('Assets/Art/Environment/Trees/tree_tropical_mature.png').convert('RGBA')
     tree_pine = Image.open('Assets/Art/Environment/Trees/tree_pine_mature.png').convert('RGBA')
-    tree_sakura = Image.open('Assets/Art/Environment/Trees/tree_sakura_mature.png').convert('RGBA')
+    tree_spruce = Image.open('Assets/Art/Environment/Trees/tree_spruce_mature.png').convert('RGBA')
     tree_birch = Image.open('Assets/Art/Environment/Trees/tree_birch_mature.png').convert('RGBA')
     tree_palm = Image.open('Assets/Art/Environment/Trees/palm_coconut_full.png').convert('RGBA')
     
@@ -72,7 +72,7 @@ def main():
     
     # 3. Forest Grove
     forest_objs = [
-        (tree_sakura, 103.0, 178.0),
+        (tree_spruce, 103.0, 178.0),
         (tree_birch, 108.0, 177.5),
         (tree_pine, 101.5, 173.0),
         (tree_tropical, 107.5, 172.5),

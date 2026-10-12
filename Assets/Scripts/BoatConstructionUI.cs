@@ -105,12 +105,14 @@ public class BoatConstructionUI : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        AudioManager.Instance?.PlayInventoryOpen();
     }
 
     public void CloseUI()
     {
         isOpen = false;
         currentSite = null;
+        AudioManager.Instance?.PlayInventoryClose();
 
         if (playerMovement != null)
         {
@@ -321,6 +323,7 @@ public class BoatConstructionUI : MonoBehaviour
         {
             if (GUI.Button(btnRect, $"INSTALL {req.DisplayName.ToUpper()}", actionBtnStyle))
             {
+                AudioManager.Instance?.PlayButtonClick();
                 currentSite.InstallNext(inventory, out _);
             }
         }
@@ -351,6 +354,7 @@ public class BoatConstructionUI : MonoBehaviour
         Rect launchBtnRect = new Rect(rx + 24, ry + rh - 126, rw - 48, 52);
         if (GUI.Button(launchBtnRect, "LAUNCH ESCAPE BOAT (SET SAIL)", actionBtnStyle))
         {
+            AudioManager.Instance?.PlayButtonClick();
             var p = FindAnyObjectByType<PlayerInteraction>();
             CloseUI();
             currentSite.TryLaunch(p, out _);
@@ -361,6 +365,7 @@ public class BoatConstructionUI : MonoBehaviour
         Rect btnRect = new Rect(rx + 24, ry + rh - 64, rw - 48, 44);
         if (GUI.Button(btnRect, "CLOSE SHIPYARD INSPECTION", actionBtnStyle))
         {
+            AudioManager.Instance?.PlayButtonClick();
             CloseUI();
         }
     }

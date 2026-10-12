@@ -139,6 +139,7 @@ public class PlayerInteraction : MonoBehaviour
         ObjectiveManager.EnsureExists();
         EscapeEndingController.EnsureExists();
         SaveManager.EnsureExists();
+        AudioManager.EnsureExists();
     }
 
     private void LocateWaterTilemaps()
@@ -246,7 +247,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             // Update prompt for active fishing state
-            if (TemporaryResourceHUD.Instance != null)
+            if (activeFishingSpot != null && TemporaryResourceHUD.Instance != null)
             {
                 if (activeFishingSpot.CurrentState == FishingSpot.FishingState.WaitingForBite)
                 {
@@ -349,6 +350,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             TemporaryResourceHUD.ShowEquipmentNotification($"Equipped: {toolName}");
+            AudioManager.Instance?.PlayToolEquip();
         }
 
         UpdateNearbyInteractable();
@@ -384,6 +386,7 @@ public class PlayerInteraction : MonoBehaviour
     public void TriggerToolAction(ToolType tool)
     {
         OnToolUsed?.Invoke(tool);
+        AudioManager.Instance?.PlayToolUse(tool);
         Debug.Log($"[STRANDED Action Hook] Tool action performed with {tool.ToDisplayName()}");
     }
 

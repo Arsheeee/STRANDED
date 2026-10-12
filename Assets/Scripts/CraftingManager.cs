@@ -197,6 +197,7 @@ public class CraftingManager : MonoBehaviour
         {
             message = failReason;
             TemporaryResourceHUD.Instance?.ShowNotification(failReason, new Color(1.0f, 0.35f, 0.35f));
+            AudioManager.Instance?.PlayCraftFail();
             return false;
         }
 
@@ -212,6 +213,7 @@ public class CraftingManager : MonoBehaviour
 
         message = $"{recipe.DisplayName} crafted!";
         TemporaryResourceHUD.Instance?.ShowNotification(message, new Color(0.40f, 1.0f, 0.60f));
+        AudioManager.Instance?.PlayCraftSuccess();
 
         OnRecipeCrafted?.Invoke(recipe);
         return true;

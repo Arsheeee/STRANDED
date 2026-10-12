@@ -259,6 +259,7 @@ public class ObjectiveManager : MonoBehaviour
         Debug.Log($"[STRANDED Objective] Objective updated to: {currentObjective} - '{Title}'");
 
         TemporaryResourceHUD.Instance?.ShowNotification($"New Objective: {Title}", new Color(1.0f, 0.85f, 0.40f));
+        AudioManager.Instance?.PlayObjectiveUpdate();
 
         OnObjectiveChanged?.Invoke(currentObjective);
         OnProgressUpdated?.Invoke(Description);

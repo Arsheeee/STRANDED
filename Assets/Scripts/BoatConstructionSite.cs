@@ -280,6 +280,7 @@ public class BoatConstructionSite : MonoBehaviour
         {
             message = failReason;
             TemporaryResourceHUD.Instance?.ShowNotification(failReason, new Color(1.0f, 0.35f, 0.35f));
+            AudioManager.Instance?.PlayCraftFail();
             return false;
         }
 
@@ -301,6 +302,7 @@ public class BoatConstructionSite : MonoBehaviour
         {
             message = "Escape Boat Completed! The vessel is seaworthy and ready for voyage.";
             TemporaryResourceHUD.Instance?.ShowNotification(message, new Color(0.35f, 1.0f, 0.55f));
+            AudioManager.Instance?.PlayVictory();
             Debug.Log("[STRANDED Boat] Escape boat construction fully completed!");
 
             OnConstructionCompleted?.Invoke();
@@ -309,6 +311,7 @@ public class BoatConstructionSite : MonoBehaviour
         {
             message = $"Installed {req.DisplayName}! Stage {currentStageIndex}/{TotalStages} complete.";
             TemporaryResourceHUD.Instance?.ShowNotification(message, new Color(0.40f, 0.90f, 1.0f));
+            AudioManager.Instance?.PlayBoatBuild();
             Debug.Log($"[STRANDED Boat] {message}");
         }
 
@@ -380,6 +383,7 @@ public class BoatConstructionSite : MonoBehaviour
             string missingPart = req != null ? req.DisplayName : "required components";
             failReason = $"Boat construction is incomplete! Stage {currentStageIndex}/{TotalStages} complete. Needs {missingPart}.";
             TemporaryResourceHUD.Instance?.ShowNotification("Cannot launch: Boat construction is incomplete!", new Color(1.0f, 0.35f, 0.35f));
+            AudioManager.Instance?.PlayCraftFail();
             Debug.LogWarning($"[STRANDED Boat] Launch rejected: {failReason}");
             return false;
         }

@@ -506,6 +506,8 @@ public class SurvivalStats : MonoBehaviour
             return false;
         }
 
+        AudioManager.Instance?.PlayConsume();
+
         // Build clear feedback string
         string feedback = $"Consumed {item.DisplayName}";
         if (item.HungerRestored > 0f && item.ThirstRestored > 0f)
@@ -544,6 +546,7 @@ public class SurvivalStats : MonoBehaviour
 
         Debug.LogWarning($"[STRANDED Survival] Player died! Cause: {reason}");
         TemporaryResourceHUD.Instance?.ShowNotification($"YOU DIED ({reason})", new Color(1.0f, 0.2f, 0.2f));
+        AudioManager.Instance?.PlayCraftFail();
 
         OnPlayerDied?.Invoke(reason);
     }

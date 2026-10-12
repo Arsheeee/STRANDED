@@ -220,6 +220,7 @@ public class HotbarUI : MonoBehaviour
 
         if (e.type == EventType.MouseDown && e.button == 0 && bagBtnRect.Contains(e.mousePosition))
         {
+            AudioManager.Instance?.PlayButtonClick();
             var invUI = Object.FindAnyObjectByType<InventoryUI>();
             invUI?.SetInventoryOpen(!InventoryUI.IsOpen);
             e.Use();
@@ -235,6 +236,7 @@ public class HotbarUI : MonoBehaviour
 
         if (e.type == EventType.MouseDown && e.button == 0 && craftBtnRect.Contains(e.mousePosition))
         {
+            AudioManager.Instance?.PlayButtonClick();
             var craftUI = Object.FindAnyObjectByType<CraftingUI>();
             craftUI?.SetCraftingOpen(!CraftingUI.IsOpen);
             e.Use();
