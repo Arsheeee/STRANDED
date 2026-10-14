@@ -12,6 +12,7 @@ public class CraftingUI : MonoBehaviour
 {
     private static bool isOpen = false;
     public static bool IsOpen => isOpen;
+    public static int LastClosedFrame { get; private set; } = -1;
 
     private Inventory inventory;
     private PlayerMovement playerMovement;
@@ -105,6 +106,7 @@ public class CraftingUI : MonoBehaviour
     public void SetCraftingOpen(bool open)
     {
         isOpen = open;
+        if (!open) LastClosedFrame = Time.frameCount;
 
         // If opening crafting, close inventory window if it was open
         if (isOpen && InventoryUI.IsOpen)
@@ -513,53 +515,69 @@ public class CraftingUI : MonoBehaviour
 
     private void InitStyles()
     {
+        Font titleFont = PixelArtFontManager.Title;
+        Font regularFont = PixelArtFontManager.Regular;
+        Font boldFont = PixelArtFontManager.Bold;
+
         if (titleStyle == null)
         {
             titleStyle = new GUIStyle();
-            titleStyle.fontSize = 26;
+            titleStyle.font = titleFont;
+            titleStyle.fontSize = 18;
             titleStyle.fontStyle = FontStyle.Bold;
             titleStyle.normal.textColor = new Color(0.32f, 0.18f, 0.08f, 1f);
         }
+        else if (titleStyle.font == null && titleFont != null) titleStyle.font = titleFont;
 
         if (sectionStyle == null)
         {
             sectionStyle = new GUIStyle();
-            sectionStyle.fontSize = 17;
+            sectionStyle.font = boldFont;
+            sectionStyle.fontSize = 13;
             sectionStyle.fontStyle = FontStyle.Bold;
             sectionStyle.normal.textColor = new Color(0.45f, 0.28f, 0.14f, 1f);
         }
+        else if (sectionStyle.font == null && boldFont != null) sectionStyle.font = boldFont;
 
         if (recipeTitleStyle == null)
         {
             recipeTitleStyle = new GUIStyle();
-            recipeTitleStyle.fontSize = 20;
+            recipeTitleStyle.font = boldFont;
+            recipeTitleStyle.fontSize = 15;
             recipeTitleStyle.fontStyle = FontStyle.Bold;
             recipeTitleStyle.normal.textColor = new Color(0.32f, 0.18f, 0.08f, 1f);
         }
+        else if (recipeTitleStyle.font == null && boldFont != null) recipeTitleStyle.font = boldFont;
 
         if (recipeDescStyle == null)
         {
             recipeDescStyle = new GUIStyle();
-            recipeDescStyle.fontSize = 15;
+            recipeDescStyle.font = regularFont;
+            recipeDescStyle.fontSize = 12;
             recipeDescStyle.normal.textColor = new Color(0.42f, 0.28f, 0.16f, 1f);
             recipeDescStyle.wordWrap = true;
         }
+        else if (recipeDescStyle.font == null && regularFont != null) recipeDescStyle.font = regularFont;
 
         if (ingredientStyle == null)
         {
             ingredientStyle = new GUIStyle();
-            ingredientStyle.fontSize = 18;
+            ingredientStyle.font = regularFont;
+            ingredientStyle.fontSize = 12;
             ingredientStyle.richText = true;
             ingredientStyle.normal.textColor = new Color(0.35f, 0.22f, 0.12f, 1f);
         }
+        else if (ingredientStyle.font == null && regularFont != null) ingredientStyle.font = regularFont;
 
         if (statusStyle == null)
         {
             statusStyle = new GUIStyle();
-            statusStyle.fontSize = 14;
+            statusStyle.font = boldFont;
+            statusStyle.fontSize = 12;
             statusStyle.fontStyle = FontStyle.Bold;
             statusStyle.richText = true;
         }
+        else if (statusStyle.font == null && boldFont != null) statusStyle.font = boldFont;
 
         if (activeTabStyle == null)
         {
@@ -568,11 +586,13 @@ public class CraftingUI : MonoBehaviour
             aTex.SetPixel(0, 0, new Color(0.88f, 0.72f, 0.48f, 1f));
             aTex.Apply();
             activeTabStyle.normal.background = aTex;
-            activeTabStyle.fontSize = 16;
+            activeTabStyle.font = boldFont;
+            activeTabStyle.fontSize = 12;
             activeTabStyle.fontStyle = FontStyle.Bold;
             activeTabStyle.alignment = TextAnchor.MiddleCenter;
             activeTabStyle.normal.textColor = new Color(0.30f, 0.16f, 0.06f, 1f);
         }
+        else if (activeTabStyle.font == null && boldFont != null) activeTabStyle.font = boldFont;
 
         if (inactiveTabStyle == null)
         {
@@ -581,10 +601,12 @@ public class CraftingUI : MonoBehaviour
             inTex.SetPixel(0, 0, new Color(0.55f, 0.38f, 0.22f, 0.85f));
             inTex.Apply();
             inactiveTabStyle.normal.background = inTex;
-            inactiveTabStyle.fontSize = 15;
+            inactiveTabStyle.font = regularFont;
+            inactiveTabStyle.fontSize = 11;
             inactiveTabStyle.alignment = TextAnchor.MiddleCenter;
             inactiveTabStyle.normal.textColor = new Color(0.88f, 0.82f, 0.72f, 1f);
         }
+        else if (inactiveTabStyle.font == null && regularFont != null) inactiveTabStyle.font = regularFont;
 
         if (craftBtnStyle == null)
         {
@@ -593,11 +615,13 @@ public class CraftingUI : MonoBehaviour
             btnTex.SetPixel(0, 0, new Color(0.24f, 0.58f, 0.22f, 1f)); // Stardew vibrant green
             btnTex.Apply();
             craftBtnStyle.normal.background = btnTex;
-            craftBtnStyle.fontSize = 22;
+            craftBtnStyle.font = boldFont;
+            craftBtnStyle.fontSize = 14;
             craftBtnStyle.fontStyle = FontStyle.Bold;
             craftBtnStyle.alignment = TextAnchor.MiddleCenter;
             craftBtnStyle.normal.textColor = Color.white;
         }
+        else if (craftBtnStyle.font == null && boldFont != null) craftBtnStyle.font = boldFont;
 
         if (craftBtnDisabledStyle == null)
         {
@@ -606,10 +630,13 @@ public class CraftingUI : MonoBehaviour
             disTex.SetPixel(0, 0, new Color(0.48f, 0.42f, 0.38f, 0.85f));
             disTex.Apply();
             craftBtnDisabledStyle.normal.background = disTex;
-            craftBtnDisabledStyle.fontSize = 20;
+            craftBtnDisabledStyle.font = boldFont;
+            craftBtnDisabledStyle.fontSize = 13;
             craftBtnDisabledStyle.fontStyle = FontStyle.Bold;
             craftBtnDisabledStyle.alignment = TextAnchor.MiddleCenter;
             craftBtnDisabledStyle.normal.textColor = new Color(0.75f, 0.72f, 0.70f, 1f);
         }
+        else if (craftBtnDisabledStyle.font == null && boldFont != null) craftBtnDisabledStyle.font = boldFont;
     }
 }
+

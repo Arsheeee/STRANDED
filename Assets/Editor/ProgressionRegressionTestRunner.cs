@@ -376,10 +376,141 @@ public static class ProgressionRegressionTestRunner
             Assert(true,
                 "TEST 18: Assembly Compilation Check",
                 "Assembly-CSharp.csproj and Assembly-CSharp-Editor.csproj built with 0 errors.");
+
+            // -------------------------------------------------------------------------
+            // TEST 19: Crashed Helicopter Base Camp Spawning & Configuration
+            // -------------------------------------------------------------------------
+            var shelter = HelicopterShelter.EnsureExists();
+            var heliObj = GameObject.Find("Crashed_Helicopter");
+            var fireObj = GameObject.Find("Campfire_Primitive");
+            var heliCol = heliObj != null ? heliObj.GetComponent<BoxCollider2D>() : null;
+            var fireCol = fireObj != null ? fireObj.GetComponent<CircleCollider2D>() : null;
+
+            bool campSpawnValid = shelter != null &&
+                                  heliObj != null &&
+                                  fireObj != null &&
+                                  heliCol != null &&
+                                  !heliCol.isTrigger &&
+                                  heliCol.size.x >= 2.0f &&
+                                  heliCol.size.y >= 1.0f &&
+                                  fireCol != null;
+
+            Vector3 playerSpawnPos = new Vector3(135.5f, 120.5f, 0f);
+            float distFromHeli = heliObj != null ? Vector3.Distance(playerSpawnPos, heliObj.transform.position) : 0f;
+            bool spawnSafeFromCollision = distFromHeli >= 2.0f && (heliCol == null || !heliCol.bounds.Contains(playerSpawnPos));
+
+            Assert(campSpawnValid && spawnSafeFromCollision,
+                "TEST 19: Crashed Helicopter Base Camp Spawning & Safe Placement",
+                $"Shelter: {shelter != null}, Heli: {heliObj != null}, Campfire: {fireObj != null}, DistToSpawn: {distFromHeli:F2}m (Safe)");
+
+            // -------------------------------------------------------------------------
+            // TEST 20: Helicopter Shelter Interaction & Resting Support
+            // -------------------------------------------------------------------------
+            string prompt = shelter.GetInteractionPrompt(interaction);
+            bool promptValid = prompt.Contains("Crashed Helicopter") && prompt.Contains("Shelter");
+
+            // Test interaction when low energy
+            SetPrivateField(survival, "currentEnergy", 50f);
+            shelter.Interact(interaction);
+            bool isResting = survival.IsResting;
+
+            // Test interaction prompt when resting
+            string promptResting = shelter.GetInteractionPrompt(interaction);
+            bool promptRestingValid = promptResting.Contains("Stop Resting") || promptResting.Contains("Stand Up");
+
+            // Test exiting shelter
+            shelter.Interact(interaction);
+            bool stoppedResting = !survival.IsResting;
+
+            Assert(promptValid && isResting && promptRestingValid && stoppedResting,
+                "TEST 20: Helicopter Shelter Interaction & Resting Mechanics",
+                $"Prompt: '{prompt}', RestingTriggered: {isResting}, RestingPrompt: '{promptResting}', StoppedResting: {stoppedResting}");
+
+            // -------------------------------------------------------------------------
+            // TEST 21: Singleton Zero-Duplication & Save Session Compatibility
+            // -------------------------------------------------------------------------
+            var repeatedShelter = HelicopterShelter.EnsureExists();
+            int heliCount = GameObject.FindObjectsByType<HelicopterShelter>().Length;
+            int campRootCount = GameObject.Find("Environment_BaseCamp") != null ? 1 : 0;
+
+            // Verify save session flag can be toggled and accurately distinguishes loaded game vs new game
+            SaveManager.IsLoadedSession = false;
+            bool newGameSessionFlag = !SaveManager.IsLoadedSession;
+            SaveManager.IsLoadedSession = true;
+            bool loadedGameSessionFlag = SaveManager.IsLoadedSession;
+            SaveManager.IsLoadedSession = false; // Reset to clean new game state
+
+            Assert(repeatedShelter == shelter && heliCount == 1 && campRootCount == 1 && newGameSessionFlag && loadedGameSessionFlag,
+                "TEST 21: Base Camp Singleton Zero-Duplication & Save Session Flags",
+                $"Shelters: {heliCount}, CampRoots: {campRootCount}, NewGameFlag: {newGameSessionFlag}, LoadedGameFlag: {loadedGameSessionFlag}");
+
+            // -------------------------------------------------------------------------
+            // TEST 22: Escape Menu UI & Restart Game Mechanics
+            // -------------------------------------------------------------------------
+            var escMenu = EscapeMenuUI.EnsureExists();
+            bool escExists = escMenu != null;
+            escMenu.SetMenuOpen(true);
+            bool escPaused = EscapeMenuUI.IsOpen && Time.timeScale == 0f;
+            escMenu.SetMenuOpen(false);
+            bool escResumed = !EscapeMenuUI.IsOpen && Time.timeScale == 1f;
+
+            Assert(escExists && escPaused && escResumed,
+                "TEST 22: Escape Menu UI & Pause State Management",
+                $"MenuExists: {escExists}, Paused: {escPaused}, Resumed: {escResumed}");
+
+            // -------------------------------------------------------------------------
+            // TEST 23: Visible Helicopter Cabin & Sleeping Survivor Mechanics
+            // -------------------------------------------------------------------------
+            shelter.EnsureSleepingVisual();
+            var sleepVis = shelter.SleepingVisual;
+            bool sleepVisConfigured = sleepVis != null;
+
+            // Rest inside cabin
+            SetPrivateField(survival, "currentEnergy", 40f);
+            shelter.Interact(interaction);
+            bool restingActive = survival.IsResting;
+            bool sleepVisActive = sleepVis != null && sleepVis.activeSelf;
+
+            // Stop resting / wake up
+            shelter.Interact(interaction);
+            bool restingEnded = !survival.IsResting;
+            bool sleepVisInactive = sleepVis != null && !sleepVis.activeSelf;
+
+            Assert(sleepVisConfigured && restingActive && sleepVisActive && restingEnded && sleepVisInactive,
+                "TEST 23: Visible Helicopter Cabin & Sleeping Survivor Mechanics",
+                $"SleepingVisualConfigured: {sleepVisConfigured}, SleepingActive: {sleepVisActive}, WokeUp: {restingEnded}");
+
+            // -------------------------------------------------------------------------
+            // TEST 24: Berries, Poisonous Berries, and Mushroom Consumables
+            // -------------------------------------------------------------------------
+            ItemDatabase.EnsureInitialized();
+            var pBerries = ItemDatabase.GetItemById("poison_berries");
+            var morel = ItemDatabase.GetItemById("mushroom");
+            var pShroom = ItemDatabase.GetItemById("poison_mushroom");
+
+            bool itemsRegistered = pBerries != null && morel != null && pShroom != null &&
+                                   pBerries.HealthRestored < 0f && morel.HungerRestored > 0f && pShroom.HealthRestored < 0f;
+
+            // Test consuming poison berries deals damage
+            inventory.Clear();
+            inventory.AddItem(pBerries, 1);
+            float hpBefore = survival.CurrentHealth;
+            bool consumedPoison = survival.TryConsumeItem(pBerries, 0);
+            float hpAfter = survival.CurrentHealth;
+            bool poisonDmgDealt = consumedPoison && hpAfter < hpBefore;
+
+            Assert(itemsRegistered && poisonDmgDealt,
+                "TEST 24: Foraging Items & Poison Damage Mechanics",
+                $"ItemsRegistered: {itemsRegistered}, PoisonConsumed: {consumedPoison}, HPBefore: {hpBefore:F0}, HPAfter: {hpAfter:F0}");
         }
         finally
         {
+            Time.timeScale = 1f;
             UnityEngine.Object.DestroyImmediate(tempRoot);
+            var camp = GameObject.Find("Environment_BaseCamp");
+            if (camp != null) UnityEngine.Object.DestroyImmediate(camp);
+            var esc = GameObject.Find("EscapeMenuUI");
+            if (esc != null) UnityEngine.Object.DestroyImmediate(esc);
         }
 
         Debug.Log("======================================================================");

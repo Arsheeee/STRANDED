@@ -457,9 +457,10 @@ public class SurvivalStats : MonoBehaviour
         bool needsHunger = (item.HungerRestored > 0f && currentHunger < maxHunger);
         bool needsThirst = (item.ThirstRestored > 0f && currentThirst < maxThirst);
         bool needsHealth = (item.HealthRestored > 0f && currentHealth < maxHealth);
+        bool isHarmful = (item.HealthRestored < 0f || item.EnergyRestored < 0f);
         bool needsEnergy = (item.EnergyRestored > 0f && currentEnergy < maxEnergy);
 
-        if (!needsHunger && !needsThirst && !needsHealth && !needsEnergy)
+        if (!isHarmful && !needsHunger && !needsThirst && !needsHealth && !needsEnergy)
         {
             TemporaryResourceHUD.Instance?.ShowNotification("Your stomach is full; no need to eat right now.", new Color(0.9f, 0.9f, 0.9f));
             return false;
@@ -481,7 +482,7 @@ public class SurvivalStats : MonoBehaviour
         if (item.HealthRestored != 0f)
         {
             if (item.HealthRestored > 0f) RestoreHealth(item.HealthRestored);
-            else TakeDamage(-item.HealthRestored, "Bad Food");
+            else TakeDamage(-item.HealthRestored, "Poisonous Food");
         }
 
         if (item.EnergyRestored != 0f)
@@ -509,21 +510,28 @@ public class SurvivalStats : MonoBehaviour
         AudioManager.Instance?.PlayConsume();
 
         // Build clear feedback string
-        string feedback = $"Consumed {item.DisplayName}";
-        if (item.HungerRestored > 0f && item.ThirstRestored > 0f)
+        if (item.HealthRestored < 0f)
         {
-            feedback += $" (Hunger +{item.HungerRestored:F0}, Thirst +{item.ThirstRestored:F0})";
+            TemporaryResourceHUD.Instance?.ShowNotification($"Agh! That was poisonous! (-{Mathf.Abs(item.HealthRestored):F0} HP)", new Color(1.0f, 0.35f, 0.35f));
         }
-        else if (item.HungerRestored > 0f)
+        else
         {
-            feedback += $" (Hunger +{item.HungerRestored:F0})";
-        }
-        else if (item.ThirstRestored > 0f)
-        {
-            feedback += $" (Thirst +{item.ThirstRestored:F0})";
-        }
+            string feedback = $"Consumed {item.DisplayName}";
+            if (item.HungerRestored > 0f && item.ThirstRestored > 0f)
+            {
+                feedback += $" (Hunger +{item.HungerRestored:F0}, Thirst +{item.ThirstRestored:F0})";
+            }
+            else if (item.HungerRestored > 0f)
+            {
+                feedback += $" (Hunger +{item.HungerRestored:F0})";
+            }
+            else if (item.ThirstRestored > 0f)
+            {
+                feedback += $" (Thirst +{item.ThirstRestored:F0})";
+            }
 
-        TemporaryResourceHUD.Instance?.ShowNotification(feedback, new Color(0.40f, 1.0f, 0.60f));
+            TemporaryResourceHUD.Instance?.ShowNotification(feedback, new Color(0.40f, 1.0f, 0.60f));
+        }
         return true;
     }
 

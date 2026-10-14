@@ -107,6 +107,14 @@ public class IslandResourcePlacer : EditorWindow
         Sprite spFiberTuft = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/plant_fiber_tuft.png");
         Sprite spGrassWild = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Plants/plant_grass_wild.png");
 
+        // Forage Item Sprites (Mushrooms & Wild Berries)
+        Sprite spMushroom = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Items/item_mushroom.png");
+        Sprite spPoisonMushroom = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Items/item_poison_mushroom.png");
+        Sprite spChanterelle = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Items/item_chanterelle.png");
+        Sprite spPurpleMushroom = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Items/item_purple_mushroom.png");
+        Sprite spPoisonBerry = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Items/item_poison_berry.png");
+        Sprite spBlackberry = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Environment/Items/item_blackberry.png");
+
         if (spMatureTree == null || spBoulder == null || spBerryFull == null || spPalmFull == null || spFiberFern == null || spPineMature == null || spBirchMature == null)
         {
             EditorUtility.ClearProgressBar();
@@ -159,6 +167,8 @@ public class IslandResourcePlacer : EditorWindow
         pFiber.SetParent(envRoot.transform);
         Transform pDriftwood = new GameObject("Driftwood").transform;
         pDriftwood.SetParent(envRoot.transform);
+        Transform pForage = new GameObject("Forage").transform;
+        pForage.SetParent(envRoot.transform);
 
         // Precompute river proximity
         EditorUtility.DisplayProgressBar("STRANDED Resource Placement", "Analyzing riverbanks & geography...", 0.4f);
@@ -242,7 +252,7 @@ public class IslandResourcePlacer : EditorWindow
         }
 
         int countTrees = 0, countPalms = 0, countBoulders = 0, countRocksMed = 0;
-        int countRocksSmall = 0, countBushes = 0, countFiber = 0, countDriftwood = 0;
+        int countRocksSmall = 0, countBushes = 0, countFiber = 0, countDriftwood = 0, countForage = 0;
 
         // 3. Guaranteed Starting Camp Starter Resources
         EditorUtility.DisplayProgressBar("STRANDED Resource Placement", "Placing starter resources near camp...", 0.5f);
@@ -382,6 +392,28 @@ public class IslandResourcePlacer : EditorWindow
                             countBushes++;
                         }
                     }
+                    // Riverbank forage (Moist wild mushrooms & nightshade berries)
+                    else if (localVal < 0.22f)
+                    {
+                        if (CanPlace(pos, 2.0f))
+                        {
+                            float rfNoise = GetNoise(x, y, 222);
+                            if (rfNoise < 0.35f && spPurpleMushroom != null)
+                            {
+                                CreateForageNode(pos, spPurpleMushroom, pForage, "Purple Cave Mushroom", "purple_mushroom");
+                            }
+                            else if (rfNoise < 0.65f && spPoisonMushroom != null)
+                            {
+                                CreateForageNode(pos, spPoisonMushroom, pForage, "Crimson Toadstool", "poison_mushroom");
+                            }
+                            else if (spMushroom != null)
+                            {
+                                CreateForageNode(pos, spMushroom, pForage, "Island Morel", "mushroom");
+                            }
+                            RegisterPlaced(pos);
+                            countForage++;
+                        }
+                    }
                 }
                 // --- BIOME 3: ROCKY PLATEAU / HIGHLANDS (Tile 7: Cliff Top) ---
                 else if (t == 7)
@@ -426,10 +458,10 @@ public class IslandResourcePlacer : EditorWindow
                             countFiber++;
                         }
                     }
-                    // Hardy mountain conifers on rocky plateau
-                    else if (localVal < 0.22f)
+                    // Hardy mountain conifers on rocky plateau (increased density)
+                    else if (localVal < 0.28f)
                     {
-                        if (CanPlace(pos, 2.8f))
+                        if (CanPlace(pos, 2.4f))
                         {
                             float hNoise = GetNoise(x, y, 88);
                             int hIdx = Mathf.Clamp(Mathf.FloorToInt(hNoise * highlandTreeSpecs.Count), 0, highlandTreeSpecs.Count - 1);
@@ -446,17 +478,17 @@ public class IslandResourcePlacer : EditorWindow
                     bool placeTree = false;
                     float treeSpacing = 2.4f;
 
-                    // Dense forest groves & clusters
-                    if (clusterVal > 0.32f && localVal < 0.32f)
+                    // Dense forest groves & clusters (increased density + tighter spacing)
+                    if (clusterVal > 0.25f && localVal < 0.38f)
                     {
                         placeTree = true;
-                        treeSpacing = 2.4f;
+                        treeSpacing = 2.1f;
                     }
                     // Open meadows & scattered clearings
-                    else if (clusterVal <= 0.32f && localVal < 0.08f)
+                    else if (clusterVal <= 0.25f && localVal < 0.12f)
                     {
                         placeTree = true;
-                        treeSpacing = 3.2f;
+                        treeSpacing = 2.8f;
                     }
 
                     if (placeTree && CanPlace(pos, treeSpacing))
@@ -534,14 +566,48 @@ public class IslandResourcePlacer : EditorWindow
                             countRocksMed++;
                         }
                     }
+                    // Woodland Forage: Wild Mushrooms & Toxic/Edible Berries
+                    else if (localVal < 0.105f)
+                    {
+                        if (CanPlace(pos, 2.0f))
+                        {
+                            float fNoise = GetNoise(x, y, 173);
+                            if (fNoise < 0.25f && spMushroom != null)
+                            {
+                                CreateForageNode(pos, spMushroom, pForage, "Island Morel", "mushroom");
+                            }
+                            else if (fNoise < 0.45f && spPoisonMushroom != null)
+                            {
+                                CreateForageNode(pos, spPoisonMushroom, pForage, "Crimson Toadstool", "poison_mushroom");
+                            }
+                            else if (fNoise < 0.65f && spChanterelle != null)
+                            {
+                                CreateForageNode(pos, spChanterelle, pForage, "Golden Chanterelle", "chanterelle");
+                            }
+                            else if (fNoise < 0.80f && spPurpleMushroom != null)
+                            {
+                                CreateForageNode(pos, spPurpleMushroom, pForage, "Purple Cave Mushroom", "purple_mushroom");
+                            }
+                            else if (fNoise < 0.90f && spBlackberry != null)
+                            {
+                                CreateForageNode(pos, spBlackberry, pForage, "Wild Blackberry", "blackberry");
+                            }
+                            else if (spPoisonBerry != null)
+                            {
+                                CreateForageNode(pos, spPoisonBerry, pForage, "Nightshade Berries", "poison_berries");
+                            }
+                            RegisterPlaced(pos);
+                            countForage++;
+                        }
+                    }
                 }
                 // --- BIOME 5: INTERIOR SOIL / DIRT (Tile 4) ---
                 else if (t == 4)
                 {
-                    // Interior trees in natural groves
-                    if (clusterVal > 0.55f && localVal < 0.08f)
+                    // Interior trees in natural groves (increased density)
+                    if (clusterVal > 0.45f && localVal < 0.12f)
                     {
-                        if (CanPlace(pos, 4.0f))
+                        if (CanPlace(pos, 3.2f))
                         {
                             float varNoise = GetNoise(x, y, 88);
                             if (varNoise < 0.22f)
@@ -655,6 +721,7 @@ public class IslandResourcePlacer : EditorWindow
 
         VineResourcePlacer.PlaceVineResources();
         ResourceNode.EnsureStartingCampResourcesExist();
+        ResourceNode.EnsureDefaultForageNodesExist();
 
         // 6. Save Scene
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
@@ -671,7 +738,8 @@ public class IslandResourcePlacer : EditorWindow
         Debug.Log($"  Berry Bushes (Berries):  {countBushes}");
         Debug.Log($"  Fiber Plants (Fiber):    {countFiber}");
         Debug.Log($"  Driftwood Logs (Wood):   {countDriftwood}");
-        Debug.Log($"  TOTAL RESOURCE NODES:    {countTrees + countPalms + countBoulders + countRocksMed + countRocksSmall + countBushes + countFiber + countDriftwood}");
+        Debug.Log($"  Forage (Mushrooms & Berries): {countForage}");
+        Debug.Log($"  TOTAL RESOURCE NODES:    {countTrees + countPalms + countBoulders + countRocksMed + countRocksSmall + countBushes + countFiber + countDriftwood + countForage}");
         Debug.Log("=====================================================================");
     }
 
@@ -926,6 +994,38 @@ public class IslandResourcePlacer : EditorWindow
         SetSerializedField(node, "depleteOnHarvest", true);
         SetSerializedField(node, "destroyOnDeplete", true);
         SetSerializedField(node, "regrowthDuration", 45f);
+
+        node.UpdateSortingOrder();
+    }
+
+    private static void CreateForageNode(Vector2 pos, Sprite sprite, Transform parent, string displayName, string customItemId)
+    {
+        string safePrefix = displayName.Replace(" ", "_");
+        GameObject go = new GameObject($"{safePrefix}_{pos.x:F0}_{pos.y:F0}");
+        go.transform.position = new Vector3(pos.x, pos.y, 0f);
+        go.transform.SetParent(parent);
+
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
+        sr.sprite = sprite;
+        sr.sortingOrder = ResourceNode.BASE_SORTING_ORDER + Mathf.RoundToInt(-pos.y * 10f);
+
+        CircleCollider2D col = go.AddComponent<CircleCollider2D>();
+        col.radius = 0.25f;
+        col.offset = new Vector2(0f, 0.12f);
+
+        ResourceNode node = go.AddComponent<ResourceNode>();
+        SetSerializedField(node, "resourceType", (int)ResourceType.Berries);
+        SetSerializedField(node, "customItemId", customItemId);
+        SetSerializedField(node, "requiredTool", (int)ToolType.None);
+        SetSerializedField(node, "nodeCategory", (int)ResourceCategory.Bush);
+        SetSerializedField(node, "nodeSize", (int)ResourceSize.VerySmall);
+        SetSerializedField(node, "nodeDisplayName", displayName);
+        SetSerializedField(node, "yieldAmount", 1);
+        SetSerializedField(node, "interactionRange", 1.3f);
+        SetSerializedField(node, "availableSprite", sprite);
+        SetSerializedField(node, "depleteOnHarvest", true);
+        SetSerializedField(node, "destroyOnDeplete", true);
+        SetSerializedField(node, "regrowthDuration", 60f);
 
         node.UpdateSortingOrder();
     }

@@ -304,47 +304,59 @@ public class HotbarUI : MonoBehaviour
 
     private void InitStyles()
     {
+        Font boldFont = PixelArtFontManager.Bold;
+
         if (slotNumberStyle == null)
         {
             slotNumberStyle = new GUIStyle();
-            slotNumberStyle.fontSize = 18;
+            slotNumberStyle.font = boldFont;
+            slotNumberStyle.fontSize = 14;
             slotNumberStyle.fontStyle = FontStyle.Bold;
             // Authentic Stardew Valley red slot numbers
             slotNumberStyle.normal.textColor = new Color(0.85f, 0.16f, 0.12f, 1f);
         }
+        else if (slotNumberStyle.font == null && boldFont != null) slotNumberStyle.font = boldFont;
 
         if (quantityStyle == null)
         {
             quantityStyle = new GUIStyle();
-            quantityStyle.fontSize = 18;
+            quantityStyle.font = boldFont;
+            quantityStyle.fontSize = 14;
             quantityStyle.fontStyle = FontStyle.Bold;
             quantityStyle.alignment = TextAnchor.LowerRight;
             quantityStyle.normal.textColor = Color.white;
         }
+        else if (quantityStyle.font == null && boldFont != null) quantityStyle.font = boldFont;
 
         if (quantityShadowStyle == null)
         {
             quantityShadowStyle = new GUIStyle(quantityStyle);
+            quantityShadowStyle.font = boldFont;
             quantityShadowStyle.normal.textColor = new Color(0.1f, 0.1f, 0.1f, 0.85f);
         }
+        else if (quantityShadowStyle.font == null && boldFont != null) quantityShadowStyle.font = boldFont;
 
         if (bagLabelStyle == null)
         {
             bagLabelStyle = new GUIStyle();
-            bagLabelStyle.fontSize = 16;
+            bagLabelStyle.font = boldFont;
+            bagLabelStyle.fontSize = 12;
             bagLabelStyle.fontStyle = FontStyle.Bold;
             bagLabelStyle.alignment = TextAnchor.MiddleCenter;
             bagLabelStyle.normal.textColor = new Color(0.38f, 0.22f, 0.10f, 1f);
         }
+        else if (bagLabelStyle.font == null && boldFont != null) bagLabelStyle.font = boldFont;
 
         if (bagSubStyle == null)
         {
             bagSubStyle = new GUIStyle();
-            bagSubStyle.fontSize = 15;
+            bagSubStyle.font = boldFont;
+            bagSubStyle.fontSize = 11;
             bagSubStyle.fontStyle = FontStyle.Bold;
             bagSubStyle.alignment = TextAnchor.MiddleCenter;
             bagSubStyle.normal.textColor = new Color(0.85f, 0.16f, 0.12f, 1f);
         }
+        else if (bagSubStyle.font == null && boldFont != null) bagSubStyle.font = boldFont;
 
         if (containerStyle == null)
         {

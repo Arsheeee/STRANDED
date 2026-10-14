@@ -34,6 +34,15 @@ public static class ItemDatabase
         RegisterConsumable(ResourceType.Coconut, "coconut", "Coconut", "Hard tropical coconut. Crack open for rich meat and hydrating coconut water.", "item_coconut.png", hunger: 20f, thirst: 15f, health: 0f, energy: 5f);
         RegisterConsumable(ResourceType.Fish, "fish", "Raw Fish", "Freshly caught coastal raw fish. Nutritious, but best cooked over fire.", "item_fish.png", hunger: 8f, thirst: 0f, health: -2f, energy: 2f);
 
+        // Foraging batch: Mushrooms & Berries (Edible and Poisonous - 50% life loss on poison)
+        RegisterSpecialConsumable("poison_berries", "Nightshade Berries", "Wild toxic berries with a deceiving glint. Highly poisonous! Eating inflicts 50% life loss.", "item_poison_berry.png", hunger: 4f, thirst: 0f, health: -50f, energy: -25f);
+        RegisterSpecialConsumable("mushroom", "Island Morel", "Earthy wild edible mushroom with a honeycomb cap. Delicious and highly nutritious.", "item_mushroom.png", hunger: 22f, thirst: 2f, health: 8f, energy: 12f);
+        RegisterSpecialConsumable("morel", "Honeycomb Morel", "Rare woodland edible morel with deep earthy flavor. Nutritious and restorative.", "item_morel.png", hunger: 25f, thirst: 2f, health: 10f, energy: 15f);
+        RegisterSpecialConsumable("poison_mushroom", "Crimson Toadstool", "Vibrant scarlet mushroom covered in pale toxic warts. Extremely poisonous! Eating inflicts 50% life loss.", "item_poison_mushroom.png", hunger: 4f, thirst: 0f, health: -50f, energy: -25f);
+        RegisterSpecialConsumable("chanterelle", "Golden Chanterelle", "Fragrant golden woodland mushroom. Rich flavor that restores health and vitality.", "item_chanterelle.png", hunger: 24f, thirst: 2f, health: 12f, energy: 15f);
+        RegisterSpecialConsumable("purple_mushroom", "Purple Cave Mushroom", "Luminous deep-purple island mushroom prized for its rare restorative properties.", "item_purple_mushroom.png", hunger: 20f, thirst: 4f, health: 15f, energy: 20f);
+        RegisterSpecialConsumable("blackberry", "Wild Blackberry", "Plump sweet wild bramble berry. Delicious snack that staves off hunger.", "item_blackberry.png", hunger: 16f, thirst: 4f, health: 4f, energy: 8f);
+
         // Architecture prepared for future cooking batch: Cooked Fish
         RegisterSpecialConsumable("cooked_fish", "Cooked Fish", "Tender fish fillet grilled over campfire embers. Hearty and restorative.", "item_fish.png", hunger: 35f, thirst: 0f, health: 15f, energy: 15f);
 
@@ -122,6 +131,14 @@ public static class ItemDatabase
             consumable: true, hunger: hunger, thirst: thirst, health: health, energy: energy
         );
         itemsById[id] = item;
+        if (!id.StartsWith("item_"))
+        {
+            itemsById["item_" + id] = item;
+        }
+        else
+        {
+            itemsById[id.Substring(5)] = item;
+        }
     }
 
     private static void RegisterTool(ToolType toolType, string id, string name, string desc, string spriteFile)

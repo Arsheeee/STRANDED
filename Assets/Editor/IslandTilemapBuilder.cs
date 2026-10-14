@@ -80,6 +80,10 @@ public class IslandTilemapBuilder : EditorWindow
             gridObj = new GameObject("Grid");
             gridObj.AddComponent<Grid>();
         }
+        if (gridObj.GetComponent<IslandTilemapRuntimeSync>() == null)
+        {
+            gridObj.AddComponent<IslandTilemapRuntimeSync>();
+        }
 
         Tilemap tmDeep = GetOrCreateTilemap(gridObj, "Tilemap_DeepOcean", -20);
         Tilemap tmShallow = GetOrCreateTilemap(gridObj, "Tilemap_ShallowWater", -10);
@@ -228,15 +232,29 @@ public class IslandTilemapBuilder : EditorWindow
                     posGround.Add(pos);
                     tilesGround.Add(sandT);
 
-                    // Sand to Water transition (water is 0 or 1)
-                    string swCode = SolveWang(mapData.tiles, x, y, (val) => val == 0 || val == 1);
-                    if (!string.IsNullOrEmpty(swCode))
+                    // Sand to River transition (river water is 5)
+                    string srCode = SolveWang(mapData.tiles, x, y, (val) => val == 5, true, true);
+                    if (!string.IsNullOrEmpty(srCode))
                     {
-                        TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Sand_Water/sand_water_{swCode}.png");
+                        TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Sand_RiverWater/sand_riverwater_{srCode}.png");
                         if (tTrans != null)
                         {
                             posTrans.Add(pos);
                             tilesTrans.Add(tTrans);
+                        }
+                    }
+                    else
+                    {
+                        // Sand to Ocean Water transition (water is 0 or 1)
+                        string swCode = SolveWang(mapData.tiles, x, y, (val) => val == 0 || val == 1);
+                        if (!string.IsNullOrEmpty(swCode))
+                        {
+                            TileBase tTrans = GetCachedTile(tileCache, $"Transitions/Sand_Water/sand_water_{swCode}.png");
+                            if (tTrans != null)
+                            {
+                                posTrans.Add(pos);
+                                tilesTrans.Add(tTrans);
+                            }
                         }
                     }
                 }
@@ -765,6 +783,21 @@ public class IslandTilemapBuilder : EditorWindow
             {
                 AnimatedTile atSW = CreateOrLoadAnimatedTile($"sand_water_{piece}", new string[] { f0, f1, f2, f3 }, Tile.ColliderType.None, 4f);
                 cache[$"Transitions/Sand_Water/sand_water_{piece}.png"] = atSW;
+            }
+        }
+
+        // Sand-RiverWater Animated Transitions (Animated river ripples on sand bank)
+        string[] srPieces = new string[] { "edge_n_01", "edge_n_02" };
+        foreach (string piece in srPieces)
+        {
+            string f0 = $"Assets/Art/Terrain/Transitions/Sand_RiverWater/sand_riverwater_{piece}_f0.png";
+            string f1 = $"Assets/Art/Terrain/Transitions/Sand_RiverWater/sand_riverwater_{piece}_f1.png";
+            string f2 = $"Assets/Art/Terrain/Transitions/Sand_RiverWater/sand_riverwater_{piece}_f2.png";
+            string f3 = $"Assets/Art/Terrain/Transitions/Sand_RiverWater/sand_riverwater_{piece}_f3.png";
+            if (File.Exists(f0) && File.Exists(f1) && File.Exists(f2) && File.Exists(f3))
+            {
+                AnimatedTile atSR = CreateOrLoadAnimatedTile($"sand_riverwater_{piece}", new string[] { f0, f1, f2, f3 }, Tile.ColliderType.None, 4f);
+                cache[$"Transitions/Sand_RiverWater/sand_riverwater_{piece}.png"] = atSR;
             }
         }
 

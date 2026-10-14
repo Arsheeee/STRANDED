@@ -12,6 +12,7 @@ public class BoatConstructionUI : MonoBehaviour
 {
     private static bool isOpen = false;
     public static bool IsOpen => isOpen;
+    public static int LastClosedFrame { get; private set; } = -1;
 
     private BoatConstructionSite currentSite;
     private Inventory inventory;
@@ -112,6 +113,7 @@ public class BoatConstructionUI : MonoBehaviour
     {
         isOpen = false;
         currentSite = null;
+        LastClosedFrame = Time.frameCount;
         AudioManager.Instance?.PlayInventoryClose();
 
         if (playerMovement != null)

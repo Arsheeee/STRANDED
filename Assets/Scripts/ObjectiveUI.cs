@@ -107,7 +107,7 @@ public class ObjectiveUI : MonoBehaviour
         if (!isVisible) return;
 
         // Hide when fullscreen / modal menus are open
-        if (BoatConstructionUI.IsOpen || InventoryUI.IsOpen || CraftingUI.IsOpen) return;
+        if (BoatConstructionUI.IsOpen || InventoryUI.IsOpen || CraftingUI.IsOpen || EscapeMenuUI.IsOpen) return;
 
         if (manager == null) manager = ObjectiveManager.Instance;
         if (manager == null) return;
@@ -115,7 +115,7 @@ public class ObjectiveUI : MonoBehaviour
         InitStyles();
 
         float x = 20f;
-        float y = 165f;
+        float y = 20f;
         float width = 640f;
         float height = 76f;
 

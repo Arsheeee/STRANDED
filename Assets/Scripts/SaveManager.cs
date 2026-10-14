@@ -20,6 +20,13 @@ public class SaveManager : MonoBehaviour
 
     public static string SaveFilePath => Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
 
+    private static bool isLoadedSession = false;
+    public static bool IsLoadedSession
+    {
+        get => isLoadedSession;
+        set => isLoadedSession = value;
+    }
+
     // Public Events
     public event Action<SaveData> OnGameSaved;
     public event Action<SaveData> OnGameLoaded;
@@ -405,6 +412,7 @@ public class SaveManager : MonoBehaviour
         AudioManager.Instance?.PlayLoadSuccess();
         Debug.Log("[STRANDED Save] Game state loaded successfully.");
 
+        isLoadedSession = true;
         OnGameLoaded?.Invoke(data);
         return true;
     }

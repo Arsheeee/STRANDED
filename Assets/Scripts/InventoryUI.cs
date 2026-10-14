@@ -11,6 +11,7 @@ public class InventoryUI : MonoBehaviour
 {
     private static bool isOpen = false;
     public static bool IsOpen => isOpen;
+    public static int LastClosedFrame { get; private set; } = -1;
 
     [Header("UI Grid Configuration")]
     [Tooltip("Slot size in screen pixels.")]
@@ -107,6 +108,7 @@ public class InventoryUI : MonoBehaviour
     {
         isOpen = open;
         heldSlotIndex = -1;
+        if (!open) LastClosedFrame = Time.frameCount;
 
         if (isOpen && CraftingUI.IsOpen)
         {
@@ -163,13 +165,13 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Draw Decorative Header Tabs along Top
-        float tabW = 150f;
+        float tabW = 155f;
         float tabH = 34f;
         Rect tab1 = new Rect(panelX + 36, panelY - tabH + 6, tabW, tabH);
-        GUI.Box(tab1, "INVENTORY", activeTabStyle);
+        GUI.Box(tab1, "★ INVENTORY ★", activeTabStyle);
 
         Rect tab2 = new Rect(panelX + 36 + tabW + 8, panelY - tabH + 6, tabW, tabH);
-        if (GUI.Button(tab2, "CRAFTING", inactiveTabStyle))
+        if (GUI.Button(tab2, "CRAFTING (C)", inactiveTabStyle))
         {
             SetInventoryOpen(false);
             var craftUI = FindAnyObjectByType<CraftingUI>();
@@ -201,8 +203,8 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Section Label: Hotbar vs Backpack
-        Rect hotbarLabelRect = new Rect(panelX + 32, panelY + 16, 300, 22);
-        GUI.Label(hotbarLabelRect, "HOTBAR (ROW 1) & BACKPACK (ROWS 2-3)", sectionStyle);
+        Rect hotbarLabelRect = new Rect(panelX + 32, panelY + 16, 400, 22);
+        DrawShadowedLabel(hotbarLabelRect, "★ HOTBAR (ROW 1) & BACKPACK (ROWS 2-3) ★", sectionStyle, new Color(0.32f, 0.16f, 0.06f, 1f), new Color(0.95f, 0.88f, 0.72f, 0.9f));
 
         Event e = Event.current;
         hoveredTooltip = "";
@@ -333,13 +335,13 @@ public class InventoryUI : MonoBehaviour
         // 2. Survivor & Island Details on the Right
         float infoX = panelX + 165f;
         Rect titleCardRect = new Rect(infoX, cardY + 2, 450, 30);
-        GUI.Label(titleCardRect, "STRANDED ISLAND", cardTitleStyle);
+        DrawShadowedLabel(titleCardRect, "STRANDED SURVIVOR", cardTitleStyle, new Color(0.35f, 0.18f, 0.08f, 1f), new Color(0.95f, 0.88f, 0.72f, 0.9f));
 
         Rect campStatusRect = new Rect(infoX, cardY + 36, 450, 22);
-        GUI.Label(campStatusRect, "Camp: Tropical Coastline Sanctuary", cardInfoStyle);
+        DrawShadowedLabel(campStatusRect, "Base Camp: Crashed Helicopter Shelter", cardInfoStyle, new Color(0.40f, 0.25f, 0.12f, 1f), new Color(0.95f, 0.90f, 0.80f, 0.8f));
 
         Rect storageStatusRect = new Rect(infoX, cardY + 60, 450, 22);
-        GUI.Label(storageStatusRect, "Storage: 36 Total Slots (12 Hotbar, 24 Backpack)", cardInfoStyle);
+        DrawShadowedLabel(storageStatusRect, "Storage: 36 Total Slots (12 Hotbar, 24 Backpack)", cardInfoStyle, new Color(0.40f, 0.25f, 0.12f, 1f), new Color(0.95f, 0.90f, 0.80f, 0.8f));
 
         string equippedName = "Bare Hands";
         var activeHotbar = inventory.GetSlot(0);
@@ -349,10 +351,10 @@ public class InventoryUI : MonoBehaviour
             equippedName = pInteraction.CurrentTool.ToDisplayName();
         }
         Rect toolStatusRect = new Rect(infoX, cardY + 84, 450, 22);
-        GUI.Label(toolStatusRect, $"Equipped Tool: <color=#206020><b>{equippedName}</b></color>", cardInfoStyle);
+        DrawShadowedLabel(toolStatusRect, $"Equipped Tool: <b>{equippedName}</b>", cardInfoStyle, new Color(0.20f, 0.45f, 0.15f, 1f), new Color(0.95f, 0.90f, 0.80f, 0.8f));
 
         Rect seasonRect = new Rect(infoX, cardY + 108, 450, 22);
-        GUI.Label(seasonRect, "Day 1 - Spring, Year 1", cardSubStyle);
+        DrawShadowedLabel(seasonRect, "Island Survivor — Chapter 1: The Crash Site", cardSubStyle, new Color(0.55f, 0.35f, 0.18f, 1f), new Color(0.95f, 0.90f, 0.80f, 0.8f));
 
         // 2.5. Save & Load Game Controls in Bottom Card
         float saveX = panelX + 630f;
@@ -492,6 +494,17 @@ public class InventoryUI : MonoBehaviour
         GUI.DrawTextureWithTexCoords(rect, sprite.texture, uvRect);
     }
 
+    private void DrawShadowedLabel(Rect rect, string text, GUIStyle style, Color textColor, Color shadowColor)
+    {
+        if (style == null) style = GUI.skin.label;
+        Color orig = style.normal.textColor;
+        style.normal.textColor = shadowColor;
+        GUI.Label(new Rect(rect.x + 1, rect.y + 1, rect.width, rect.height), text, style);
+        style.normal.textColor = textColor;
+        GUI.Label(rect, text, style);
+        style.normal.textColor = orig;
+    }
+
     private void LoadTextures()
     {
         panelTex = LoadTexture("Assets/Art/UI/ui_inventory_panel.png");
@@ -534,57 +547,72 @@ public class InventoryUI : MonoBehaviour
 
     private void InitStyles()
     {
+        Font titleFont = PixelArtFontManager.Title;
+        Font regularFont = PixelArtFontManager.Regular;
+        Font boldFont = PixelArtFontManager.Bold;
+
         if (titleStyle == null)
         {
             titleStyle = new GUIStyle();
-            titleStyle.fontSize = 20;
+            titleStyle.font = titleFont;
+            titleStyle.fontSize = 16;
             titleStyle.fontStyle = FontStyle.Bold;
             titleStyle.normal.textColor = new Color(0.35f, 0.20f, 0.08f, 1f);
         }
+        else if (titleStyle.font == null && titleFont != null) titleStyle.font = titleFont;
 
         if (sectionStyle == null)
         {
             sectionStyle = new GUIStyle();
-            sectionStyle.fontSize = 13;
+            sectionStyle.font = boldFont;
+            sectionStyle.fontSize = 12;
             sectionStyle.fontStyle = FontStyle.Bold;
-            sectionStyle.normal.textColor = new Color(0.45f, 0.28f, 0.14f, 1f);
+            sectionStyle.normal.textColor = new Color(0.35f, 0.18f, 0.06f, 1f);
         }
+        else if (sectionStyle.font == null && boldFont != null) sectionStyle.font = boldFont;
 
         if (slotNumberStyle == null)
         {
             slotNumberStyle = new GUIStyle();
-            slotNumberStyle.fontSize = 15;
+            slotNumberStyle.font = boldFont;
+            slotNumberStyle.fontSize = 13;
             slotNumberStyle.fontStyle = FontStyle.Bold;
-            slotNumberStyle.normal.textColor = new Color(0.82f, 0.16f, 0.12f, 1f);
+            slotNumberStyle.normal.textColor = new Color(0.85f, 0.20f, 0.15f, 1f);
         }
+        else if (slotNumberStyle.font == null && boldFont != null) slotNumberStyle.font = boldFont;
 
         if (quantityStyle == null)
         {
             quantityStyle = new GUIStyle();
-            quantityStyle.fontSize = 15;
+            quantityStyle.font = boldFont;
+            quantityStyle.fontSize = 13;
             quantityStyle.fontStyle = FontStyle.Bold;
             quantityStyle.alignment = TextAnchor.LowerRight;
-            quantityStyle.normal.textColor = Color.white;
+            quantityStyle.normal.textColor = new Color(1.0f, 0.96f, 0.88f, 1f);
         }
+        else if (quantityStyle.font == null && boldFont != null) quantityStyle.font = boldFont;
 
         if (quantityShadowStyle == null)
         {
             quantityShadowStyle = new GUIStyle(quantityStyle);
-            quantityShadowStyle.normal.textColor = new Color(0.1f, 0.1f, 0.1f, 0.85f);
+            quantityShadowStyle.font = boldFont;
+            quantityShadowStyle.normal.textColor = new Color(0.18f, 0.08f, 0.02f, 1f);
         }
+        else if (quantityShadowStyle.font == null && boldFont != null) quantityShadowStyle.font = boldFont;
 
         if (activeTabStyle == null)
         {
             activeTabStyle = new GUIStyle(GUI.skin.box);
             Texture2D aTex = new Texture2D(1, 1);
-            aTex.SetPixel(0, 0, new Color(0.88f, 0.72f, 0.48f, 1f));
+            aTex.SetPixel(0, 0, new Color(0.92f, 0.78f, 0.54f, 1f));
             aTex.Apply();
             activeTabStyle.normal.background = aTex;
-            activeTabStyle.fontSize = 13;
-            activeTabStyle.fontStyle = FontStyle.Bold;
+            activeTabStyle.font = boldFont;
+            activeTabStyle.fontSize = 12;
             activeTabStyle.alignment = TextAnchor.MiddleCenter;
-            activeTabStyle.normal.textColor = new Color(0.30f, 0.16f, 0.06f, 1f);
+            activeTabStyle.normal.textColor = new Color(0.25f, 0.12f, 0.04f, 1f);
         }
+        else if (activeTabStyle.font == null && boldFont != null) activeTabStyle.font = boldFont;
 
         if (inactiveTabStyle == null)
         {
@@ -593,36 +621,43 @@ public class InventoryUI : MonoBehaviour
             inTex.SetPixel(0, 0, new Color(0.55f, 0.38f, 0.22f, 0.85f));
             inTex.Apply();
             inactiveTabStyle.normal.background = inTex;
-            inactiveTabStyle.fontSize = 12;
+            inactiveTabStyle.font = regularFont;
+            inactiveTabStyle.fontSize = 11;
             inactiveTabStyle.alignment = TextAnchor.MiddleCenter;
             inactiveTabStyle.normal.textColor = new Color(0.85f, 0.78f, 0.68f, 1f);
         }
+        else if (inactiveTabStyle.font == null && regularFont != null) inactiveTabStyle.font = regularFont;
 
         if (cardTitleStyle == null)
         {
             cardTitleStyle = new GUIStyle();
-            cardTitleStyle.fontSize = 24;
+            cardTitleStyle.font = boldFont;
+            cardTitleStyle.fontSize = 16;
             cardTitleStyle.fontStyle = FontStyle.Bold;
             cardTitleStyle.normal.textColor = new Color(0.32f, 0.18f, 0.08f, 1f);
         }
+        else if (cardTitleStyle.font == null && boldFont != null) cardTitleStyle.font = boldFont;
 
         if (cardInfoStyle == null)
         {
             cardInfoStyle = new GUIStyle();
-            cardInfoStyle.fontSize = 15;
+            cardInfoStyle.font = regularFont;
+            cardInfoStyle.fontSize = 12;
             cardInfoStyle.fontStyle = FontStyle.Normal;
             cardInfoStyle.normal.textColor = new Color(0.40f, 0.25f, 0.12f, 1f);
             cardInfoStyle.richText = true;
         }
+        else if (cardInfoStyle.font == null && regularFont != null) cardInfoStyle.font = regularFont;
 
         if (cardSubStyle == null)
         {
             cardSubStyle = new GUIStyle();
-            cardSubStyle.fontSize = 14;
-            cardSubStyle.fontStyle = FontStyle.Bold;
+            cardSubStyle.font = boldFont;
+            cardSubStyle.fontSize = 11;
             cardSubStyle.alignment = TextAnchor.MiddleCenter;
             cardSubStyle.normal.textColor = new Color(0.45f, 0.28f, 0.14f, 1f);
         }
+        else if (cardSubStyle.font == null && boldFont != null) cardSubStyle.font = boldFont;
 
         if (portraitBoxStyle == null)
         {
@@ -640,29 +675,35 @@ public class InventoryUI : MonoBehaviour
             tTex.SetPixel(0, 0, new Color(0.12f, 0.08f, 0.04f, 0.95f));
             tTex.Apply();
             tooltipStyle.normal.background = tTex;
+            tooltipStyle.font = regularFont;
             tooltipStyle.normal.textColor = new Color(0.95f, 0.90f, 0.80f, 1f);
-            tooltipStyle.fontSize = 14;
+            tooltipStyle.fontSize = 12;
             tooltipStyle.richText = true;
             tooltipStyle.wordWrap = true;
             tooltipStyle.padding = new RectOffset(12, 12, 10, 10);
         }
+        else if (tooltipStyle.font == null && regularFont != null) tooltipStyle.font = regularFont;
 
         if (saveBtnStyle == null)
         {
             saveBtnStyle = new GUIStyle(GUI.skin.button);
-            saveBtnStyle.fontSize = 12;
-            saveBtnStyle.fontStyle = FontStyle.Bold;
+            saveBtnStyle.font = boldFont;
+            saveBtnStyle.fontSize = 11;
             saveBtnStyle.alignment = TextAnchor.MiddleCenter;
             saveBtnStyle.normal.textColor = new Color(0.95f, 0.90f, 0.82f, 1f);
         }
+        else if (saveBtnStyle.font == null && boldFont != null) saveBtnStyle.font = boldFont;
 
         if (saveStatusStyle == null)
         {
             saveStatusStyle = new GUIStyle(GUI.skin.label);
-            saveStatusStyle.fontSize = 11;
+            saveStatusStyle.font = regularFont;
+            saveStatusStyle.fontSize = 10;
             saveStatusStyle.fontStyle = FontStyle.Italic;
             saveStatusStyle.alignment = TextAnchor.MiddleCenter;
             saveStatusStyle.normal.textColor = new Color(0.48f, 0.35f, 0.22f, 1f);
         }
+        else if (saveStatusStyle.font == null && regularFont != null) saveStatusStyle.font = regularFont;
     }
 }
+

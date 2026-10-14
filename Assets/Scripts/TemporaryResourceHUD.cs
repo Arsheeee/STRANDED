@@ -237,31 +237,9 @@ public class TemporaryResourceHUD : MonoBehaviour
             cachedPlayer = Object.FindAnyObjectByType<PlayerInteraction>();
         }
 
-        // 1. Session Harvest & Tool Equipment Tracker in Top-Left Corner (VERY VERY BIG)
-        float trackerWidth = 640f;
-        float trackerHeight = 135f;
-        Rect trackerRect = new Rect(20f, 20f, trackerWidth, trackerHeight);
-        GUI.Box(trackerRect, GUIContent.none, trackerStyle);
+        // Top-left tracker bar removed per user request to provide a clean, cinematic pixel-art screen.
 
-        GUILayout.BeginArea(trackerRect);
-        GUILayout.Space(8);
-        GUILayout.Label("  [STRANDED: INVENTORY, HOTBAR & CRAFTING]", trackerHeaderStyle);
-        GUILayout.Space(4);
-        string summaryLine = $"   Wood: {GetCollectedCount(ResourceType.Wood)}  |  " +
-                             $"Stone: {GetCollectedCount(ResourceType.Stone)}  |  " +
-                             $"Fiber: {GetCollectedCount(ResourceType.Fiber)}  |  " +
-                             $"Vines: {GetCollectedCount(ResourceType.Vines)}  |  " +
-                             $"Berries: {GetCollectedCount(ResourceType.Berries)}  |  " +
-                             $"Coconut: {GetCollectedCount(ResourceType.Coconut)}";
-        GUILayout.Label(summaryLine, trackerStyle);
-        GUILayout.Space(4);
-
-        string toolName = cachedPlayer != null ? cachedPlayer.CurrentTool.ToDisplayName() : "None";
-        string toolLine = $"   Equipped: [{toolName}]  (Hotbar: 1-9,0,-,= | Bag: 'I' | Craft: 'C')";
-        GUILayout.Label(toolLine, trackerToolStyle);
-        GUILayout.EndArea();
-
-        // 2. Contextual Interaction Prompt (Positioned cleanly above the 80px enlarged hotbar)
+        // 2. Contextual Interaction Prompt (Positioned cleanly above the hotbar)
         if (!string.IsNullOrEmpty(currentPrompt))
         {
             float promptWidth = 620f;

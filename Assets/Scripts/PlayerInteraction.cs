@@ -46,6 +46,7 @@ public class PlayerInteraction : MonoBehaviour
     private FishingSpot currentTargetSpot;
     private FishingSpot activeFishingSpot;
     private BoatConstructionSite currentTargetBoatSite;
+    private HelicopterShelter currentTargetShelter;
     private NearbyWaterType nearbyWater = NearbyWaterType.None;
     private float lastInteractionTime = -99f;
     private readonly Collider2D[] queryResults = new Collider2D[16];
@@ -61,6 +62,7 @@ public class PlayerInteraction : MonoBehaviour
     public FishingSpot ActiveFishingSpot => activeFishingSpot;
     public FishingSpot CurrentTargetSpot => currentTargetSpot;
     public BoatConstructionSite CurrentTargetBoatSite => currentTargetBoatSite;
+    public HelicopterShelter CurrentTargetShelter => currentTargetShelter;
 
     public void SetActiveFishingSpot(FishingSpot spot)
     {
@@ -136,11 +138,14 @@ public class PlayerInteraction : MonoBehaviour
         FishingSpot.EnsureDefaultFishingSpotsExist();
         ResourceNode.EnsureDefaultVineNodesExist();
         ResourceNode.EnsureStartingCampResourcesExist();
+        ResourceNode.EnsureDefaultForageNodesExist();
+        HelicopterShelter.EnsureExists();
         BoatConstructionSite.EnsureDefaultSiteExists();
         ObjectiveManager.EnsureExists();
         EscapeEndingController.EnsureExists();
         SaveManager.EnsureExists();
         AudioManager.EnsureExists();
+        EscapeMenuUI.EnsureExists();
     }
 
     private void LocateWaterTilemaps()
@@ -194,9 +199,10 @@ public class PlayerInteraction : MonoBehaviour
             {
                 activeFishingSpot.CancelFishing(string.Empty);
             }
-            if (currentTargetBoatSite != null || currentTargetNode != null || currentTargetSpot != null || nearbyWater != NearbyWaterType.None)
+            if (currentTargetBoatSite != null || currentTargetShelter != null || currentTargetNode != null || currentTargetSpot != null || nearbyWater != NearbyWaterType.None)
             {
                 currentTargetBoatSite = null;
+                currentTargetShelter = null;
                 currentTargetNode = null;
                 currentTargetSpot = null;
                 nearbyWater = NearbyWaterType.None;
@@ -205,16 +211,17 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        // 1. If Inventory, Crafting, or Boat Construction window is open, suppress world interaction to prevent accidental harvesting
-        if (InventoryUI.IsOpen || CraftingUI.IsOpen || BoatConstructionUI.IsOpen)
+        // 1. If Inventory, Crafting, Boat Construction, or Escape Menu is open, suppress world interaction to prevent accidental harvesting
+        if (InventoryUI.IsOpen || CraftingUI.IsOpen || BoatConstructionUI.IsOpen || EscapeMenuUI.IsOpen)
         {
             if (activeFishingSpot != null)
             {
                 activeFishingSpot.CancelFishing("Fishing cancelled.");
             }
-            if (currentTargetBoatSite != null || currentTargetNode != null || currentTargetSpot != null || nearbyWater != NearbyWaterType.None)
+            if (currentTargetBoatSite != null || currentTargetShelter != null || currentTargetNode != null || currentTargetSpot != null || nearbyWater != NearbyWaterType.None)
             {
                 currentTargetBoatSite = null;
+                currentTargetShelter = null;
                 currentTargetNode = null;
                 currentTargetSpot = null;
                 nearbyWater = NearbyWaterType.None;
@@ -237,6 +244,11 @@ public class PlayerInteraction : MonoBehaviour
         if (!wasInteracted && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             wasInteracted = true;
+        }
+
+        if (Keyboard.current != null && Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            HandleQuickConsume();
         }
 
         // If actively fishing, direct input directly to the fishing spot
@@ -296,6 +308,10 @@ public class PlayerInteraction : MonoBehaviour
             else if (currentTargetNode != null && currentTargetNode.CanInteract())
             {
                 HarvestCurrentTarget();
+            }
+            else if (currentTargetShelter != null)
+            {
+                currentTargetShelter.Interact(this);
             }
             else if (nearbyWater != NearbyWaterType.None)
             {
@@ -474,9 +490,23 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        // Query for Helicopter Shelter
+        HelicopterShelter bestShelter = null;
+        var shelterInstance = HelicopterShelter.Instance;
+        if (shelterInstance != null && shelterInstance.gameObject.activeInHierarchy)
+        {
+            float distSq = ((Vector2)shelterInstance.transform.position - playerPos).sqrMagnitude;
+            float range = shelterInstance.InteractionRadius;
+            if (distSq <= range * range)
+            {
+                bestShelter = shelterInstance;
+            }
+        }
+
         currentTargetNode = bestNode;
         currentTargetSpot = bestSpot;
         currentTargetBoatSite = bestBoatSite;
+        currentTargetShelter = bestShelter;
 
         // Prioritize fishing spot if Fishing Rod is equipped, or if no node is near, or if spot is closer
         bool prioritizeFishing = (bestSpot != null) && (bestNode == null || currentTool == ToolType.FishingRod || bestSpotDistSq < bestNodeDistSq);
@@ -536,6 +566,12 @@ public class PlayerInteraction : MonoBehaviour
                         TemporaryResourceHUD.Instance.SetInteractionPrompt($"[E] {currentTargetNode.DisplayName} (Requires {currentTargetNode.RequiredTool.ToDisplayName()})");
                     }
                 }
+            }
+            else if (currentTargetShelter != null)
+            {
+                currentTargetSpot = null;
+                nearbyWater = NearbyWaterType.None;
+                TemporaryResourceHUD.Instance.SetInteractionPrompt(currentTargetShelter.GetInteractionPrompt(this));
             }
             else
             {

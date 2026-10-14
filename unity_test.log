@@ -1,0 +1,1045 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.5/staging' branch; Version is '6000.5.3f1 (c2eb47b3a2a9) revision 12774215'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION" at "2026-10-13T13:56:09.1827917Z"
+OS: 'Windows 11  (10.0.26300) CoreSingleLanguage' Language: 'en' Physical Memory: 7521 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-10-13T13:56:09Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Unity.exe
+-projectPath
+D:\Unity\Projects\STRANDED
+-batchmode
+-quit
+-executeMethod
+ProgressionRegressionTestRunner.RunAllTests
+-logFile
+D:\Unity\Projects\STRANDED\unity_test.log
+Successfully changed project path to: D:\Unity\Projects\STRANDED
+D:/Unity/Projects/STRANDED
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=0"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.Player connection [13908]  Target information:
+
+Player connection [13908]  * "[IP] 10.250.117.30 [Port] 55504 [Flags] 2 [Guid] 2092128845 [EditorId] 2092128845 [Version] 1048832 [Id] WindowsEditor(7,Arsheeslap) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [13908] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [13908] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-12268" after 0.3 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-PAVILION"
+[Licensing::IpcConnector] LicenseClient-PAVILION channel disconnected successfully.
+[Licensing::IpcConnector] Channel LicenseClient-PAVILION-6000.5.3 doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 18892)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION-6000.5.3" at "2026-10-13T13:56:14.5784582Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 18892, path: "C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              6bc0e7f3b76e441fa948af0944e5dacd
+  Correlation Id:          025cd8d68b870d9a3a5485500ff8a9b2
+  External correlation Id: 1756675834797631865
+  Machine Id:              AG7afaxG1JpfRCvCxKExb45z/zQ=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-PAVILION-6000.5.3" (connect: 2.91s, validation: 0.23s, handshake: 0.03s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-PAVILION-6000.5.3-notifications" at "2026-10-13T13:56:14.8318599Z"
+[Licensing::Module] Connected to LicensingClient (PId: 18892, launch time: 0.03, total connection time: 3.16s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 13469945438328-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 5.68s
+[Licensing::Module] Licensing is initialized (took 4.50s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 2.22 ms, found 0 plugins.
+Initialize engine version: 6000.5.3f1 (c2eb47b3a2a9)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/Unity/Projects/STRANDED/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        NVIDIA GeForce RTX 3050 Laptop GPU (ID=0x25a2)
+    Vendor:          NVIDIA
+    VRAM:            3964 MB
+    App VRAM Budget: 3369 MB
+    Driver:          32.0.15.8183
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56268
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.5.3f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.004613 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.639 seconds
+Domain Reload Profiling: 3657ms
+	BeginReloadAssembly (363ms)
+		CreateAndSetChildDomain (9ms)
+	RebuildCommonClasses (9ms)
+	RebuildNativeTypeToScriptingClass (226ms)
+	initialDomainReloadingComplete (268ms)
+	LoadAllAssembliesAndSetupDomain (2144ms)
+		LoadAssemblies (354ms)
+		AnalyzeDomain (2026ms)
+			TypeCache.Refresh (2023ms)
+				TypeCache.ScanAssembly (1654ms)
+	FinalizeReload (647ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (4ms)
+			BeforeProcessingInitializeOnLoad (121ms)
+			ProcessInitializeOnLoadAttributes (164ms)
+			ProcessInitializeOnLoadMethodAttributes (256ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 69 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.2d.animation@15.1.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.animation@6d5a363ae647)
+    com.unity.2d.aseprite@5.0.3 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.aseprite@d13865913efa)
+    com.unity.2d.psdimporter@14.0.3 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.psdimporter@5d82044f9e43)
+    com.unity.2d.spriteshape@15.0.3 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.spriteshape@fcb7ec61a58b)
+    com.unity.2d.tilemap.extras@8.0.3 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.tilemap.extras@a80140457adc)
+    com.unity.2d.tooling@3.0.1 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.tooling@6f06ffb033c0)
+    com.unity.ai.assistant@2.20.0-pre.2 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.ai.assistant@1b11b9bfd84a)
+    com.unity.ai.inference@2.6.1 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.ai.inference@9a123aee5df7)
+    com.unity.collab-proxy@2.12.4 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.collab-proxy@0b1559bcd34e)
+    com.unity.ide.rider@3.0.38 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.19.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.inputsystem@21a28c3a6c83)
+    com.unity.timeline@1.8.12 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.11 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.visualscripting@8bed5ad90189)
+    com.unity.burst@1.8.29 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.burst@6bb9aca3ef38)
+    com.unity.dt.app-ui@2.1.7 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.dt.app-ui@b097002a00c2)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.nuget.mono-cecil@1.11.6 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.2d.common@14.0.1 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.common@73badf92ba8b)
+    com.unity.searcher@4.9.4 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.test-framework.performance@3.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.sprite@053a968eab56)
+    com.unity.2d.tilemap@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.2d.tilemap@592c6ccaefe1)
+    com.unity.multiplayer.center@1.0.1 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.multiplayer.center@b860850997d0)
+    com.unity.render-pipelines.universal@17.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.render-pipelines.universal@276396f56b3f)
+    com.unity.test-framework@1.7.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.test-framework@1405238725ab)
+    com.unity.ugui@2.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.ugui@377fd60ad87b)
+    com.unity.modules.accessibility@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.1.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.ext.nunit@44f7d31723bd)
+    com.unity.render-pipelines.core@17.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.render-pipelines.core@0733e3164aa3)
+    com.unity.shadergraph@17.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.shadergraph@8aa9acb51790)
+    com.unity.render-pipelines.universal-config@17.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.render-pipelines.universal-config@fdda01c80fe3)
+    com.unity.collections@6.5.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.collections@a43cabe808ca)
+    com.unity.mathematics@1.4.0 (location: D:\Unity\Projects\STRANDED\Library\PackageCache\com.unity.mathematics@981956d94fb6)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.03 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Refreshing native plugins compatible for Editor in 115.15 ms, found 6 plugins.
+Starting: C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: D:/Unity/Projects/STRANDED
+DisplayProgressbar: Compiling Scripts
+ExitCode: 4 Duration: 5s116ms
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/1900b0aE-inputdata.json
+[1309/1726  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra requires additional run (5.00 seconds), 2 items updated, 1308 evaluated
+Starting: C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Data\netcorerun\netcorerun.exe "C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Data\Tools\BuildPipeline\ScriptCompilationBuildProgram.exe" "Library/Bee/1900b0aE.dag.json" "Library/Bee/1900b0aE-inputdata.json" "Library\Bee\buildprogram0.traceevents"
+WorkingDir: D:/Unity/Projects/STRANDED
+ExitCode: 0 Duration: 4s372ms
+Starting: C:\Program Files\Unity\Hub\Editor\6000.5.3f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --dagfilejson="Library\Bee\1900b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: D:/Unity/Projects/STRANDED
+ExitCode: 0 Duration: 3s902ms
+Finished compiling graph: 1730 nodes, 37798 flattened edges (30638 ToBuild, 288 ToUse), maximum node priority 1993
+[ 881/1726  0s] WriteText Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.rsp
+[1309/1726  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[1718/1726  0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+Assets\Scripts\PlayerInteraction.cs(422,24): warning CS0618: 'Physics2D.OverlapCircleNonAlloc(Vector2, float, Collider2D[], int)' is obsolete: 'OverlapCircleNonAlloc has been deprecated. Please use OverlapCircle.'
+[1719/1726  0s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+Assets\Editor\SetupPlayerHelper.cs(64,13): warning CS0618: 'TextureImporter.spritesheet' is obsolete: 'Support for accessing sprite meta data through spritesheet has been removed. Please use the UnityEditor.U2D.Sprites.ISpriteEditorDataProvider interface instead.'
+
+Assets\Editor\IslandResourcePlacer.cs(26,32): warning UAC1009: Field 'tiles' uses an unsupported type 'System.Collections.Generic.List<System.Collections.Generic.List<int>>'. Refer to the Serialization rules analyzer reference. (https://docs.unity3d.com/6000.5/Documentation/Manual/script-serialization-analyzer.html#uac1009)
+[1720/1726  1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 144 defines and 379 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1721/1726  1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 142 defines and 403 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1722/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[1723/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[1724/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+[1725/1726  0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (3.86 seconds), 10 items updated, 1726 evaluated
+Assets\Scripts\PlayerInteraction.cs(422,24): warning CS0618: 'Physics2D.OverlapCircleNonAlloc(Vector2, float, Collider2D[], int)' is obsolete: 'OverlapCircleNonAlloc has been deprecated. Please use OverlapCircle.'
+Assets\Editor\SetupPlayerHelper.cs(64,13): warning CS0618: 'TextureImporter.spritesheet' is obsolete: 'Support for accessing sprite meta data through spritesheet has been removed. Please use the UnityEditor.U2D.Sprites.ISpriteEditorDataProvider interface instead.'
+Assets\Editor\IslandResourcePlacer.cs(26,32): warning UAC1009: Field 'tiles' uses an unsupported type 'System.Collections.Generic.List<System.Collections.Generic.List<int>>'. Refer to the Serialization rules analyzer reference. (https://docs.unity3d.com/6000.5/Documentation/Manual/script-serialization-analyzer.html#uac1009)
+AssetDatabase: script compilation time: 15.041808s
+Begin MonoManager ReloadAssembly
+Importing 'GUID: 2cec4302cf8b487faff49b3719dd6395 - Path: Assets/Resources' with importer (DefaultImporter)
+Imported 'GUID: 2cec4302cf8b487faff49b3719dd6395' -> (Import Result ID: '16653ec341837cdba0244f54f2e29d5a') in 0.045 seconds [static dependencies only]. Details - ImportResultOutputID=a9652a761f4c64ed800aa581aef2521b DependenciesID=ebd4fabca0f1db1d95dda167f45021d9 StaticDependenciesID=928091307e6c5be185fa7846e24b5861 
+Importing 'GUID: fb283c82552c41329f7a19628b0d1696 - Path: Assets/Art/Fonts' with importer (DefaultImporter)
+Imported 'GUID: fb283c82552c41329f7a19628b0d1696' -> (Import Result ID: '534322e41528df225d379f1cb898fa4f') in 0.008 seconds [static dependencies only]. Details - ImportResultOutputID=1381f27e75edb42bd62318933ea05c93 DependenciesID=d4c759db877d9cc79b3851140e0933f9 StaticDependenciesID=dd13f1d1fb27a6b566dc34abecf32fb7 
+Importing 'GUID: 4c46eaab402349aa9af44a992c2b8b97 - Path: Assets/Resources/Fonts' with importer (DefaultImporter)
+Imported 'GUID: 4c46eaab402349aa9af44a992c2b8b97' -> (Import Result ID: '4c7b79642feec7fb6ccc4e74b0824c4c') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=3335e9304bbb01e5ec5531dba87cbc12 DependenciesID=e277de0106587ea86f93c109a8f34bd4 StaticDependenciesID=3b2378146e7dd44f5f3ef58cdf86cbaf 
+Refreshing native plugins compatible for Editor in 4.96 ms, found 6 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.62 ms, found 6 plugins.
+Refreshing native plugins compatible for Editor in 9.18 ms, found 6 plugins.
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+[Licensing::Client] Error: Code 404 while processing request (status: Found 0 entitlement groups and 0 free entitlements matching requested entitlement ids)
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  7.355 seconds
+Domain Reload Profiling: 11926ms
+	BeginReloadAssembly (464ms)
+		DisableScriptedObjects (41ms)
+		CreateAndSetChildDomain (203ms)
+	RebuildCommonClasses (10ms)
+	RebuildNativeTypeToScriptingClass (19ms)
+	initialDomainReloadingComplete (134ms)
+	LoadAllAssembliesAndSetupDomain (3938ms)
+		LoadAssemblies (3191ms)
+		AnalyzeDomain (688ms)
+			TypeCache.Refresh (512ms)
+				TypeCache.ScanAssembly (481ms)
+			BuildScriptInfoCaches (157ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (7360ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (162ms)
+			ProcessInitializeOnLoadAttributes (5015ms)
+			ProcessInitializeOnLoadMethodAttributes (1474ms)
+			AfterProcessingInitializeOnLoad (12ms)
+		AwakeInstancesAfterBackupRestoration (49ms)
+Importing 'GUID: 5047b4aef54045cfbfab585046c024f9 - Path: Assets/Art/UI/ui_slot_selected.png' with importer (TextureImporter)
+Imported 'GUID: 5047b4aef54045cfbfab585046c024f9' -> (Import Result ID: 'c8dfd82ae187145eecafd2250b9decab') in 0.092 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=82c5a6010b427bda095aae8c17085ad9 DependenciesID=755f163bd599c682ff232c2ccab76e9f StaticDependenciesID=f70cd3285575e1778ad2d0b06542ff0d 
+Importing 'GUID: 900896fb5cfb4d1096e1e6628c7bf715 - Path: Assets/Art/UI/ui_slot_background.png' with importer (TextureImporter)
+Imported 'GUID: 900896fb5cfb4d1096e1e6628c7bf715' -> (Import Result ID: '40a0a824458d49f4cf7e62e6dc8257c8') in 0.008 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=f21846935b2f1cac261770e89e2a23f5 DependenciesID=1169689ccef6fc77f88789820b99594d StaticDependenciesID=6c4c0976dcc6a9a689967beae07abec9 
+Importing 'GUID: 41064797502b4ea6930aff736873f036 - Path: Assets/Art/UI/ui_menu_panel.png' with importer (TextureImporter)
+Imported 'GUID: 41064797502b4ea6930aff736873f036' -> (Import Result ID: '2acdb295756b79bdda4bae1988e2608d') in 0.030 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=6e5f83066a13ee80abd981f09dedb636 DependenciesID=cf7e6d45d909ac95b458a338d978622a StaticDependenciesID=0b27f16c3743a1c1cd2fc96b15c7d6a6 
+Importing 'GUID: df717d4fc1734bb0be71a9d5b68d82e7 - Path: Assets/Art/UI/ui_inventory_panel.png' with importer (TextureImporter)
+Imported 'GUID: df717d4fc1734bb0be71a9d5b68d82e7' -> (Import Result ID: '4d09b2cc8f9d28d938c65897b23b1e5f') in 0.017 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=ed2313cffa2a8e2f8ad337c8f1505f8c DependenciesID=bf810386ff479035f5193977850883be StaticDependenciesID=d551c744b93c259ff49017150992e7a1 
+Importing 'GUID: e2b638392b734fba9c80328c141bd085 - Path: Assets/Resources/Fonts/PixelArtFont-Title.ttf' with importer (TrueTypeFontImporter)
+Imported 'GUID: e2b638392b734fba9c80328c141bd085' -> (Import Result ID: '78d22f70cb78d7b3b8af5098a65c43de') in 0.031 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=b096768cffeb6010e291d4ddbec790a1 DependenciesID=478d00a45b600a00c090c3d522b6f95e StaticDependenciesID=261b10c4d465eead87cfd733f1de1cfa 
+Importing 'GUID: 63508a70e8e84251b31322996cd8c599 - Path: Assets/Art/Fonts/PixelArtFont-Bold.ttf' with importer (TrueTypeFontImporter)
+Imported 'GUID: 63508a70e8e84251b31322996cd8c599' -> (Import Result ID: 'dfa8c0949d1263691127c0a2049e051c') in 0.007 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=46c44e5e65c6ea60d3879e9e91fbbc7c DependenciesID=38440c2a142b504d9b88872b0bdbfbb9 StaticDependenciesID=3bde7da882389676ec57e99096b86855 
+Importing 'GUID: d5721cf3d55448579169aad59087c40e - Path: Assets/Resources/Fonts/PixelArtFont-Bold.ttf' with importer (TrueTypeFontImporter)
+Imported 'GUID: d5721cf3d55448579169aad59087c40e' -> (Import Result ID: 'c868d9163f1eb185b2a3a2c2391c8754') in 0.004 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=c00ee5a595b856d117729571c59e8bcb DependenciesID=e6518a42b99ca9411b2ce9272433d143 StaticDependenciesID=fc945fb954b5199e442e9d5c43116633 
+Importing 'GUID: c6b088f540364965a9a38d7f23ed09cd - Path: Assets/Art/Fonts/PixelArtFont.ttf' with importer (TrueTypeFontImporter)
+Imported 'GUID: c6b088f540364965a9a38d7f23ed09cd' -> (Import Result ID: '97dae47c75428925dc9e2c5bab1f1a26') in 0.004 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=d56d1646a6af76b2ee12ad08cd5e41c4 DependenciesID=15d092b793be59f1c9a995620b342abd StaticDependenciesID=4dfa52f30be489018df6b5319b3a1d1c 
+Importing 'GUID: b7cd822674354255b2efc9ffb5d24aee - Path: Assets/Resources/Fonts/PixelArtFont.ttf' with importer (TrueTypeFontImporter)
+Imported 'GUID: b7cd822674354255b2efc9ffb5d24aee' -> (Import Result ID: '34a0c74777d31956231501050b0901e0') in 0.003 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=48310a2ecd28e7d23ebe13333c5420d7 DependenciesID=ef29ed9a11018391cac7a18e96ba941c StaticDependenciesID=9d24245413f3acf5890c64dfc614ce98 
+Importing 'GUID: 1954d217b2dc4c6ab96323ba3f4f8cc4 - Path: Assets/Art/Fonts/PixelArtFont-Title.ttf' with importer (TrueTypeFontImporter)
+Imported 'GUID: 1954d217b2dc4c6ab96323ba3f4f8cc4' -> (Import Result ID: '75a9ca29137def682815950cc899b4e3') in 0.003 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=921c5e8f7ecd25454f716a64579f084a DependenciesID=2c4d569a892b20017c454e86ff016caa StaticDependenciesID=c205d34a3343471ffffb5744dbdcd903 
+Starting new worker id: 0 with log in D:/Unity/Projects/STRANDED/Logs/AssetImportWorkerHW0.log
+Refreshing native plugins compatible for Editor in 15.44 ms, found 6 plugins.
+
+Asset Pipeline Refresh (id=66a83e346ce57534a82fe613d0f9c785): Total: 42.203 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=13 (actual=13, local cache=0, cache server=0)
+		Asset DB Process Time: managed=74 ms, native=17566 ms
+		Asset DB Callback time: managed=4576 ms, native=116 ms
+		Scripting: domain reloads=1, domain reload time=4709 ms, compile time=15044 ms, other=113 ms
+		Project Asset Count: scripts=2332, non-scripts=6754
+		Asset File Changes: new=10, changed=19, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 51.147ms
+	ApplyChangesToAssetFolders: 1.435ms
+	Scan: 622.180ms
+	Collect global state as custom dependencies: 10.195ms
+	OnSourceAssetsModified: 3.614ms
+	CategorizeScriptCompilationAssets: 2659.695ms
+	ProcessAssetsWithTransientArtifactChanges: 163.275ms
+	CategorizeAssets: 558.409ms
+	CompileScripts: 15044.449ms
+	ImportOutOfDateAssets: 7899.382ms (7430.293ms without children)
+		ImportManagerImport: 273.823ms (3.252ms without children)
+			UpdateCategorizedAssets: 0.197ms
+		UnloadImportedAssets: 1.817ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.866ms
+		ImportSchedulerStart: 191.488ms
+	PostProcessAllAssets: 4584.490ms
+		VCAutoAddAssetPostprocess 6.716ms
+		XRBuildSystem.XRAssetImported 2.203ms
+		SpriteAtlasDatabase.OnAssetPostprocessCallback 0.618ms
+		AssemblyValidation.PostprocessAllAssets 0.291ms
+		VersionControlSettings.HiddenFilePostprocess 0.237ms
+		Canvas.OnAllAssetImport 0.196ms
+		PostProcessCallbackCreateDeferredMaterials 0.159ms
+		ShaderAssetModifiedCallback 0.080ms
+		RaytracingShaderImportPostprocess 0.073ms
+		BlockShaderImporter.PostprocessAllAssets 0.057ms
+		MonoPostProcessAllAssets: 4567.708ms
+			AssetPostprocessor.OnPostprocessAllAssets 2095.927ms
+			SyncVS.PostprocessSyncProject 1223.793ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 418.005ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 170.588ms
+			AssetReferenceReimportMonitor.OnPostprocessAllAssets 43.686ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 36.075ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 19.502ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 18.338ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 15.620ms
+			AssetChangedListener.OnPostprocessAllAssets 13.586ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 13.207ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 10.700ms
+			MaterialPostprocessor.OnPostprocessAllAssets 7.995ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 5.650ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 4.396ms
+			AssetProcessor.OnPostprocessAllAssets 3.560ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 3.447ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 3.273ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 2.775ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 2.596ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 2.325ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 2.233ms
+			SpriteShapeAssetPostProcessor.OnPostprocessAllAssets 1.884ms
+			PostProcessor.OnPostprocessAllAssets 1.499ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 1.408ms
+			AssetChangeDetector.OnPostprocessAllAssets 1.173ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 1.111ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 1.045ms
+			SampleDependencyImporterPostProcessor.OnPostprocessAllAssets 1.021ms
+			SpriteLibraryAssetPostprocessor.OnPostprocessAllAssets 1.000ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.911ms
+			SkillsProjectAssetPostprocessor.OnPostprocessAllAssets 0.902ms
+			PSDImportPostProcessor.OnPostprocessAllAssets 0.895ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.750ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.628ms
+			PSDImporterAssetPostProcessor.OnPostprocessAllAssets 0.602ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.583ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.564ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.452ms
+			ModelAssetProcessor.OnPostprocessAllAssets 0.441ms
+			AssetEvents.OnPostprocessAllAssets 0.382ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.224ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.194ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.157ms
+			TrackSelectedAssetsProcessor.OnPostprocessAllAssets 0.143ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.134ms
+	PostAssetChangesProfiler: 57.606ms
+	UnloadStreamsBegin: 5.899ms
+	PersistCurrentRevisions: 1.234ms
+	GenerateScriptTypeHashes: 4.999ms
+	GenerateScriptTypeSerializationHashes: 7.979ms
+	Untracked: 10530.970ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Worker ready: AssetImportWorkerHW0 0
+Scanning for USB devices : 7.113ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-STRANDED
+Unloading 72 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 10830 unused Assets / (25.9 MB). Loaded Objects now: 11771.
+Memory consumption went from 0.61 GB to 0.59 GB.
+Total: 86.393800 ms (FindLiveObjects: 1.509600 ms CreateObjectMapping: 6.116400 ms MarkObjects: 58.076000 ms  DeleteObjects: 20.477400 ms)
+
+======================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:19)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 19)
+
+STRANDED: Running Comprehensive Progression & Knife Regression Tests
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:20)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 20)
+
+======================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:21)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 21)
+
+[PASS] TEST 1: Starting New Game Inventory — Stone Knife count: 1, Other tools: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:73)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 1b: Repeated New Game Initialization Prevents Duplication — Knife count after repeated call: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:80)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Action Hook] Tool action performed with Stone Knife
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlayerInteraction:TriggerToolAction (ToolType) (at Assets/Scripts/PlayerInteraction.cs:401)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:445)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:125)
+
+(Filename: Assets/Scripts/PlayerInteraction.cs Line: 401)
+
+[STRANDED Harvest] Collected Stone +1 (Total: 1) from 'Stone'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TemporaryResourceHUD:RecordCollection (ResourceType,int,string) (at Assets/Scripts/TemporaryResourceHUD.cs:82)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:460)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:125)
+
+(Filename: Assets/Scripts/TemporaryResourceHUD.cs Line: 82)
+
+[PASS] TEST 2: Stone Knife + Very Small Rock — CanHarvest: True, Yield: 1, Error: ''
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:126)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Action Hook] Tool action performed with Stone Knife
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlayerInteraction:TriggerToolAction (ToolType) (at Assets/Scripts/PlayerInteraction.cs:401)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:445)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:135)
+
+(Filename: Assets/Scripts/PlayerInteraction.cs Line: 401)
+
+[STRANDED Harvest] Collected Fiber +1 (Total: 1) from 'Fiber'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TemporaryResourceHUD:RecordCollection (ResourceType,int,string) (at Assets/Scripts/TemporaryResourceHUD.cs:82)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:460)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:135)
+
+(Filename: Assets/Scripts/TemporaryResourceHUD.cs Line: 82)
+
+[PASS] TEST 3: Stone Knife + Very Small Bush — CanHarvest: True, Yield: 1, Error: ''
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:136)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Action Hook] Tool action performed with Stone Knife
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+PlayerInteraction:TriggerToolAction (ToolType) (at Assets/Scripts/PlayerInteraction.cs:401)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:445)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:145)
+
+(Filename: Assets/Scripts/PlayerInteraction.cs Line: 401)
+
+[STRANDED Harvest] Collected Wood +1 (Total: 1) from 'Wood'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+TemporaryResourceHUD:RecordCollection (ResourceType,int,string) (at Assets/Scripts/TemporaryResourceHUD.cs:82)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:460)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:145)
+
+(Filename: Assets/Scripts/TemporaryResourceHUD.cs Line: 82)
+
+[PASS] TEST 4: Stone Knife + Very Small Log — CanHarvest: True, Yield: 1, Error: ''
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:146)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 5: Stone Knife + Medium/Large Rock Rejection — MedRock Err: 'Your knife is too weak for this resource.', LargeRock Err: 'Your knife is too weak for this resource.'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:155)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 6: Stone Knife + Medium/Large Bush Rejection — MedBush Err: 'Your knife is too weak for this resource.', LargeBush Err: 'Your knife is too weak for this resource.'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:166)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 7: Stone Knife + Normal/Large Log Rejection — NormLog Err: 'Your knife is too weak for this resource.', LargeLog Err: 'Your knife is too weak for this resource.'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:177)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 8: Stone Knife + Tree Rejection — Tree Err: 'Your knife is too weak for this resource.'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:187)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Tool Requirement] Your knife is too weak for this resource.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+TemporaryResourceHUD:ShowRequirementFeedback (string) (at Assets/Scripts/TemporaryResourceHUD.cs:96)
+ResourceNode:Interact (ToolType,PlayerInteraction) (at Assets/Scripts/ResourceNode.cs:422)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:196)
+
+(Filename: Assets/Scripts/TemporaryResourceHUD.cs Line: 96)
+
+[PASS] TEST 9: Failed Harvest Atomicity & Zero State Loss — Yield: 0, AvailableAfter: True, InvCount: 0
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:201)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 10: Advanced Tools Unlock Respective Resources — AxeTree: True, AxeLog: True, AxeVines: True, PickMedRock: True, PickLargeRock: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:215)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 11: Recipe Catalog Dependency Audit (No Circular Loops) — Total recipes: 19. All recipes validated cleanly.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:240)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 12: Early Game Progression Simulation (Stone Knife -> Axe + Pickaxe) — CraftedAxe: True, CraftedPickaxe: True, InvAxeCount: 1
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:271)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 13: Trace Dependency Chain to All 5 Escape Boat Components — Verified valid recipes and items for Paddle, Wind Assembly, Rope Binding Kit, Structural Frame, and Reinforced Hull.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:307)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 14: Renewable Early-Game Resources (Anti-Deadlock Regrowth) — RockRegrowth: 45s, BushRegrowth: 45s, LogRegrowth: 45s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:314)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Save] Initialized SaveManager singleton in scene.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SaveManager:EnsureExists () (at Assets/Scripts/SaveManager.cs:457)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:323)
+
+(Filename: Assets/Scripts/SaveManager.cs Line: 457)
+
+[STRANDED Boat] Created default Boat Construction Site at Northeastern Cove (276.5, 265.5).
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+BoatConstructionSite:EnsureDefaultSiteExists () (at Assets/Scripts/BoatConstructionSite.cs:481)
+SaveManager:SaveGame (string&) (at Assets/Scripts/SaveManager.cs:179)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:334)
+
+(Filename: Assets/Scripts/BoatConstructionSite.cs Line: 481)
+
+[STRANDED Save] Game saved successfully to: C:/Users/PAVILION/AppData/LocalLow/DefaultCompany/STRANDED\stranded_save.json
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SaveManager:SaveGame (string&) (at Assets/Scripts/SaveManager.cs:260)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:334)
+
+(Filename: Assets/Scripts/SaveManager.cs Line: 260)
+
+[STRANDED Save] Game state loaded successfully.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+SaveManager:LoadGame (string&) (at Assets/Scripts/SaveManager.cs:413)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:338)
+
+(Filename: Assets/Scripts/SaveManager.cs Line: 413)
+
+[PASS] TEST 15: Save and Load Inventory Integrity — Saved state restored exactly; no extra Stone Knife granted.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:347)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Escape] Initialized EscapeEndingController singleton in scene.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+EscapeEndingController:EnsureExists () (at Assets/Scripts/EscapeEndingController.cs:545)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:356)
+
+(Filename: Assets/Scripts/EscapeEndingController.cs Line: 545)
+
+[PASS] TEST 16: Boat Construction Site & Escape Ending Systems Active — BoatSite: True, TotalStages: 5, EscapeEndingController: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:360)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 17: F8 Shortcut Enclosed in Development/Editor Build Directives — UpdateDeveloperShortcuts() verified under #if UNITY_EDITOR || DEVELOPMENT_BUILD.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:369)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 18: Assembly Compilation Check — Assembly-CSharp.csproj and Assembly-CSharp-Editor.csproj built with 0 errors.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:376)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[STRANDED Base Camp] Initialized Crashed Helicopter shelter and base camp at (134.5, 122.8).
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+HelicopterShelter:EnsureExists () (at Assets/Scripts/HelicopterShelter.cs:333)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:383)
+
+(Filename: Assets/Scripts/HelicopterShelter.cs Line: 333)
+
+[PASS] TEST 19: Crashed Helicopter Base Camp Spawning & Safe Placement — Shelter: True, Heli: True, Campfire: True, DistToSpawn: 2.51m (Safe)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:402)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 20: Helicopter Shelter Interaction & Resting Mechanics — Prompt: '[E] Crashed Helicopter (Shelter)', RestingTriggered: True, RestingPrompt: '[E] Stand Up (Stop Resting)', StoppedResting: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:425)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 21: Base Camp Singleton Zero-Duplication & Save Session Flags — Shelters: 1, CampRoots: 1, NewGameFlag: True, LoadedGameFlag: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:443)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 22: Escape Menu UI & Pause State Management — MenuExists: True, Paused: True, Resumed: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:457)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 23: Visible Helicopter Cabin & Sleeping Survivor Mechanics — SleepingVisualConfigured: True, SleepingActive: True, WokeUp: True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:479)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+[PASS] TEST 24: Foraging Items & Poison Damage Mechanics — ItemsRegistered: True, PoisonConsumed: True, HPBefore: 100, HPAfter: 80
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:<RunAllTests>g__Assert|0_0 (bool,string,string,ProgressionRegressionTestRunner/<>c__DisplayClass0_0&) (at Assets/Editor/ProgressionRegressionTestRunner.cs:31)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:502)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 31)
+
+======================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:516)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 516)
+
+STRANDED REGRESSION TESTING COMPLETE: 25 PASSED, 0 FAILED.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:517)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 517)
+
+======================================================================
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+ProgressionRegressionTestRunner:RunAllTests () (at Assets/Editor/ProgressionRegressionTestRunner.cs:518)
+
+(Filename: Assets/Editor/ProgressionRegressionTestRunner.cs Line: 518)
+
+Batchmode quit successfully invoked - shutting down!
+Curl error 42: Callback aborted
+Importing 'GUID: 00000000000000007000000000000000 - Path: ProjectSettings/TimeManager.asset' with importer (LibraryAssetImporter)
+Imported 'GUID: 00000000000000007000000000000000' -> (Import Result ID: '0a60df3c20d93b723ae0b35ded6c2a63') in 0.025 seconds [static dependencies only]. Details - ImportResultOutputID=bcbe57e6eed4f14d697ceae3e9a4ee48 DependenciesID=50b65264b9bb240314e092a3620af00b StaticDependenciesID=47e7cd4ba931b595a0bce618b57fd01d 
+Importing 'GUID: 0000000000000000b000000000000000 - Path: ProjectSettings/EditorBuildSettings.asset' with importer (LibraryAssetImporter)
+Imported 'GUID: 0000000000000000b000000000000000' -> (Import Result ID: '3631e549778deb690ef5d2662982fccf') in 0.003 seconds [static dependencies only]. Details - ImportResultOutputID=4647dd083cfc32cebcd7526e8846440c DependenciesID=da48c0a03c36b3674bf4abf1f28c32db StaticDependenciesID=a8cb8ea7aa553fc43cdae5003d8265dc 
+Refreshing native plugins compatible for Editor in 7.02 ms, found 6 plugins.
+
+Asset Pipeline Refresh (id=b2cab5225ac63c8408ebf47138a5537a): Total: 0.804 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=2 (actual=2, local cache=0, cache server=0)
+		Asset DB Process Time: managed=1 ms, native=767 ms
+		Asset DB Callback time: managed=12 ms, native=21 ms
+		Scripting: domain reloads=0, domain reload time=0 ms, compile time=0 ms, other=0 ms
+		Project Asset Count: scripts=2332, non-scripts=6754
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 2
+	ApplyChangesToAssetFolders: 0.334ms
+	Scan: 49.336ms
+	Collect global state as custom dependencies: 0.415ms
+	ProcessAssetsWithTransientArtifactChanges: 1.717ms
+	CategorizeAssets: 411.137ms
+	ImportOutOfDateAssets: 169.806ms (22.442ms without children)
+		ImportManagerImport: 33.760ms (1.101ms without children)
+			UpdateCategorizedAssets: 0.070ms
+		ReloadNativeAssets: 0.077ms
+		UnloadImportedAssets: 0.280ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.800ms
+		InitializingProgressBar: 0.190ms
+		ImportSchedulerStart: 111.252ms
+	PostProcessAllAssets: 24.802ms
+		XRBuildSystem.XRAssetImported 9.133ms
+		WindowTitlePostprocess 0.200ms
+		SpriteAtlasDatabase.OnAssetPostprocessCallback 0.170ms
+		MonoPostProcessAllAssets: 12.479ms
+			AssetPostprocessor.OnPostprocessAllAssets 7.193ms
+			SyncVS.PostprocessSyncProject 0.934ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 0.504ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.469ms
+			SpriteShapeAssetPostProcessor.OnPostprocessAllAssets 0.344ms
+			SpriteSlicePostprocessor.OnPostprocessAllAssets 0.312ms
+			AssetChangedListener.OnPostprocessAllAssets 0.275ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.243ms
+			SpriteEditorTexturePostprocessor.OnPostprocessAllAssets 0.142ms
+			ModelAssetProcessor.OnPostprocessAllAssets 0.110ms
+			GraphRefreshPostprocessor.OnPostprocessAllAssets 0.096ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.056ms
+	PostAssetChangesProfiler: 8.681ms
+	GatherAllCurrentPrimaryImportResultRevisions: 7.091ms
+	UnloadStreamsBegin: 0.439ms
+	PersistCurrentRevisions: 0.454ms
+	Untracked: 129.299ms
+
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-PAVILION-6000.5.3-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-PAVILION-6000.5.3 channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0
